@@ -5,8 +5,9 @@ import static org.assertj.core.api.Assertions.*;
 
 public class PawnTest {
 
-    private boolean verifyPawn(Pawn pawn, final String color) {
-        return pawn.getColor().equals(color);
+    private void verifyPawn(final String color) {
+        Pawn pawn = new Pawn(color);
+        assertThat(pawn.getColor()).isEqualTo(color);
     }
 
     @Test
@@ -14,8 +15,7 @@ public class PawnTest {
     public void create() {
         String[] colors = {"white", "black"};
         for (String color : colors) {
-            Pawn pawn = new Pawn(color);
-            assertThat(verifyPawn(pawn, color)).isEqualTo(true);
+            verifyPawn(color);
         }
     }
 }
