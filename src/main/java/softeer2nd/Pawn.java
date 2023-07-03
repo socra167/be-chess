@@ -1,0 +1,12 @@
+package softeer2nd;
+
+public class Pawn {
+    String color;
+    Pawn(String color) {
+        this.color = color;
+    }
+
+    String getColor() {
+        return color;
+    }
+}
