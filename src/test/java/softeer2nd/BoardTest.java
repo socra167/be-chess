@@ -1,8 +1,14 @@
 package softeer2nd;
 
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class BoardTest {
+
+    @Test
+    @DisplayName("체스판에 폰을 추가할 때 체스판의 크기가 1 커지고 추가된 폰의 색이 일치해야 한다")
     public void create() throws Exception {
         Board board = new Board();
 
