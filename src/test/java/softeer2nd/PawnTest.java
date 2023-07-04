@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class PawnTest {
 
-    private void verifyPawn(final String color) {
+    private void verifyPawn(Color color) {
         Pawn pawn = new Pawn(color);
         assertThat(pawn.getColor()).isEqualTo(color);
     }
@@ -14,8 +14,8 @@ public class PawnTest {
     @Test
     @DisplayName("색에 알맞은 폰이 생성되어야 한다")
     public void create() {
-        String[] colors = {"white", "black"};
-        for (String color : colors) {
+        Color[] colors = {Color.WHITE, Color.BLACK};
+        for (Color color : colors) {
             verifyPawn(color);
         }
     }
@@ -24,6 +24,6 @@ public class PawnTest {
     @DisplayName("기본 생성자로 색을 지정하지 않은 경우 흰색 폰이 생성되어야 한다")
     public void create_기본생성자() throws Exception {
         Pawn pawn = new Pawn();
-        assertEquals("white", pawn.getColor());
+        assertEquals(Color.WHITE, pawn.getColor());
     }
 }
