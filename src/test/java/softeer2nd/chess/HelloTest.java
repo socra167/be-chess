@@ -1,4 +1,4 @@
-package softeer2nd;
+package softeer2nd.chess;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

@@ -1,6 +1,9 @@
-package softeer2nd;
+package softeer2nd.chess.pieces;
 
 import org.junit.jupiter.api.*;
+import softeer2nd.chess.Color;
+import softeer2nd.chess.pieces.Pawn;
+
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 

@@ -1,4 +1,4 @@
-package softeer2nd;
+package softeer2nd.chess;
 
 public enum Color {
     WHITE("white"),
