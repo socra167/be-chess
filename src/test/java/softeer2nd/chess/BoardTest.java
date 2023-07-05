@@ -1,6 +1,5 @@
 package softeer2nd.chess;
 
-import org.junit.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,9 +13,18 @@ public class BoardTest {
 
     private void verifyAddPawn(Color color) {
         Pawn pawn = new Pawn(color);
-        board.add(pawn);
-        assertEquals(count + 1, board.size());
-        assertEquals(pawn, board.findPawn(count));
+        board.addEmpty(pawn);
+        count++;
+        assertEquals(count, board.size());
+        assertEquals(pawn, board.findPawn(count - 1));
+    }
+
+    private void verifyAddPawn(Color color, int x, int y) throws Exception {
+        Pawn pawn = new Pawn(color);
+        board.add(pawn, x, y);
+        count++;
+        assertEquals(count, board.size());
+        assertEquals(pawn, board.findPawn(x, y));
     }
 
     @BeforeEach
@@ -32,7 +40,13 @@ public class BoardTest {
 
         for (Color color : colors) {
             verifyAddPawn(color);
-            count++;
         }
+    }
+
+    @Test
+    @DisplayName("폰이 체스판의 특정 위치에 정상적으로 추가되어야 한다.")
+    public void addPawnByLocation() throws Exception {
+        verifyAddPawn(Color.WHITE, 5, 5);
+        verifyAddPawn(Color.BLACK, 5, 6);
     }
 }
