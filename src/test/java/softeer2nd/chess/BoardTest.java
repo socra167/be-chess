@@ -64,7 +64,8 @@ public class BoardTest {
                 "........\n" +
                 "pppppppp\n" +
                 "........\n";
-        String output = board.printBoard();
+        String output = board.getBoardResult();
+        System.out.println(output);
         assertEquals(NORMAL_OUTPUT, output);
     }
 
@@ -75,14 +76,15 @@ public class BoardTest {
         final String NORMAL_OUTPUT =
                 "........\n" +
                 "PPPPPPPP\n" +
-                        "........\n" +
-                        "........\n" +
-                        "........\n" +
-                        "........\n" +
-                        "........\n" +
-                        "pppppppp\n" +
-                        "........\n";
-        String output = board.printBoard();
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "pppppppp\n" +
+                "........\n";
+        String output = board.getBoardResult();
+        System.out.println(output);
         assertEquals(NORMAL_OUTPUT, output);
     }
 

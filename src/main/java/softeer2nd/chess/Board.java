@@ -95,14 +95,14 @@ public class Board {
         String location = coordinatesToLocation(x, y);
         add(pawn, location);
     }
+    public void add(Color color, String location) throws Exception{
+        Pawn pawn = new Pawn(color);
+        add(pawn, location);
+    }
     public int size() {
         return pawnMap.size();
     }
     public Pawn findPawn(String location) {
-        return pawnMap.get(location);
-    }
-    public Pawn findPawn(int index) {
-        String location = indexToLocation(index);
         return pawnMap.get(location);
     }
     public Pawn findPawn(int x, int y) {
@@ -122,7 +122,8 @@ public class Board {
     public String getBlackPawnResult() {
         return getLineResult(1);
     }
-    public String printBoard() {
+
+    public String getBoardResult() {
         StringBuilder sb = new StringBuilder();
         String location;
         for (int i = 0; i < rowSize; i++) {
@@ -136,7 +137,6 @@ public class Board {
             }
             sb.append("\n");
         }
-        System.out.print(sb);
         return sb.toString();
     }
 }
