@@ -85,4 +85,12 @@ public class BoardTest {
         String output = board.printBoard();
         assertEquals(NORMAL_OUTPUT, output);
     }
+
+    @Test
+    @DisplayName("체스판 초기화 시 흰색 Pawn 열과 검은색 Pawn 열의 결과가 정상이어야 한다")
+    public void initialize() throws Exception {
+        board = new Board();
+        assertEquals("pppppppp", board.getWhitePawnResult());
+        assertEquals("PPPPPPPP", board.getBlackPawnResult());
+    }
 }
