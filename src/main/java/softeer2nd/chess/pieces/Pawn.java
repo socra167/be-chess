@@ -4,7 +4,6 @@ import softeer2nd.chess.Color;
 
 public class Pawn {
     Color color;
-
     public Pawn(Color color) {
         this.color = color;
     }
@@ -13,5 +12,8 @@ public class Pawn {
     }
     public Color getColor() {
         return color;
+    }
+    public String getRepresentation() {
+        return color.getRepresentation();
     }
 }
