@@ -14,31 +14,32 @@ public class Board {
     Board() {
         this(8, 8);
     }
-
     Board(int row, int col) {
         initialize(row, col);
+    }
+    private void setLine(int row, Color color) {
+        Pawn pawn;
+        for (int col = 0; col < colSize; col++) {
+            pawn = new Pawn(color);
+            try{
+                add(pawn, col, row);
+            } catch (Exception e) {
+            }
+        }
+    }
+    private void setWhitePawnLine() {
+        setLine(rowSize - 2, Color.WHITE);
+    }
+    private void setBlackPawnLine() {
+        setLine(1, Color.BLACK);
     }
     public void initialize(int row, int col) {
         Pawn pawn;
         rowSize = row;
         colSize = col;
         pawnMap.clear();
-        try {
-            for (int i = 0; i < rowSize; i++) {
-                if (i == 1) {
-                    for (int j = 0; j < colSize; j++) {
-                        pawn = new Pawn(Color.BLACK);
-                        add(pawn, j, i);
-                    }
-                } else if (rowSize - i == 2) {
-                    for (int j = 0; j < colSize; j++) {
-                        pawn = new Pawn(Color.WHITE);
-                        add(pawn, j, i);
-                    }
-                }
-            }
-        } catch (Exception e) {
-        }
+        setBlackPawnLine();
+        setWhitePawnLine();
     }
     public String findEmpty() throws Exception { // 체스판의 비어 있는 공간 중 맨 앞의 키 반환
         Set<String> keys = pawnMap.keySet();
@@ -100,15 +101,14 @@ public class Board {
     public Pawn findPawn(String location) {
         return pawnMap.get(location);
     }
-    public Pawn findPawn(int index) { // 체스판의 인덱스 위치에 있는 폰을 찾음
+    public Pawn findPawn(int index) {
         String location = indexToLocation(index);
         return pawnMap.get(location);
     }
-    public Pawn findPawn(int x, int y) { // 체스판의 특정 좌표에 있는 폰을 찾음
+    public Pawn findPawn(int x, int y) {
         String location = coordinatesToLocation(x, y);
         return pawnMap.get(location);
     }
-
     private String getLineResult(int row) {
         StringBuilder sb = new StringBuilder();
         for (int j = 0; j < colSize; j++) {
