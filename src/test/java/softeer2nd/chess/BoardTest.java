@@ -44,9 +44,26 @@ public class BoardTest {
     }
 
     @Test
-    @DisplayName("폰이 체스판의 특정 위치에 정상적으로 추가되어야 한다.")
+    @DisplayName("폰이 체스판의 특정 위치에 정상적으로 추가되어야 한다")
     public void addPawnByLocation() throws Exception {
         verifyAddPawn(Color.WHITE, 5, 5);
         verifyAddPawn(Color.BLACK, 5, 6);
+    }
+
+    @Test
+    @DisplayName("체스판을 초기화하면 폰의 위치가 정상적으로 출력되어야 한다")
+    public void printChessBoard() throws Exception {
+        final String NORMAL_OUTPUT =
+                "........\n" +
+                "PPPPPPPP\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "pppppppp\n" +
+                "........\n";
+        board.initialize();
+        String output = board.printBoard();
+        assertEquals(NORMAL_OUTPUT, output);
     }
 }
