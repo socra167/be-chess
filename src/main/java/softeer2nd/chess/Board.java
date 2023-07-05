@@ -20,8 +20,8 @@ public class Board {
                     pawn = new Pawn(Color.BLACK);
                     add(pawn, j, i);
                 }
-            } else if (ROW_SIZE - i == 1) {
-                for (int j = 0; j < COL_SIZE; i++) {
+            } else if (ROW_SIZE - i == 2) {
+                for (int j = 0; j < COL_SIZE; j++) {
                     pawn = new Pawn(Color.WHITE);
                     add(pawn, j, i);
                 }
@@ -83,5 +83,22 @@ public class Board {
     public Pawn findPawn(int x, int y) { // 체스판의 특정 좌표에 있는 폰을 찾음
         String location = coordinatesToLocation(x, y);
         return pawnMap.get(location);
+    }
+    public String printBoard() {
+        StringBuilder sb = new StringBuilder();
+        String location;
+        for (int i = 0; i < ROW_SIZE; i++) {
+            for (int j = 0; j < COL_SIZE; j++) {
+                location = coordinatesToLocation(j, i);
+                if (pawnMap.containsKey(location)) {
+                    sb.append(pawnMap.get(location).getRepresentation());
+                } else {
+                    sb.append(".");
+                }
+            }
+            sb.append("\n");
+        }
+        System.out.print(sb);
+        return sb.toString();
     }
 }
