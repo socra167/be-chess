@@ -13,10 +13,10 @@ public class BoardTest {
 
     private void verifyAddPawn(Color color) {
         Pawn pawn = new Pawn(color);
-        board.addEmpty(pawn);
+        String location = board.addEmpty(pawn);
         count++;
         assertEquals(count, board.size());
-        assertEquals(pawn, board.findPawn(count - 1));
+        assertEquals(pawn, board.findPawn(location));
     }
 
     private void verifyAddPawn(Color color, int x, int y) throws Exception {
@@ -27,32 +27,34 @@ public class BoardTest {
         assertEquals(pawn, board.findPawn(x, y));
     }
 
+    public void initializeBoard(int row, int col) {
+        board = new Board(row, col);
+        count = col * 2; // 초기화 후 체크판 위 Pawn의 수
+    }
+
     @BeforeEach
     public void setUp() {
-        board = new Board();
-        count = 0;
+        initializeBoard(8, 8);
     }
 
     @Test
-    @DisplayName("체스판에 폰을 추가할 때 체스판의 크기가 1 커지고 추가된 폰의 색이 일치해야 한다")
+    @DisplayName("체스판의 빈 공간에 폰을 추가하면 체스판의 기물 수가 커지고, 추가하고자 한 폰은 체스판에 추가된 폰과 일치해야 한다")
     public void create() throws Exception {
-        Color[] colors = {Color.WHITE, Color.BLACK};
-
-        for (Color color : colors) {
-            verifyAddPawn(color);
-        }
+        verifyAddPawn(Color.WHITE);
+        verifyAddPawn(Color.BLACK);
     }
 
     @Test
     @DisplayName("폰이 체스판의 특정 위치에 정상적으로 추가되어야 한다")
     public void addPawnByLocation() throws Exception {
         verifyAddPawn(Color.WHITE, 5, 5);
-        verifyAddPawn(Color.BLACK, 5, 6);
+        verifyAddPawn(Color.BLACK, 5, 4);
     }
 
     @Test
     @DisplayName("체스판을 초기화하면 폰의 위치가 정상적으로 출력되어야 한다")
-    public void printChessBoard() throws Exception {
+    public void printChessBoard() {
+        initializeBoard(8, 8);
         final String NORMAL_OUTPUT =
                 "........\n" +
                 "PPPPPPPP\n" +
@@ -62,7 +64,24 @@ public class BoardTest {
                 "........\n" +
                 "pppppppp\n" +
                 "........\n";
-        board.initialize();
+        String output = board.printBoard();
+        assertEquals(NORMAL_OUTPUT, output);
+    }
+
+    @Test
+    @DisplayName("체스판의 규격을 지정해 초기화하면 폰의 위치가 정상적으로 출력되어야 한다")
+    public void initalizeChessBoard() {
+        initializeBoard(9, 8);
+        final String NORMAL_OUTPUT =
+                "........\n" +
+                "PPPPPPPP\n" +
+                        "........\n" +
+                        "........\n" +
+                        "........\n" +
+                        "........\n" +
+                        "........\n" +
+                        "pppppppp\n" +
+                        "........\n";
         String output = board.printBoard();
         assertEquals(NORMAL_OUTPUT, output);
     }
