@@ -5,8 +5,8 @@ import softeer2nd.chess.pieces.Pawn;
 import java.util.*;
 
 public class Board {
-    private int rowSize;
-    private int colSize;
+    private int rowSize; // 가능한 범위 4 ~ 26
+    private int colSize; // 가능한 범위 1 ~ *
     private static final int ROW_SIZE = 8;
     private static final int COL_SIZE = 8;
     Map<String, Pawn> pawnMap = new HashMap<>();
@@ -107,6 +107,20 @@ public class Board {
     public Pawn findPawn(int x, int y) { // 체스판의 특정 좌표에 있는 폰을 찾음
         String location = coordinatesToLocation(x, y);
         return pawnMap.get(location);
+    }
+
+    private String getLineResult(int row) {
+        StringBuilder sb = new StringBuilder();
+        for (int j = 0; j < colSize; j++) {
+            sb.append(pawnMap.get(coordinatesToLocation(j, row)).getRepresentation());
+        }
+        return sb.toString();
+    }
+    public String getWhitePawnResult() {
+        return getLineResult(rowSize - 2);
+    }
+    public String getBlackPawnResult() {
+        return getLineResult(1);
     }
     public String printBoard() {
         StringBuilder sb = new StringBuilder();
