@@ -1,13 +1,11 @@
-package softeer2nd.chess;
-
-import softeer2nd.chess.pieces.Piece;
+package softeer2nd.chess.game;
 
 import java.util.Scanner;
 
-public class MainMenu {
+public class GameMenu {
     private static final String MAIN_INFORM = "0: 보드 초기화하기\n1: 폰 추가하기\n2: 폰 찾기\n-1: 종료";
     private static final String BOARDSIZE_INFORM = "체스판의 크기를 입력하세요.";
-    private static final String COLOR_INFORM = "0: white\n1: black";
+    private static final String COLOR_INFORM = "말의 색을 입력하세요. (white/black)";
     private static final String LOCATION_INFORM = "위치를 입력하세요. (예: A1)";
     private static final String CUTTING_LINE = "==================";
     private static final String START_INFORM = "0: 게임 시작\n-1: 종료";
@@ -16,7 +14,7 @@ public class MainMenu {
     private String location;
     private int[] boardSize; // {row, col}
     private Scanner scanner;
-    MainMenu() {
+    GameMenu() {
         scanner = new Scanner(System.in);
         boardSize = new int[2];
         choice = 0;
@@ -26,7 +24,7 @@ public class MainMenu {
         choice = scanner.nextInt();
         return choice;
     }
-    public int[] issueBoardSize() {
+    public int[] askBoardSize() {
         System.out.println(BOARDSIZE_INFORM);
         System.out.print("세로 : ");
         boardSize[0] = scanner.nextInt();
@@ -34,14 +32,14 @@ public class MainMenu {
         boardSize[1] = scanner.nextInt();
         return boardSize;
     }
-    public String issueColor() {
+    public String askColor() {
         System.out.println(COLOR_INFORM);
+        scanner.nextLine();
         colorChoice = scanner.nextLine();
         return colorChoice;
     }
-    public String issueLocation() {
+    public String askLocation() {
         System.out.println(LOCATION_INFORM);
-        scanner.nextLine();
         location = scanner.nextLine();
         return location;
     }
