@@ -8,7 +8,6 @@ public class MainMenu {
     private static final String COLOR_INFORM = "0: white\n1: black";
     private static final String LOCATION_INFORM = "위치를 입력하세요. (예: A1)";
     private static final String CUTTING_LINE = "==================";
-    private static final String BLANK_SPACE = "\n\n\n\n\n\n";
     private static final String START_INFORM = "0: 게임 시작\n-1: 종료";
     private int choice;
     private int colorChoice;
@@ -50,10 +49,6 @@ public class MainMenu {
     }
     public void printCuttingLine() {
         System.out.println(CUTTING_LINE);
-    }
-
-    public void printBlankSpace() {
-        System.out.println(BLANK_SPACE);
     }
 
     public boolean checkStart() {

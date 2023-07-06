@@ -1,6 +1,7 @@
 package softeer2nd.chess;
 
 import softeer2nd.chess.pieces.Pawn;
+import softeer2nd.chess.utils.StringUtils;
 
 import java.util.*;
 
@@ -135,7 +136,7 @@ public class Board {
                     sb.append(".");
                 }
             }
-            sb.append("\n");
+            sb.append(StringUtils.NEWLINE);
         }
         return sb.toString();
     }

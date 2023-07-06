@@ -1,5 +1,7 @@
 package softeer2nd.chess;
 
+import softeer2nd.chess.utils.StringUtils;
+
 public class MainControl {
 
     public static void main(String[] args) {
@@ -35,7 +37,7 @@ public class MainControl {
                 case -1:
                     return;
             }
-            mainMenu.printBlankSpace();
+            StringUtils.printBlankSpace();
         }
     }
 }
