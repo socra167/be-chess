@@ -5,6 +5,8 @@ import softeer2nd.chess.utils.StringUtils;
 
 import java.util.*;
 
+import static softeer2nd.chess.utils.StringUtils.*;
+
 public class Board {
     private int rowSize; // 가능한 범위 4 ~ 26
     private int colSize; // 가능한 범위 1 ~ *
@@ -136,7 +138,7 @@ public class Board {
                     sb.append(".");
                 }
             }
-            sb.append(StringUtils.NEWLINE);
+            sb.append(NEWLINE);
         }
         return sb.toString();
     }
