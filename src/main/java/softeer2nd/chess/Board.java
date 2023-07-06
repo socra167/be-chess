@@ -18,30 +18,32 @@ public class Board {
     Board(int row, int col) {
         initialize(row, col);
     }
-    private void setLine(int row, String color) {
+    private void setLine(int y, String color) {
         Piece piece;
-        for (int col = 0; col < colSize; col++) {
+        for (int x = 0; x < colSize; x++) {
             if (color.equals(Piece.WHITE_COLOR)) {
                 piece = Piece.createWhitePawn();
             } else {
                 piece = Piece.createBlackPawn();
             }
-            add(piece, col, row);
+            add(piece, x, y);
         }
     }
-    private void setWhitePieceLine() {
-        setLine(rowSize - 2, Piece.WHITE_COLOR);
+    private void setWhitePawn() {
+        setLine(1, Piece.WHITE_COLOR);
     }
-    private void setBlackPieceLine() {
-        setLine(1, Piece.BLACK_COLOR);
+    private void setBlackPawn() {
+        setLine(rowSize - 2, Piece.BLACK_COLOR);
+    }
+    public void initialize() {
+        initialize(8, 8);
     }
     public void initialize(int row, int col) {
-        Piece piece;
         rowSize = row;
         colSize = col;
         pieceMap.clear();
-        setBlackPieceLine();
-        setWhitePieceLine();
+        setWhitePawn();
+        setBlackPawn();
     }
     public String findEmpty() throws Exception { // 체스판의 비어 있는 공간 중 맨 앞의 키 반환
         Set<String> keys = pieceMap.keySet();
@@ -67,8 +69,10 @@ public class Board {
         return sb.toString();
     }
     private String coordinatesToLocation(int x, int y) { // 좌표를 체스판 맵의 키로 변환
-        String location = indexToLocation(x * colSize + y);
-        return location;
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append((char)('A' + y));
+        stringBuilder.append(x + 1);
+        return stringBuilder.toString();
     }
     public String addEmpty(Piece piece) { // 체스판에 빈 공간 중 맨 앞에 폰을 추가
         String location;
@@ -106,7 +110,7 @@ public class Board {
         }
         add(piece, location);
     }
-    public int size() {
+    public int pieceCount() {
         return pieceMap.size();
     }
     public Piece findPiece(String location) {
@@ -129,7 +133,7 @@ public class Board {
     public String getBlackPieceResult() {
         return getLineResult(rowSize - 2);
     }
-    public String getBoardResult() {
+    public String showBoard() {
         StringBuilder stringBuilder = new StringBuilder();
         String location;
         for (int i = rowSize - 1; i >= 0; i--) {

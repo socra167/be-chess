@@ -15,7 +15,7 @@ public class MainControl {
             return;
         }
         while(true) {
-            System.out.println(board.getBoardResult());
+            System.out.println(board.showBoard());
             mainMenu.printCuttingLine();
             switch (mainMenu.issueMenu()) {
                 case 0: // 초기화

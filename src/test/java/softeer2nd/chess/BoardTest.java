@@ -5,9 +5,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import softeer2nd.chess.pieces.Piece;
 
-import java.nio.MappedByteBuffer;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static softeer2nd.chess.utils.StringUtils.appendNewLine;
 
 public class BoardTest {
     public Board board;
@@ -26,7 +25,7 @@ public class BoardTest {
         Piece piece = makePawn(color);
         String location = board.addEmpty(piece);
         count++;
-        assertEquals(count, board.size());
+        assertEquals(count, board.pieceCount());
         assertEquals(piece, board.findPiece(location));
     }
 
@@ -34,7 +33,7 @@ public class BoardTest {
         Piece piece = makePawn(color);
         board.add(piece, x, y);
         count++;
-        assertEquals(count, board.size());
+        assertEquals(count, board.pieceCount());
         assertEquals(piece, board.findPiece(x, y));
     }
 
@@ -50,7 +49,7 @@ public class BoardTest {
 
     @Test
     @DisplayName("체스판의 빈 공간에 폰을 추가하면 체스판의 기물 수가 커지고, 추가하고자 한 폰은 체스판에 추가된 폰과 일치해야 한다")
-    public void create() throws Exception {
+    public void createPawn() throws Exception {
         verifyAddPawn(Piece.WHITE_COLOR);
         verifyAddPawn(Piece.BLACK_COLOR);
     }
@@ -75,7 +74,7 @@ public class BoardTest {
                 "........\n" +
                 "pppppppp\n" +
                 "........\n";
-        String output = board.getBoardResult();
+        String output = board.showBoard();
         System.out.println(output);
         assertEquals(NORMAL_OUTPUT, output);
     }
@@ -94,7 +93,7 @@ public class BoardTest {
                 "........\n" +
                 "pppppppp\n" +
                 "........\n";
-        String output = board.getBoardResult();
+        String output = board.showBoard();
         System.out.println(output);
         assertEquals(NORMAL_OUTPUT, output);
     }
