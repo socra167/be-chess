@@ -158,7 +158,7 @@ public class Board {
     }
     public void add(String color, String location) {
         Piece piece;
-        if (color.equals(Piece.WHITE_COLOR)) {
+        if (color.equals(Piece.Color.WHITE.getName())) {
             piece = Piece.createWhitePawn();
         } else {
             piece = Piece.createBlackPawn();
