@@ -5,6 +5,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import softeer2nd.chess.pieces.Piece;
 
+import java.nio.MappedByteBuffer;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class BoardTest {
@@ -103,5 +105,20 @@ public class BoardTest {
         board = new Board();
         assertEquals("pppppppp", board.getWhitePieceResult());
         assertEquals("PPPPPPPP", board.getBlackPieceResult());
+    }
+
+    @Test
+    @DisplayName("체스판 초기화 후 전체 상태를 출력하면 말이 순서에 맞게 놓인 상태로 출력된다")
+    public void create() throws Exception {
+        board.initialize();
+        assertEquals(32, board.pieceCount());
+        String blankRank = appendNewLine("........");
+        assertEquals(
+                appendNewLine("RNBQKBNR") +
+                        appendNewLine("PPPPPPPP") +
+                        blankRank + blankRank + blankRank + blankRank +
+                        appendNewLine("pppppppp") +
+                        appendNewLine("rnbqkbnr"),
+                board.showBoard());
     }
 }
