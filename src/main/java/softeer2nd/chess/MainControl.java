@@ -1,7 +1,5 @@
 package softeer2nd.chess;
 
-import softeer2nd.chess.utils.StringUtils;
-
 import static softeer2nd.chess.utils.StringUtils.*;
 
 public class MainControl {
@@ -34,7 +32,7 @@ public class MainControl {
                     break;
                 case 2: // 찾기
                     location = mainMenu.issueLocation();
-                    System.out.println(board.findPawn(location).getRepresentation());
+                    System.out.println(board.findPiece(location).getRepresentation());
                     break;
                 case -1:
                     return;

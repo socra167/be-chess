@@ -1,7 +1,6 @@
 package softeer2nd.chess;
 
-import softeer2nd.chess.pieces.Pawn;
-import softeer2nd.chess.utils.StringUtils;
+import softeer2nd.chess.pieces.Piece;
 
 import java.util.*;
 
@@ -12,7 +11,7 @@ public class Board {
     private int colSize; // 가능한 범위 1 ~ *
     private static final int ROW_SIZE = 8;
     private static final int COL_SIZE = 8;
-    Map<String, Pawn> pawnMap = new HashMap<>();
+    Map<String, Piece> pieceMap = new HashMap<>();
 
     Board() {
         this(8, 8);
@@ -21,31 +20,31 @@ public class Board {
         initialize(row, col);
     }
     private void setLine(int row, Color color) {
-        Pawn pawn;
+        Piece piece;
         for (int col = 0; col < colSize; col++) {
-            pawn = new Pawn(color);
+            piece = new Piece(color);
             try{
-                add(pawn, col, row);
+                add(piece, col, row);
             } catch (Exception e) {
             }
         }
     }
-    private void setWhitePawnLine() {
+    private void setWhitePieceLine() {
         setLine(rowSize - 2, Color.WHITE);
     }
-    private void setBlackPawnLine() {
+    private void setBlackPieceLine() {
         setLine(1, Color.BLACK);
     }
     public void initialize(int row, int col) {
-        Pawn pawn;
+        Piece piece;
         rowSize = row;
         colSize = col;
-        pawnMap.clear();
-        setBlackPawnLine();
-        setWhitePawnLine();
+        pieceMap.clear();
+        setBlackPieceLine();
+        setWhitePieceLine();
     }
     public String findEmpty() throws Exception { // 체스판의 비어 있는 공간 중 맨 앞의 키 반환
-        Set<String> keys = pawnMap.keySet();
+        Set<String> keys = pieceMap.keySet();
         StringBuilder sb = new StringBuilder();
         String location;
         for (int i = 0; i < rowSize; i++) {
@@ -71,17 +70,17 @@ public class Board {
         String location = indexToLocation(x * colSize + y);
         return location;
     }
-    public String addEmpty(Pawn pawn) { // 체스판에 빈 공간 중 맨 앞에 폰을 추가
+    public String addEmpty(Piece piece) { // 체스판에 빈 공간 중 맨 앞에 폰을 추가
         String location;
         try {
             location = findEmpty();
-            pawnMap.put(findEmpty(), pawn);
+            pieceMap.put(findEmpty(), piece);
             return location;
         } catch(Exception e) {
             return null;
         }
     }
-    public void add(Pawn pawn, String location) throws Exception {
+    public void add(Piece piece, String location) throws Exception {
         StringBuilder sb = new StringBuilder();
         String regex;
         sb.append("[A-][1-]");
@@ -89,40 +88,40 @@ public class Board {
         sb.insert(8, rowSize);
         regex = sb.toString();
         if (location.matches(regex)) {
-            pawnMap.put(location, pawn);
+            pieceMap.put(location, piece);
         } else {
             throw new Exception("Location 형식이 틀림");
         }
     }
-    public void add(Pawn pawn, int x, int y) throws Exception {
+    public void add(Piece piece, int x, int y) throws Exception {
         String location = coordinatesToLocation(x, y);
-        add(pawn, location);
+        add(piece, location);
     }
     public void add(Color color, String location) throws Exception{
-        Pawn pawn = new Pawn(color);
-        add(pawn, location);
+        Piece piece = new Piece(color);
+        add(piece, location);
     }
     public int size() {
-        return pawnMap.size();
+        return pieceMap.size();
     }
-    public Pawn findPawn(String location) {
-        return pawnMap.get(location);
+    public Piece findPiece(String location) {
+        return pieceMap.get(location);
     }
-    public Pawn findPawn(int x, int y) {
+    public Piece findPiece(int x, int y) {
         String location = coordinatesToLocation(x, y);
-        return pawnMap.get(location);
+        return pieceMap.get(location);
     }
     private String getLineResult(int row) {
         StringBuilder sb = new StringBuilder();
         for (int j = 0; j < colSize; j++) {
-            sb.append(pawnMap.get(coordinatesToLocation(j, row)).getRepresentation());
+            sb.append(pieceMap.get(coordinatesToLocation(j, row)).getRepresentation());
         }
         return sb.toString();
     }
-    public String getWhitePawnResult() {
+    public String getWhitePieceResult() {
         return getLineResult(rowSize - 2);
     }
-    public String getBlackPawnResult() {
+    public String getBlackPieceResult() {
         return getLineResult(1);
     }
 
@@ -132,8 +131,8 @@ public class Board {
         for (int i = 0; i < rowSize; i++) {
             for (int j = 0; j < colSize; j++) {
                 location = coordinatesToLocation(j, i);
-                if (pawnMap.containsKey(location)) {
-                    sb.append(pawnMap.get(location).getRepresentation());
+                if (pieceMap.containsKey(location)) {
+                    sb.append(pieceMap.get(location).getRepresentation());
                 } else {
                     sb.append(".");
                 }

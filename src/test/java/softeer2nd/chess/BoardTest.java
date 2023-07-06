@@ -3,7 +3,7 @@ package softeer2nd.chess;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import softeer2nd.chess.pieces.Pawn;
+import softeer2nd.chess.pieces.Piece;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -12,19 +12,19 @@ public class BoardTest {
     private int count;
 
     private void verifyAddPawn(Color color) {
-        Pawn pawn = new Pawn(color);
-        String location = board.addEmpty(pawn);
+        Piece piece = new Piece(color);
+        String location = board.addEmpty(piece);
         count++;
         assertEquals(count, board.size());
-        assertEquals(pawn, board.findPawn(location));
+        assertEquals(piece, board.findPiece(location));
     }
 
     private void verifyAddPawn(Color color, int x, int y) throws Exception {
-        Pawn pawn = new Pawn(color);
-        board.add(pawn, x, y);
+        Piece piece = new Piece(color);
+        board.add(piece, x, y);
         count++;
         assertEquals(count, board.size());
-        assertEquals(pawn, board.findPawn(x, y));
+        assertEquals(piece, board.findPiece(x, y));
     }
 
     public void initializeBoard(int row, int col) {
@@ -92,7 +92,7 @@ public class BoardTest {
     @DisplayName("체스판 초기화 시 흰색 Pawn 열과 검은색 Pawn 열의 결과가 정상이어야 한다")
     public void initialize() throws Exception {
         board = new Board();
-        assertEquals("pppppppp", board.getWhitePawnResult());
-        assertEquals("PPPPPPPP", board.getBlackPawnResult());
+        assertEquals("pppppppp", board.getWhitePieceResult());
+        assertEquals("PPPPPPPP", board.getBlackPieceResult());
     }
 }
