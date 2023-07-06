@@ -7,31 +7,16 @@ import java.util.*;
 import static softeer2nd.chess.utils.StringUtils.*;
 
 public class Board {
+    private static final int DEFAULT_ROW_SIZE = 8;
+    private static final int DEFAULT_COL_SIZE = 8;
     private int rowSize; // 가능한 범위 4 ~ 26
     private int colSize; // 가능한 범위 1 ~ *
-    Map<String, Piece> pieceMap = new HashMap<>();
-    Board() {
-        this(8, 8);
+    private Map<String, Piece> pieceMap = new HashMap<>();
+    public Board() {
+        this(DEFAULT_ROW_SIZE, DEFAULT_COL_SIZE);
     }
-    Board(int row, int col) {
+    public Board(int row, int col) {
         initialize(row, col);
-    }
-    private void setLine(int y, String color) {
-        Piece piece;
-        for (int x = 0; x < colSize; x++) {
-            if (color.equals(Piece.WHITE_COLOR)) {
-                piece = Piece.createWhitePawn();
-            } else {
-                piece = Piece.createBlackPawn();
-            }
-            add(piece, x, y);
-        }
-    }
-    private void setWhitePawn() {
-        setLine(1, Piece.WHITE_COLOR);
-    }
-    private void setBlackPawn() {
-        setLine(rowSize - 2, Piece.BLACK_COLOR);
     }
     public void initialize() {
         initialize(8, 8);
@@ -40,63 +25,86 @@ public class Board {
         rowSize = row;
         colSize = col;
         pieceMap.clear();
-        setWhitePawn();
-        setBlackPawn();
-        setWhiteKnight();
-        setBlackKnight();
-        setWhiteRook();
-        setBlackRook();
-        setWhiteBishop();
-        setBlackBishop();
-        setWhiteQueen();
-        setBlackQueen();
-        setWhiteKing();
-        setBlackKing();
+        setWhitePawn(1);
+        setBlackPawn(rowSize - 2);
+        setWhiteKnight("B1", "G1");
+        setBlackKnight("B8", "G8");
+        setWhiteRook("A1", "H1");
+        setBlackRook("A8", "H8");
+        setWhiteBishop("C1", "F1");
+        setBlackBishop("C8", "F8");
+        setWhiteQueen("D1");
+        setBlackQueen("D8");
+        setWhiteKing("E1");
+        setBlackKing("E8");
+    }
+    private void setWhitePawn(int row) {
+        for (int col = 0; col < colSize; col++) {
+            add(Piece.createWhitePawn(), col, row);
+        }
+    }
+    private void setBlackPawn(int row) {
+        for (int col = 0; col < colSize; col++) {
+            add(Piece.createBlackPawn(), col, row);
+        }
+    }
+    private void setWhiteKnight(String ... locations) {
+        for (String location : locations) {
+            add(Piece.createWhiteKnight(), location);
+        }
     }
 
-    private void setWhiteKnight() {
-        add(Piece.createWhiteKnight(), "B1");
-        add(Piece.createWhiteKnight(), "G1");
+    private void setBlackKnight(String ... locations) {
+        for (String location : locations) {
+            add(Piece.createBlackKnight(), location);
+        }
     }
 
-    private void setBlackKnight() {
-        add(Piece.createBlackKnight(), "B8");
-        add(Piece.createBlackKnight(), "G8");
+    private void setWhiteRook(String ... locations) {
+        for (String location : locations) {
+            add(Piece.createWhiteRook(), location);
+        }
     }
 
-    private void setWhiteRook() {
-        add(Piece.createWhiteRook(), "A1");
-        add(Piece.createWhiteRook(), "H1");
+    private void setBlackRook(String ... locations) {
+        for (String location : locations) {
+            add(Piece.createBlackRook(), location);
+        }
     }
 
-    private void setBlackRook() {
-        add(Piece.createBlackRook(), "A8");
-        add(Piece.createBlackRook(), "H8");
+    private void setWhiteBishop(String ... locations) {
+        for (String location : locations) {
+            add(Piece.createWhiteBishop(), location);
+        }
+    }
+    private void setBlackBishop(String ... locations) {
+        for (String location : locations) {
+            add(Piece.createBlackBishop(), location);
+        }
     }
 
-    private void setWhiteBishop() {
-        add(Piece.createWhiteBishop(), "C1");
-        add(Piece.createWhiteBishop(), "F1");
-    }
-    private void setBlackBishop() {
-        add(Piece.createBlackBishop(), "C8");
-        add(Piece.createBlackBishop(), "F8");
+    private void setWhiteQueen(String ... locations) {
+        for (String location : locations) {
+            add(Piece.createWhiteQueen(), location);
+        }
     }
 
-    private void setWhiteQueen() {
-        add(Piece.createWhiteQueen(), "D1");
+    private void setBlackQueen(String ... locations) {
+        for (String location : locations) {
+            add(Piece.createBlackQueen(), location);
+        }
     }
 
-    private void setBlackQueen() {
-        add(Piece.createBlackQueen(), "D8");
+    private void setWhiteKing(String ... locations) {
+        for (String location : locations) {
+            add(Piece.createWhiteKing(), location);
+        }
     }
 
-    private void setWhiteKing() {
-        add(Piece.createWhiteKing(), "E1");
-    }
-
-    private void setBlackKing() {
-        add(Piece.createBlackKing(), "E8");
+    private void setBlackKing(String ... locations) {
+        for (String location : locations) {
+            add(Piece.createBlackKing(), location);
+        }
     }
 
     public String findEmpty() throws Exception { // 체스판의 비어 있는 공간 중 맨 앞의 키 반환
