@@ -3,6 +3,7 @@ package softeer2nd.chess.utils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
+import static softeer2nd.chess.utils.StringUtils.*;
 
 public class StringUtilsTest {
 
@@ -11,8 +12,6 @@ public class StringUtilsTest {
     public void appendLine() {
         String input = "test";
         String expected = input + System.getProperty("line.separator");
-        assertThat(expected).isEqualTo(StringUtils.appendNewLine(input));
+        assertThat(expected).isEqualTo(appendNewLine(input));
     }
-
-
 }

@@ -1,49 +1,114 @@
 package softeer2nd.chess;
 
-import softeer2nd.chess.pieces.Pawn;
-import softeer2nd.chess.utils.StringUtils;
+import softeer2nd.chess.pieces.Piece;
 
 import java.util.*;
 
+import static softeer2nd.chess.utils.StringUtils.*;
+
 public class Board {
+    private static final int DEFAULT_ROW_SIZE = 8;
+    private static final int DEFAULT_COL_SIZE = 8;
     private int rowSize; // 가능한 범위 4 ~ 26
     private int colSize; // 가능한 범위 1 ~ *
-    private static final int ROW_SIZE = 8;
-    private static final int COL_SIZE = 8;
-    Map<String, Pawn> pawnMap = new HashMap<>();
-
-    Board() {
-        this(8, 8);
+    private Map<String, Piece> pieceMap = new HashMap<>();
+    public Board() {
+        this(DEFAULT_ROW_SIZE, DEFAULT_COL_SIZE);
     }
-    Board(int row, int col) {
+    public Board(int row, int col) {
         initialize(row, col);
     }
-    private void setLine(int row, Color color) {
-        Pawn pawn;
-        for (int col = 0; col < colSize; col++) {
-            pawn = new Pawn(color);
-            try{
-                add(pawn, col, row);
-            } catch (Exception e) {
-            }
-        }
-    }
-    private void setWhitePawnLine() {
-        setLine(rowSize - 2, Color.WHITE);
-    }
-    private void setBlackPawnLine() {
-        setLine(1, Color.BLACK);
+    public void initialize() {
+        initialize(8, 8);
     }
     public void initialize(int row, int col) {
-        Pawn pawn;
         rowSize = row;
         colSize = col;
-        pawnMap.clear();
-        setBlackPawnLine();
-        setWhitePawnLine();
+        pieceMap.clear();
+        setWhitePawn(1);
+        setBlackPawn(rowSize - 2);
+        setWhiteKnight("B1", "G1");
+        setBlackKnight("B8", "G8");
+        setWhiteRook("A1", "H1");
+        setBlackRook("A8", "H8");
+        setWhiteBishop("C1", "F1");
+        setBlackBishop("C8", "F8");
+        setWhiteQueen("D1");
+        setBlackQueen("D8");
+        setWhiteKing("E1");
+        setBlackKing("E8");
     }
+    private void setWhitePawn(int row) {
+        for (int col = 0; col < colSize; col++) {
+            add(Piece.createWhitePawn(), col, row);
+        }
+    }
+    private void setBlackPawn(int row) {
+        for (int col = 0; col < colSize; col++) {
+            add(Piece.createBlackPawn(), col, row);
+        }
+    }
+    private void setWhiteKnight(String ... locations) {
+        for (String location : locations) {
+            add(Piece.createWhiteKnight(), location);
+        }
+    }
+
+    private void setBlackKnight(String ... locations) {
+        for (String location : locations) {
+            add(Piece.createBlackKnight(), location);
+        }
+    }
+
+    private void setWhiteRook(String ... locations) {
+        for (String location : locations) {
+            add(Piece.createWhiteRook(), location);
+        }
+    }
+
+    private void setBlackRook(String ... locations) {
+        for (String location : locations) {
+            add(Piece.createBlackRook(), location);
+        }
+    }
+
+    private void setWhiteBishop(String ... locations) {
+        for (String location : locations) {
+            add(Piece.createWhiteBishop(), location);
+        }
+    }
+    private void setBlackBishop(String ... locations) {
+        for (String location : locations) {
+            add(Piece.createBlackBishop(), location);
+        }
+    }
+
+    private void setWhiteQueen(String ... locations) {
+        for (String location : locations) {
+            add(Piece.createWhiteQueen(), location);
+        }
+    }
+
+    private void setBlackQueen(String ... locations) {
+        for (String location : locations) {
+            add(Piece.createBlackQueen(), location);
+        }
+    }
+
+    private void setWhiteKing(String ... locations) {
+        for (String location : locations) {
+            add(Piece.createWhiteKing(), location);
+        }
+    }
+
+    private void setBlackKing(String ... locations) {
+        for (String location : locations) {
+            add(Piece.createBlackKing(), location);
+        }
+    }
+
     public String findEmpty() throws Exception { // 체스판의 비어 있는 공간 중 맨 앞의 키 반환
-        Set<String> keys = pawnMap.keySet();
+        Set<String> keys = pieceMap.keySet();
         StringBuilder sb = new StringBuilder();
         String location;
         for (int i = 0; i < rowSize; i++) {
@@ -58,28 +123,23 @@ public class Board {
         }
         throw new Exception("비어 있는 공간이 없음");
     }
-    private String indexToLocation(int index) { // index 값을 체스판 맵의 키로 변환
-        StringBuilder sb = new StringBuilder();
-        String location;
-        sb.append((char)('A' + (index / colSize)));
-        sb.append(index % rowSize + 1);
-        return sb.toString();
-    }
     private String coordinatesToLocation(int x, int y) { // 좌표를 체스판 맵의 키로 변환
-        String location = indexToLocation(x * colSize + y);
-        return location;
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append((char)('A' + x));
+        stringBuilder.append(y + 1);
+        return stringBuilder.toString();
     }
-    public String addEmpty(Pawn pawn) { // 체스판에 빈 공간 중 맨 앞에 폰을 추가
+    public String addEmpty(Piece piece) { // 체스판에 빈 공간 중 맨 앞에 폰을 추가
         String location;
         try {
             location = findEmpty();
-            pawnMap.put(findEmpty(), pawn);
+            pieceMap.put(findEmpty(), piece);
             return location;
         } catch(Exception e) {
             return null;
         }
     }
-    public void add(Pawn pawn, String location) throws Exception {
+    public void add(Piece piece, String location) throws RuntimeException {
         StringBuilder sb = new StringBuilder();
         String regex;
         sb.append("[A-][1-]");
@@ -87,57 +147,67 @@ public class Board {
         sb.insert(8, rowSize);
         regex = sb.toString();
         if (location.matches(regex)) {
-            pawnMap.put(location, pawn);
+            pieceMap.put(location, piece);
         } else {
-            throw new Exception("Location 형식이 틀림");
+            throw new RuntimeException("Location 형식이 틀림");
         }
     }
-    public void add(Pawn pawn, int x, int y) throws Exception {
+    public void add(Piece piece, int x, int y) {
         String location = coordinatesToLocation(x, y);
-        add(pawn, location);
+        add(piece, location);
     }
-    public void add(Color color, String location) throws Exception{
-        Pawn pawn = new Pawn(color);
-        add(pawn, location);
+    public void add(String color, String location) {
+        Piece piece;
+        if (color.equals(Piece.WHITE_COLOR)) {
+            piece = Piece.createWhitePawn();
+        } else {
+            piece = Piece.createBlackPawn();
+        }
+        add(piece, location);
     }
-    public int size() {
-        return pawnMap.size();
+    public int pieceCount() {
+        return pieceMap.size();
     }
-    public Pawn findPawn(String location) {
-        return pawnMap.get(location);
+    public Piece findPiece(String location) {
+        return pieceMap.get(location);
     }
-    public Pawn findPawn(int x, int y) {
+    public Piece findPiece(int x, int y) {
         String location = coordinatesToLocation(x, y);
-        return pawnMap.get(location);
+        return pieceMap.get(location);
     }
     private String getLineResult(int row) {
         StringBuilder sb = new StringBuilder();
         for (int j = 0; j < colSize; j++) {
-            sb.append(pawnMap.get(coordinatesToLocation(j, row)).getRepresentation());
+            sb.append(pieceMap.get(coordinatesToLocation(j, row)).getRepresentation());
         }
         return sb.toString();
     }
-    public String getWhitePawnResult() {
-        return getLineResult(rowSize - 2);
-    }
-    public String getBlackPawnResult() {
+    public String getWhitePieceResult() {
         return getLineResult(1);
     }
-
-    public String getBoardResult() {
-        StringBuilder sb = new StringBuilder();
+    public String getBlackPieceResult() {
+        return getLineResult(rowSize - 2);
+    }
+    public String showBoard() {
+        StringBuilder stringBuilder = new StringBuilder();
         String location;
-        for (int i = 0; i < rowSize; i++) {
+        for (int i = rowSize - 1; i >= 0; i--) {
             for (int j = 0; j < colSize; j++) {
                 location = coordinatesToLocation(j, i);
-                if (pawnMap.containsKey(location)) {
-                    sb.append(pawnMap.get(location).getRepresentation());
+                if (pieceMap.containsKey(location)) {
+                    stringBuilder.append(getRepresentationAt(location));
                 } else {
-                    sb.append(".");
+                    stringBuilder.append(".");
                 }
             }
-            sb.append(StringUtils.NEWLINE);
+            stringBuilder.append(NEWLINE);
         }
-        return sb.toString();
+        return stringBuilder.toString();
+    }
+
+    private char getRepresentationAt(String location) {
+        char representation;
+        representation = pieceMap.get(location).getRepresentation();
+        return representation;
     }
 }
