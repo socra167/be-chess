@@ -12,28 +12,28 @@ public class Board {
     private static final int ROW_SIZE = 8;
     private static final int COL_SIZE = 8;
     Map<String, Piece> pieceMap = new HashMap<>();
-
     Board() {
         this(8, 8);
     }
     Board(int row, int col) {
         initialize(row, col);
     }
-    private void setLine(int row, Color color) {
+    private void setLine(int row, String color) {
         Piece piece;
         for (int col = 0; col < colSize; col++) {
-            piece = new Piece(color);
-            try{
-                add(piece, col, row);
-            } catch (Exception e) {
+            if (color.equals(Piece.WHITE_COLOR)) {
+                piece = Piece.createWhitePawn();
+            } else {
+                piece = Piece.createBlackPawn();
             }
+            add(piece, col, row);
         }
     }
     private void setWhitePieceLine() {
-        setLine(rowSize - 2, Color.WHITE);
+        setLine(rowSize - 2, Piece.WHITE_COLOR);
     }
     private void setBlackPieceLine() {
-        setLine(1, Color.BLACK);
+        setLine(1, Piece.BLACK_COLOR);
     }
     public void initialize(int row, int col) {
         Piece piece;
@@ -80,7 +80,7 @@ public class Board {
             return null;
         }
     }
-    public void add(Piece piece, String location) throws Exception {
+    public void add(Piece piece, String location) throws RuntimeException {
         StringBuilder sb = new StringBuilder();
         String regex;
         sb.append("[A-][1-]");
@@ -90,15 +90,20 @@ public class Board {
         if (location.matches(regex)) {
             pieceMap.put(location, piece);
         } else {
-            throw new Exception("Location 형식이 틀림");
+            throw new RuntimeException("Location 형식이 틀림");
         }
     }
-    public void add(Piece piece, int x, int y) throws Exception {
+    public void add(Piece piece, int x, int y) {
         String location = coordinatesToLocation(x, y);
         add(piece, location);
     }
-    public void add(Color color, String location) throws Exception{
-        Piece piece = new Piece(color);
+    public void add(String color, String location) {
+        Piece piece;
+        if (color.equals(Piece.WHITE_COLOR)) {
+            piece = Piece.createWhitePawn();
+        } else {
+            piece = Piece.createBlackPawn();
+        }
         add(piece, location);
     }
     public int size() {
@@ -119,26 +124,31 @@ public class Board {
         return sb.toString();
     }
     public String getWhitePieceResult() {
-        return getLineResult(rowSize - 2);
-    }
-    public String getBlackPieceResult() {
         return getLineResult(1);
     }
-
+    public String getBlackPieceResult() {
+        return getLineResult(rowSize - 2);
+    }
     public String getBoardResult() {
-        StringBuilder sb = new StringBuilder();
+        StringBuilder stringBuilder = new StringBuilder();
         String location;
-        for (int i = 0; i < rowSize; i++) {
+        for (int i = rowSize - 1; i >= 0; i--) {
             for (int j = 0; j < colSize; j++) {
                 location = coordinatesToLocation(j, i);
                 if (pieceMap.containsKey(location)) {
-                    sb.append(pieceMap.get(location).getRepresentation());
+                    stringBuilder.append(getRepresentationAt(location));
                 } else {
-                    sb.append(".");
+                    stringBuilder.append(".");
                 }
             }
-            sb.append(NEWLINE);
+            stringBuilder.append(NEWLINE);
         }
-        return sb.toString();
+        return stringBuilder.toString();
+    }
+
+    private char getRepresentationAt(String location) {
+        char representation;
+        representation = pieceMap.get(location).getRepresentation();
+        return representation;
     }
 }

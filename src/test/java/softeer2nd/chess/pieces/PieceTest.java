@@ -1,15 +1,19 @@
 package softeer2nd.chess.pieces;
 
 import org.junit.jupiter.api.*;
-import softeer2nd.chess.Color;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class PieceTest {
 
-    private void verifyPiece(Color color) {
-        Piece piece = new Piece(color);
+    private void verifyPiece(String color) {
+        Piece piece;
+        if (color.equals(Piece.WHITE_COLOR)) {
+            piece = Piece.createWhitePawn();
+        } else {
+            piece = Piece.createBlackPawn();
+        }
         assertThat(piece.getColor()).isEqualTo(color);
     }
     private void verifyPiece(final Piece piece, final String color, final char representation) {
@@ -21,10 +25,8 @@ public class PieceTest {
     @Test
     @DisplayName("색에 알맞은 폰이 생성되어야 한다")
     public void create() {
-        Color[] colors = {Color.WHITE, Color.BLACK};
-        for (Color color : colors) {
-            verifyPiece(color);
-        }
+        verifyPiece(Piece.WHITE_COLOR);
+        verifyPiece(Piece.BLACK_COLOR);
     }
 
     @Test

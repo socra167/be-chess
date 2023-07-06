@@ -14,6 +14,4 @@ public class StringUtilsTest {
         String expected = input + System.getProperty("line.separator");
         assertThat(expected).isEqualTo(appendNewLine(input));
     }
-
-
 }

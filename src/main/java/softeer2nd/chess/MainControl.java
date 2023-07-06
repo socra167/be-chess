@@ -8,7 +8,7 @@ public class MainControl {
         MainMenu mainMenu = new MainMenu();
         Board board = new Board();
         int[] boardSize;
-        Color color;
+        String color;
         String location;
 
         if (mainMenu.checkStart() == false) {

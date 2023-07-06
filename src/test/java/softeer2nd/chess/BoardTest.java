@@ -11,16 +11,25 @@ public class BoardTest {
     public Board board;
     private int count;
 
-    private void verifyAddPawn(Color color) {
-        Piece piece = new Piece(color);
+    private Piece makePawn(String color) {
+        Piece piece;
+        if (color.equals(Piece.WHITE_COLOR)) {
+            piece = Piece.createWhitePawn();
+        } else {
+            piece = Piece.createBlackPawn();
+        }
+        return piece;
+    }
+    private void verifyAddPawn(String color) {
+        Piece piece = makePawn(color);
         String location = board.addEmpty(piece);
         count++;
         assertEquals(count, board.size());
         assertEquals(piece, board.findPiece(location));
     }
 
-    private void verifyAddPawn(Color color, int x, int y) throws Exception {
-        Piece piece = new Piece(color);
+    private void verifyAddPawn(String color, int x, int y) throws Exception {
+        Piece piece = makePawn(color);
         board.add(piece, x, y);
         count++;
         assertEquals(count, board.size());
@@ -40,15 +49,15 @@ public class BoardTest {
     @Test
     @DisplayName("체스판의 빈 공간에 폰을 추가하면 체스판의 기물 수가 커지고, 추가하고자 한 폰은 체스판에 추가된 폰과 일치해야 한다")
     public void create() throws Exception {
-        verifyAddPawn(Color.WHITE);
-        verifyAddPawn(Color.BLACK);
+        verifyAddPawn(Piece.WHITE_COLOR);
+        verifyAddPawn(Piece.BLACK_COLOR);
     }
 
     @Test
     @DisplayName("폰이 체스판의 특정 위치에 정상적으로 추가되어야 한다")
     public void addPawnByLocation() throws Exception {
-        verifyAddPawn(Color.WHITE, 5, 5);
-        verifyAddPawn(Color.BLACK, 5, 4);
+        verifyAddPawn(Piece.WHITE_COLOR, 5, 5);
+        verifyAddPawn(Piece.BLACK_COLOR, 5, 4);
     }
 
     @Test

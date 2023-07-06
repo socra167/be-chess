@@ -1,5 +1,7 @@
 package softeer2nd.chess;
 
+import softeer2nd.chess.pieces.Piece;
+
 import java.util.Scanner;
 
 public class MainMenu {
@@ -10,7 +12,7 @@ public class MainMenu {
     private static final String CUTTING_LINE = "==================";
     private static final String START_INFORM = "0: 게임 시작\n-1: 종료";
     private int choice;
-    private int colorChoice;
+    private String colorChoice;
     private String location;
     private int[] boardSize; // {row, col}
     private Scanner scanner;
@@ -18,7 +20,6 @@ public class MainMenu {
         scanner = new Scanner(System.in);
         boardSize = new int[2];
         choice = 0;
-        colorChoice = 0;
     }
     public int issueMenu() {
         System.out.println(MAIN_INFORM);
@@ -33,13 +34,10 @@ public class MainMenu {
         boardSize[1] = scanner.nextInt();
         return boardSize;
     }
-    public Color issueColor() {
+    public String issueColor() {
         System.out.println(COLOR_INFORM);
-        colorChoice = scanner.nextInt();
-        if (colorChoice == 0) {
-            return Color.WHITE;
-        }
-        return Color.BLACK;
+        colorChoice = scanner.nextLine();
+        return colorChoice;
     }
     public String issueLocation() {
         System.out.println(LOCATION_INFORM);
