@@ -2,7 +2,6 @@ package softeer2nd.chess.game;
 
 import softeer2nd.chess.Board;
 import softeer2nd.chess.pieces.Piece;
-
 import static softeer2nd.chess.utils.StringUtils.printBlankSpace;
 
 public class GameManager {
@@ -25,21 +24,16 @@ public class GameManager {
             printBoard();
             gameMenu.printCuttingLine();
             switch (gameMenu.issueMenu()) {
-                case 0: // 초기화
-                    boardSize = gameMenu.askBoardSize();
-                    board.initialize(boardSize[0], boardSize[1]);
+                case GameMenu.INITIALIZE_BOARD:
+                    initializeBoard();
                     break;
-                case 1: // 추가
-                    color = gameMenu.askColor();
-                    location = gameMenu.askLocation();
-                    board.add(color, location);
+                case GameMenu.ADD_PIECE:
+                    addPiece();
                     break;
-                case 2: // 찾기
-                    location = gameMenu.askLocation();
-                    piece = board.findPiece(location);
-                    System.out.println(piece.getColor() + " " + piece.getName());
+                case GameMenu.FIND_PIECE:
+                    findPiece();
                     break;
-                case -1:
+                case GameMenu.EXIT:
                     return;
             }
             printBlankSpace();
@@ -48,5 +42,22 @@ public class GameManager {
 
     private void printBoard() {
         System.out.println(board.showBoard());
+    }
+
+    private void initializeBoard() {
+        boardSize = gameMenu.askBoardSize();
+        board.initialize(boardSize[0], boardSize[1]);
+    }
+
+    private void addPiece() {
+        color = gameMenu.askColor();
+        location = gameMenu.askLocation();
+        board.add(color, location);
+    }
+
+    private void findPiece() {
+        location = gameMenu.askLocation();
+        piece = board.findPiece(location);
+        System.out.println(piece.getColor() + " " + piece.getName());
     }
 }
