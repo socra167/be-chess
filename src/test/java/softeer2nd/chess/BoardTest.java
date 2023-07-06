@@ -39,7 +39,7 @@ public class BoardTest {
 
     public void initializeBoard(int row, int col) {
         board = new Board(row, col);
-        count = col * 2; // 초기화 후 체크판 위 Pawn의 수
+        count = 32; // 초기화 후 체크판 위 Piece의 수
     }
 
     @BeforeEach
@@ -62,43 +62,6 @@ public class BoardTest {
     }
 
     @Test
-    @DisplayName("체스판을 초기화하면 폰의 위치가 정상적으로 출력되어야 한다")
-    public void printChessBoard() {
-        initializeBoard(8, 8);
-        final String NORMAL_OUTPUT =
-                "........\n" +
-                "PPPPPPPP\n" +
-                "........\n" +
-                "........\n" +
-                "........\n" +
-                "........\n" +
-                "pppppppp\n" +
-                "........\n";
-        String output = board.showBoard();
-        System.out.println(output);
-        assertEquals(NORMAL_OUTPUT, output);
-    }
-
-    @Test
-    @DisplayName("체스판의 규격을 지정해 초기화하면 폰의 위치가 정상적으로 출력되어야 한다")
-    public void initalizeChessBoard() {
-        initializeBoard(9, 8);
-        final String NORMAL_OUTPUT =
-                "........\n" +
-                "PPPPPPPP\n" +
-                "........\n" +
-                "........\n" +
-                "........\n" +
-                "........\n" +
-                "........\n" +
-                "pppppppp\n" +
-                "........\n";
-        String output = board.showBoard();
-        System.out.println(output);
-        assertEquals(NORMAL_OUTPUT, output);
-    }
-
-    @Test
     @DisplayName("체스판 초기화 시 흰색 Pawn 열과 검은색 Pawn 열의 결과가 정상이어야 한다")
     public void initialize() throws Exception {
         board = new Board();
@@ -110,6 +73,7 @@ public class BoardTest {
     @DisplayName("체스판 초기화 후 전체 상태를 출력하면 말이 순서에 맞게 놓인 상태로 출력된다")
     public void create() throws Exception {
         board.initialize();
+        System.out.println(board.showBoard());
         assertEquals(32, board.pieceCount());
         String blankRank = appendNewLine("........");
         assertEquals(

@@ -9,8 +9,6 @@ import static softeer2nd.chess.utils.StringUtils.*;
 public class Board {
     private int rowSize; // 가능한 범위 4 ~ 26
     private int colSize; // 가능한 범위 1 ~ *
-    private static final int ROW_SIZE = 8;
-    private static final int COL_SIZE = 8;
     Map<String, Piece> pieceMap = new HashMap<>();
     Board() {
         this(8, 8);
@@ -44,7 +42,63 @@ public class Board {
         pieceMap.clear();
         setWhitePawn();
         setBlackPawn();
+        setWhiteKnight();
+        setBlackKnight();
+        setWhiteRook();
+        setBlackRook();
+        setWhiteBishop();
+        setBlackBishop();
+        setWhiteQueen();
+        setBlackQueen();
+        setWhiteKing();
+        setBlackKing();
     }
+
+    private void setWhiteKnight() {
+        add(Piece.createWhiteKnight(), "B1");
+        add(Piece.createWhiteKnight(), "G1");
+    }
+
+    private void setBlackKnight() {
+        add(Piece.createBlackKnight(), "B8");
+        add(Piece.createBlackKnight(), "G8");
+    }
+
+    private void setWhiteRook() {
+        add(Piece.createWhiteRook(), "A1");
+        add(Piece.createWhiteRook(), "H1");
+    }
+
+    private void setBlackRook() {
+        add(Piece.createBlackRook(), "A8");
+        add(Piece.createBlackRook(), "H8");
+    }
+
+    private void setWhiteBishop() {
+        add(Piece.createWhiteBishop(), "C1");
+        add(Piece.createWhiteBishop(), "F1");
+    }
+    private void setBlackBishop() {
+        add(Piece.createBlackBishop(), "C8");
+        add(Piece.createBlackBishop(), "F8");
+    }
+
+    private void setWhiteQueen() {
+        add(Piece.createWhiteQueen(), "D1");
+    }
+
+    private void setBlackQueen() {
+        add(Piece.createBlackQueen(), "D8");
+    }
+
+    private void setWhiteKing() {
+        add(Piece.createWhiteKing(), "E1");
+    }
+
+    private void setBlackKing() {
+        add(Piece.createBlackKing(), "E8");
+    }
+
     public String findEmpty() throws Exception { // 체스판의 비어 있는 공간 중 맨 앞의 키 반환
         Set<String> keys = pieceMap.keySet();
         StringBuilder sb = new StringBuilder();
@@ -61,17 +115,10 @@ public class Board {
         }
         throw new Exception("비어 있는 공간이 없음");
     }
-    private String indexToLocation(int index) { // index 값을 체스판 맵의 키로 변환
-        StringBuilder sb = new StringBuilder();
-        String location;
-        sb.append((char)('A' + (index / colSize)));
-        sb.append(index % rowSize + 1);
-        return sb.toString();
-    }
     private String coordinatesToLocation(int x, int y) { // 좌표를 체스판 맵의 키로 변환
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append((char)('A' + y));
-        stringBuilder.append(x + 1);
+        stringBuilder.append((char)('A' + x));
+        stringBuilder.append(y + 1);
         return stringBuilder.toString();
     }
     public String addEmpty(Piece piece) { // 체스판에 빈 공간 중 맨 앞에 폰을 추가
