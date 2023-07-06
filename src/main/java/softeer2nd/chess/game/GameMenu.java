@@ -1,5 +1,6 @@
 package softeer2nd.chess.game;
 
+import java.io.InputStream;
 import java.util.Scanner;
 
 public class GameMenu {
@@ -7,19 +8,19 @@ public class GameMenu {
     public static final int ADD_PIECE = 1;
     public static final int FIND_PIECE = 2;
     public static final int EXIT = -1;
-    private static final String MAIN_INFORM = "0: 보드 초기화하기\n1: 폰 추가하기\n2: 폰 찾기\n-1: 종료";
-    private static final String BOARDSIZE_INFORM = "체스판의 크기를 입력하세요.";
-    private static final String COLOR_INFORM = "말의 색을 입력하세요. (white/black)";
-    private static final String LOCATION_INFORM = "위치를 입력하세요. (예: A1)";
-    private static final String CUTTING_LINE = "==================";
-    private static final String START_INFORM = "0: 게임 시작\n-1: 종료";
+    public static final String MAIN_INFORM = "0: 보드 초기화하기\n1: 폰 추가하기\n2: 폰 찾기\n-1: 종료";
+    public static final String BOARDSIZE_INFORM = "체스판의 크기를 입력하세요.";
+    public static final String COLOR_INFORM = "말의 색을 입력하세요. (white/black)";
+    public static final String LOCATION_INFORM = "위치를 입력하세요. (예: A1)";
+    public static final String CUTTING_LINE = "==================";
+    public static final String START_INFORM = "0: 게임 시작\n-1: 종료";
     private int choice;
     private String colorChoice;
     private String location;
     private int[] boardSize; // {row, col}
     private Scanner scanner;
-    GameMenu() {
-        scanner = new Scanner(System.in);
+    GameMenu(InputStream inputStream) {
+        scanner = new Scanner(inputStream);
         boardSize = new int[2];
         choice = 0;
     }
