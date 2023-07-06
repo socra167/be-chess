@@ -50,4 +50,15 @@ public class PieceTest {
         verifyPiece(Piece.createWhiteKing(), Piece.WHITE_COLOR, Piece.WHITE_KING_REPRESENTATION);
         verifyPiece(Piece.createBlackKing(), Piece.BLACK_COLOR, Piece.BLACK_KING_REPRESENTATION);
     }
+
+    @Test
+    @DisplayName("검은색 말과 흰색 말을 구분할 수 있다")
+    public void checkColor() {
+        Piece whitePawn = Piece.createWhitePawn();
+        Piece blackPawn = Piece.createBlackPawn();
+        assertThat(Piece.isWhite(whitePawn)).isEqualTo(true);
+        assertThat(Piece.isBlack(whitePawn)).isEqualTo(false);
+        assertThat(Piece.isWhite(blackPawn)).isEqualTo(false);
+        assertThat(Piece.isBlack(blackPawn)).isEqualTo(true);
+    }
 }
