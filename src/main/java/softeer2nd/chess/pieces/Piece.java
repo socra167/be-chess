@@ -82,6 +82,20 @@ public class Piece {
         return piece;
     }
 
+    public static boolean isWhite(Piece piece) {
+        if (piece.getColor().equals(WHITE_COLOR)) {
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean isBlack(Piece piece) {
+        if (piece.getColor().equals(BLACK_COLOR)) {
+            return true;
+        }
+        return false;
+    }
+
     public String getColor() {
         return color;
     }
