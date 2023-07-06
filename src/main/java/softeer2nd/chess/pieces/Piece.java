@@ -85,6 +85,10 @@ public class Piece {
     public String getColor() {
         return color;
     }
+    public String getName() {
+        return name;
+    }
+
     public char getRepresentation() {
         char representation = name.charAt(0);
         if (name.equals("knight")) {

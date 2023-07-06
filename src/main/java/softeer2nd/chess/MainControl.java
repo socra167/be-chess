@@ -1,5 +1,7 @@
 package softeer2nd.chess;
 
+import softeer2nd.chess.pieces.Piece;
+
 import static softeer2nd.chess.utils.StringUtils.*;
 
 public class MainControl {
@@ -7,6 +9,7 @@ public class MainControl {
     public static void main(String[] args) {
         MainMenu mainMenu = new MainMenu();
         Board board = new Board();
+        Piece piece;
         int[] boardSize;
         String color;
         String location;
@@ -32,7 +35,8 @@ public class MainControl {
                     break;
                 case 2: // 찾기
                     location = mainMenu.issueLocation();
-                    System.out.println(board.findPiece(location).getRepresentation());
+                    piece = board.findPiece(location);
+                    System.out.println(piece.getColor() + " " + piece.getName());
                     break;
                 case -1:
                     return;
