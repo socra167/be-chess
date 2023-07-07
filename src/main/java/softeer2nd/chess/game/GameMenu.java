@@ -19,17 +19,20 @@ public class GameMenu {
     private String location;
     private int[] boardSize; // {row, col}
     private Scanner scanner;
+
     GameMenu(InputStream inputStream) {
         scanner = new Scanner(inputStream);
         boardSize = new int[2];
         choice = 0;
     }
+
     public int issueMenu() {
         System.out.println(MAIN_INFORM);
         choice = scanner.nextInt();
         scanner.nextLine();
         return choice;
     }
+
     public int[] askBoardSize() {
         System.out.println(BOARDSIZE_INFORM);
         System.out.print("세로 : ");
@@ -39,16 +42,19 @@ public class GameMenu {
         scanner.nextLine();
         return boardSize;
     }
+
     public String askColor() {
         System.out.println(COLOR_INFORM);
         colorChoice = scanner.nextLine();
         return colorChoice;
     }
+
     public String askLocation() {
         System.out.println(LOCATION_INFORM);
         location = scanner.nextLine();
         return location;
     }
+
     public void printCuttingLine() {
         System.out.println(CUTTING_LINE);
     }

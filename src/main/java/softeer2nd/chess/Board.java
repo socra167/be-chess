@@ -11,16 +11,21 @@ public class Board {
     private static final int DEFAULT_COL_SIZE = 8;
     private int rowSize; // 가능한 범위 4 ~ 26
     private int colSize; // 가능한 범위 1 ~ *
+
     private Map<String, Piece> pieceMap = new HashMap<>();
+
     public Board() {
         this(DEFAULT_ROW_SIZE, DEFAULT_COL_SIZE);
     }
+
     public Board(int row, int col) {
         initialize(row, col);
     }
+
     public void initialize() {
         initialize(8, 8);
     }
+
     public void initialize(int row, int col) {
         rowSize = row;
         colSize = col;
@@ -38,16 +43,19 @@ public class Board {
         setWhiteKing("E1");
         setBlackKing("E8");
     }
+
     private void setWhitePawn(int row) {
         for (int col = 0; col < colSize; col++) {
             add(Piece.createWhitePawn(), col, row);
         }
     }
+
     private void setBlackPawn(int row) {
         for (int col = 0; col < colSize; col++) {
             add(Piece.createBlackPawn(), col, row);
         }
     }
+
     private void setWhiteKnight(String ... locations) {
         for (String location : locations) {
             add(Piece.createWhiteKnight(), location);
@@ -77,6 +85,7 @@ public class Board {
             add(Piece.createWhiteBishop(), location);
         }
     }
+
     private void setBlackBishop(String ... locations) {
         for (String location : locations) {
             add(Piece.createBlackBishop(), location);
@@ -123,12 +132,14 @@ public class Board {
         }
         throw new Exception("비어 있는 공간이 없음");
     }
+
     private String coordinatesToLocation(int x, int y) { // 좌표를 체스판 맵의 키로 변환
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append((char)('A' + x));
         stringBuilder.append(y + 1);
         return stringBuilder.toString();
     }
+
     public String addEmpty(Piece piece) { // 체스판에 빈 공간 중 맨 앞에 폰을 추가
         String location;
         try {
@@ -139,6 +150,7 @@ public class Board {
             return null;
         }
     }
+
     public void add(Piece piece, String location) throws RuntimeException {
         StringBuilder sb = new StringBuilder();
         String regex;
@@ -152,10 +164,12 @@ public class Board {
             throw new RuntimeException("Location 형식이 틀림");
         }
     }
+
     public void add(Piece piece, int x, int y) {
         String location = coordinatesToLocation(x, y);
         add(piece, location);
     }
+
     public void add(String color, String location) {
         Piece piece;
         if (color.equals(Piece.Color.WHITE.getName())) {
@@ -165,16 +179,20 @@ public class Board {
         }
         add(piece, location);
     }
+
     public int pieceCount() {
         return pieceMap.size();
     }
+
     public Piece findPiece(String location) {
         return pieceMap.get(location);
     }
+
     public Piece findPiece(int x, int y) {
         String location = coordinatesToLocation(x, y);
         return pieceMap.get(location);
     }
+
     private String getLineResult(int row) {
         StringBuilder sb = new StringBuilder();
         for (int j = 0; j < colSize; j++) {
@@ -182,12 +200,15 @@ public class Board {
         }
         return sb.toString();
     }
+
     public String getWhitePieceResult() {
         return getLineResult(1);
     }
+
     public String getBlackPieceResult() {
         return getLineResult(rowSize - 2);
     }
+
     public String showBoard() {
         StringBuilder stringBuilder = new StringBuilder();
         String location;

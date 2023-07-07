@@ -21,6 +21,7 @@ public class BoardTest {
         }
         return piece;
     }
+
     private void verifyAddPawn(Piece.Color color) {
         Piece piece = makePawn(color);
         String location = board.addEmpty(piece);
@@ -37,19 +38,14 @@ public class BoardTest {
         assertEquals(piece, board.findPiece(x, y));
     }
 
-    public void initializeBoard(int row, int col) {
-        board = new Board(row, col);
-        count = 32; // 초기화 후 체크판 위 Piece의 수
-    }
-
     @BeforeEach
     public void setUp() {
-        initializeBoard(8, 8);
+        board = new Board();
     }
 
     @Test
     @DisplayName("체스판의 빈 공간에 폰을 추가하면 체스판의 기물 수가 커지고, 추가하고자 한 폰은 체스판에 추가된 폰과 일치해야 한다")
-    public void createPawn() throws Exception {
+    public void createPawn() {
         verifyAddPawn(Piece.Color.WHITE);
         verifyAddPawn(Piece.Color.BLACK);
     }
@@ -63,7 +59,7 @@ public class BoardTest {
 
     @Test
     @DisplayName("체스판 초기화 시 흰색 Pawn 열과 검은색 Pawn 열의 결과가 정상이어야 한다")
-    public void initialize() throws Exception {
+    public void initialize() {
         board = new Board();
         assertEquals("pppppppp", board.getWhitePieceResult());
         assertEquals("PPPPPPPP", board.getBlackPieceResult());
@@ -71,7 +67,7 @@ public class BoardTest {
 
     @Test
     @DisplayName("체스판 초기화 후 전체 상태를 출력하면 말이 순서에 맞게 놓인 상태로 출력된다")
-    public void create() throws Exception {
+    public void create() {
         board.initialize();
         System.out.println(board.showBoard());
         assertEquals(32, board.pieceCount());

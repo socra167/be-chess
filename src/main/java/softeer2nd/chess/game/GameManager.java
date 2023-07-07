@@ -16,10 +16,12 @@ public class GameManager {
     public GameManager() {
         this(System.in);
     }
+
     public GameManager(InputStream inputStream) {
         gameMenu = new GameMenu(inputStream);
         board = new Board();
     }
+
     public void startGame() {
         if (!gameMenu.checkStart()) {
             return;
@@ -62,6 +64,6 @@ public class GameManager {
     private void findPiece() {
         location = gameMenu.askLocation();
         piece = board.findPiece(location);
-        System.out.println(piece.getColor() + " " + piece.getName());
+        System.out.println(piece.getColor() + " " + piece.getType().name());
     }
 }

@@ -9,7 +9,6 @@ import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class PieceTest {
-
     @Test
     @DisplayName("색에 알맞은 폰이 생성되어야 한다")
     public void create() {

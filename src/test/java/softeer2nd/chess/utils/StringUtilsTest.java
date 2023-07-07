@@ -6,7 +6,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static softeer2nd.chess.utils.StringUtils.*;
 
 public class StringUtilsTest {
-
     @Test
     @DisplayName("인자로 전달한 문자열에 new line 문자를 추가해 반환한다")
     public void appendLine() {
