@@ -42,6 +42,18 @@ public class Board {
         setBlackQueen("D8");
         setWhiteKing("E1");
         setBlackKing("E8");
+        setBlank();
+    }
+
+    private void setBlank() {
+        for (int row = rowSize - 1; row >= 0; row --) {
+            for (int col = 0; col < colSize; col++) {
+                String location = coordinatesToLocation(col, row);
+                if (!pieceMap.containsKey(location)) {
+                    add(Piece.createBlank(), location);
+                }
+            }
+        }
     }
 
     private void setWhitePawn(int row) {
@@ -116,21 +128,19 @@ public class Board {
         }
     }
 
-    public String findEmpty() throws Exception { // 체스판의 비어 있는 공간 중 맨 앞의 키 반환
-        Set<String> keys = pieceMap.keySet();
-        StringBuilder sb = new StringBuilder();
+    public String findEmpty() throws RuntimeException { // 체스판의 비어 있는 공간 중 맨 앞의 키 반환
         String location;
-        for (int i = 0; i < rowSize; i++) {
-            for (int j = 1; j < colSize + 1; j++) {
-                sb.append((char)('A' + 0));
-                sb.append(j);
-                if (!keys.contains(sb.toString())) {
-                    return sb.toString();
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int row = rowSize - 1; row >= 0; row--) {
+            for (int col = 0; col < colSize; col++) {
+                location = coordinatesToLocation(col, row);
+                if (pieceMap.get(location).isBlank()) {
+                    return location;
                 }
-                sb.setLength(0);
+                stringBuilder.setLength(0);
             }
         }
-        throw new Exception("비어 있는 공간이 없음");
+        throw new RuntimeException("비어 있는 공간이 없음");
     }
 
     private String coordinatesToLocation(int x, int y) { // 좌표를 체스판 맵의 키로 변환
@@ -181,7 +191,17 @@ public class Board {
     }
 
     public int pieceCount() {
-        return pieceMap.size();
+        int count = 0;
+        String location;
+        for (int row = rowSize - 1; row >= 0; row--) {
+            for (int col = 0; col < colSize; col++) {
+                location = coordinatesToLocation(col, row);
+                if (!pieceMap.get(location).isBlank()) {
+                    count++;
+                }
+            }
+        }
+        return count;
     }
 
     public Piece findPiece(String location) {

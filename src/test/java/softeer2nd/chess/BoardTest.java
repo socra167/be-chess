@@ -12,6 +12,12 @@ public class BoardTest {
     public Board board;
     private int count;
 
+    @BeforeEach
+    public void setUp() {
+        board = new Board();
+        count = board.pieceCount();
+    }
+
     private Piece makePawn(Piece.Color color) {
         Piece piece;
         if (color == Piece.Color.WHITE) {
@@ -36,11 +42,6 @@ public class BoardTest {
         count++;
         assertEquals(count, board.pieceCount());
         assertEquals(piece, board.findPiece(x, y));
-    }
-
-    @BeforeEach
-    public void setUp() {
-        board = new Board();
     }
 
     @Test

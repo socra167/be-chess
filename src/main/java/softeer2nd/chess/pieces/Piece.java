@@ -3,10 +3,12 @@ package softeer2nd.chess.pieces;
 public class Piece {
     private Color color;
     private Type type;
+
     public enum Color {
         WHITE("white"), BLACK("black"), NOCOLOR("no color");
 
         private final String name;
+
         Color(String name) {
             this.name = name;
         }
@@ -28,16 +30,15 @@ public class Piece {
             this.whiteRepresentation = whiteRepresentation;
             this.blackRepresentation = blackRepresentation;
         }
-
         public char getWhiteRepresentation() {
             return whiteRepresentation;
         }
+
         public char getBlackRepresentation() {
             return blackRepresentation;
         }
 
     }
-
     private Piece(Color color, Type name) {
         this.color = color;
         this.type = name;
@@ -115,6 +116,13 @@ public class Piece {
 
     public boolean isBlack() {
         if (color == Color.BLACK) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean isBlank() {
+        if (color == Color.NOCOLOR) {
             return true;
         }
         return false;
