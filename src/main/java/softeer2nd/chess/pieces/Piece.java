@@ -43,68 +43,66 @@ public class Piece {
         this.type = name;
     }
 
-    public static Piece createBlank() {
-        Piece piece = new Piece(Color.NOCOLOR, Type.NO_PIECE);
-        return piece;
-    }
-
     public static Piece createWhitePawn() {
-        Piece piece = new Piece(Color.WHITE,  Type.PAWN);
-        return piece;
+        return createWhite(Type.PAWN);
     }
 
     public static Piece createBlackPawn() {
-        Piece piece = new Piece(Color.BLACK,  Type.PAWN);
-        return piece;
+        return createBlack(Type.PAWN);
     }
 
     public static Piece createWhiteKnight() {
-        Piece piece = new Piece(Color.WHITE,  Type.KNIGHT);
-        return piece;
+        return createWhite(Type.KNIGHT);
     }
 
     public static Piece createBlackKnight() {
-        Piece piece = new Piece(Color.BLACK,  Type.KNIGHT);
-        return piece;
+        return createBlack(Type.KNIGHT);
     }
 
     public static Piece createWhiteRook() {
-        Piece piece = new Piece(Color.WHITE,  Type.ROOK);
-        return piece;
+        return createWhite(Type.ROOK);
     }
 
     public static Piece createBlackRook() {
-        Piece piece = new Piece(Color.BLACK, Type.ROOK);
-        return piece;
+        return createBlack(Type.ROOK);
     }
 
     public static Piece createWhiteBishop() {
-        Piece piece = new Piece(Color.WHITE, Type.BISHOP);
-        return piece;
+        return createWhite(Type.BISHOP);
     }
 
     public static Piece createBlackBishop() {
-        Piece piece = new Piece(Color.BLACK, Type.BISHOP);
-        return piece;
+        return createBlack(Type.BISHOP);
     }
 
     public static Piece createWhiteQueen() {
-        Piece piece = new Piece(Color.WHITE, Type.QUEEN);
-        return piece;
+        return createWhite(Type.QUEEN);
     }
 
     public static Piece createBlackQueen() {
-        Piece piece = new Piece(Color.BLACK, Type.QUEEN);
-        return piece;
+        return createBlack(Type.QUEEN);
     }
 
     public static Piece createWhiteKing() {
-        Piece piece = new Piece(Color.WHITE, Type.KING);
-        return piece;
+        return createWhite(Type.KING);
     }
 
     public static Piece createBlackKing() {
-        Piece piece = new Piece(Color.BLACK, Type.KING);
+        return createBlack(Type.KING);
+    }
+
+    private static Piece createWhite(Type type) {
+        Piece piece = new Piece(Color.WHITE, type);
+        return piece;
+    }
+
+    private static Piece createBlack(Type type) {
+        Piece piece = new Piece(Color.BLACK, type);
+        return piece;
+    }
+
+    public static Piece createBlank() {
+        Piece piece = new Piece(Color.NOCOLOR, Type.NO_PIECE);
         return piece;
     }
 
