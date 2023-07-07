@@ -59,10 +59,10 @@ public class PieceTest {
     public void checkColor() {
         Piece whitePawn = Piece.createWhitePawn();
         Piece blackPawn = Piece.createBlackPawn();
-        assertThat(Piece.isWhite(whitePawn)).isEqualTo(true);
-        assertThat(Piece.isBlack(whitePawn)).isEqualTo(false);
-        assertThat(Piece.isWhite(blackPawn)).isEqualTo(false);
-        assertThat(Piece.isBlack(blackPawn)).isEqualTo(true);
+        assertThat(whitePawn.isWhite()).isEqualTo(true);
+        assertThat(whitePawn.isBlack()).isEqualTo(false);
+        assertThat(blackPawn.isWhite()).isEqualTo(false);
+        assertThat(blackPawn.isBlack()).isEqualTo(true);
     }
 
     @Test
@@ -82,12 +82,12 @@ public class PieceTest {
         Piece blank = Piece.createBlank();
         assertFalse(blank.isWhite());
         assertFalse(blank.isBlack());
-        assertEquals(Type.NO_PIECE, blank.getType);
+        assertEquals(Type.NO_PIECE, blank.getType());
     }
 
     private void verifyPiece(final Piece whitePiece, final Piece blackPiece, final Type type) {
         assertTrue(whitePiece.isWhite());
-        assertEquals(type, whitePiece.getType);
+        assertEquals(type, whitePiece.getType());
 
         assertTrue(blackPiece.isBlack());
         assertEquals(type, blackPiece.getType());
