@@ -103,4 +103,14 @@ public class BoardTest {
         assertEquals(1, board.getPieceCount(Piece.Color.WHITE, Type.KING));
         assertEquals(1, board.getPieceCount(Piece.Color.BLACK, Type.KING));
     }
+
+    @Test
+    @DisplayName("위치를 지정해 기물을 조회할 수 있다")
+    public void findPiece() throws Exception {
+        board.initialize();
+        assertEquals(Piece.createBlackRook(), board.findPiece("a8"));
+        assertEquals(Piece.createBlackRook(), board.findPiece("h8"));
+        assertEquals(Piece.createWhiteRook(), board.findPiece("a1"));
+        assertEquals(Piece.createWhiteRook(), board.findPiece("h1"));
+    }
 }
