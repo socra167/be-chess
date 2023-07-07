@@ -1,9 +1,7 @@
 package softeer2nd.chess;
 
 import softeer2nd.chess.pieces.Piece;
-
 import java.util.*;
-
 import static softeer2nd.chess.utils.StringUtils.*;
 
 public class Board {
@@ -12,13 +10,22 @@ public class Board {
     private int rowSize; // 가능한 범위 4 ~ 26
     private int colSize; // 가능한 범위 1 ~ *
 
-    private Map<String, Piece> pieceMap = new HashMap<>();
+    private List<Rank> chessBoard;
+
+    private class Rank {
+        private List<Piece> rankList;
+
+        Rank() {
+            rankList = new ArrayList<>();
+        }
+    }
 
     public Board() {
         this(DEFAULT_ROW_SIZE, DEFAULT_COL_SIZE);
     }
 
     public Board(int row, int col) {
+        chessBoard = new ArrayList<>();
         initialize(row, col);
     }
 
@@ -29,9 +36,10 @@ public class Board {
     public void initialize(int row, int col) {
         rowSize = row;
         colSize = col;
-        pieceMap.clear();
-        setWhitePawn(1);
-        setBlackPawn(rowSize - 2);
+        chessBoard.clear();
+        fillWithBlank();
+        setWhitePawn(rowSize - 2);
+        setBlackPawn(1);
         setWhiteKnight("B1", "G1");
         setBlackKnight("B8", "G8");
         setWhiteRook("A1", "H1");
@@ -42,29 +50,26 @@ public class Board {
         setBlackQueen("D8");
         setWhiteKing("E1");
         setBlackKing("E8");
-        setBlank();
     }
 
-    private void setBlank() {
-        for (int row = rowSize - 1; row >= 0; row --) {
+    private void fillWithBlank() {
+        for (int row = 0; row < rowSize; row++) {
+            chessBoard.add(new Rank());
             for (int col = 0; col < colSize; col++) {
-                String location = coordinatesToLocation(col, row);
-                if (!pieceMap.containsKey(location)) {
-                    add(Piece.createBlank(), location);
-                }
+                chessBoard.get(row).rankList.add(Piece.createBlank());
             }
         }
     }
 
     private void setWhitePawn(int row) {
         for (int col = 0; col < colSize; col++) {
-            add(Piece.createWhitePawn(), col, row);
+            add(Piece.createWhitePawn(), row, col);
         }
     }
 
     private void setBlackPawn(int row) {
         for (int col = 0; col < colSize; col++) {
-            add(Piece.createBlackPawn(), col, row);
+            add(Piece.createBlackPawn(), row, col);
         }
     }
 
@@ -134,7 +139,7 @@ public class Board {
         for (int row = rowSize - 1; row >= 0; row--) {
             for (int col = 0; col < colSize; col++) {
                 location = coordinatesToLocation(col, row);
-                if (pieceMap.get(location).isBlank()) {
+                if (findPiece(location).isBlank()) {
                     return location;
                 }
                 stringBuilder.setLength(0);
@@ -143,112 +148,103 @@ public class Board {
         throw new RuntimeException("비어 있는 공간이 없음");
     }
 
-    private String coordinatesToLocation(int x, int y) { // 좌표를 체스판 맵의 키로 변환
+    private String coordinatesToLocation(int row, int col) {
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append((char)('A' + x));
-        stringBuilder.append(y + 1);
+        stringBuilder.append((char)('A' + rowSize - 1 - row));
+        stringBuilder.append(col + 1);
         return stringBuilder.toString();
+    }
+
+    private void locationToCoordinates(String location, int[] coordiantes) {
+        if (isAvailableLocation(location)) {
+            coordiantes[0] = rowSize - Integer.parseInt(location.substring(1));
+            coordiantes[1] = location.charAt(0) - 'A';
+        }
     }
 
     public String addEmpty(Piece piece) { // 체스판에 빈 공간 중 맨 앞에 폰을 추가
         String location;
-        try {
-            location = findEmpty();
-            pieceMap.put(findEmpty(), piece);
-            return location;
-        } catch(Exception e) {
-            return null;
+        location = findEmpty();
+        add(piece, location);
+        return location;
+    }
+
+    public void add(Piece piece, String location) {
+        int[] coordiantes = new int[2];
+        if (isAvailableLocation(location)) {
+            locationToCoordinates(location, coordiantes);
+            add(piece, coordiantes[0], coordiantes[1]);
+            chessBoard.get(coordiantes[0]).rankList.set(coordiantes[1], piece);
         }
     }
 
-    public void add(Piece piece, String location) throws RuntimeException {
-        StringBuilder sb = new StringBuilder();
+    private void add(Piece piece, int row, int col) {
+        chessBoard.get(row).rankList.set(col, piece);
+    }
+
+    public boolean isAvailableLocation(String location) throws RuntimeException {
+        StringBuilder stringBuilder = new StringBuilder();
         String regex;
-        sb.append("[A-][1-]");
-        sb.insert(3, (char)('A' + colSize));
-        sb.insert(8, rowSize);
-        regex = sb.toString();
+        stringBuilder.append("[A-][1-]");
+        stringBuilder.insert(3, (char)('A' + colSize));
+        stringBuilder.insert(8, rowSize);
+        regex = stringBuilder.toString();
         if (location.matches(regex)) {
-            pieceMap.put(location, piece);
-        } else {
-            throw new RuntimeException("Location 형식이 틀림");
+            return true;
         }
-    }
-
-    public void add(Piece piece, int x, int y) {
-        String location = coordinatesToLocation(x, y);
-        add(piece, location);
-    }
-
-    public void add(String color, String location) {
-        Piece piece;
-        if (color.equals(Piece.Color.WHITE.getName())) {
-            piece = Piece.createWhitePawn();
-        } else {
-            piece = Piece.createBlackPawn();
-        }
-        add(piece, location);
+        throw new RuntimeException("Location 형식이 틀림");
     }
 
     public int pieceCount() {
         int count = 0;
-        String location;
-        for (int row = rowSize - 1; row >= 0; row--) {
-            for (int col = 0; col < colSize; col++) {
-                location = coordinatesToLocation(col, row);
-                if (!pieceMap.get(location).isBlank()) {
-                    count++;
-                }
+        for (Piece piece : getAllPieceList()) {
+            if (!piece.isBlank()) {
+                count++;
             }
         }
         return count;
     }
 
-    public Piece findPiece(String location) {
-        return pieceMap.get(location);
+    private List<Piece> getAllPieceList() {
+        List<Piece> pieceList = new ArrayList<>();
+        for (Rank rank : chessBoard) {
+            pieceList.addAll(rank.rankList);
+        }
+        return Collections.unmodifiableList(pieceList);
     }
 
-    public Piece findPiece(int x, int y) {
-        String location = coordinatesToLocation(x, y);
-        return pieceMap.get(location);
+    public Piece findPiece(String location) {
+        int[] coordinates = new int[2];
+        locationToCoordinates(location, coordinates);
+        return chessBoard.get(coordinates[0]).rankList.get(coordinates[1]);
     }
 
     private String getLineResult(int row) {
-        StringBuilder sb = new StringBuilder();
-        for (int j = 0; j < colSize; j++) {
-            sb.append(pieceMap.get(coordinatesToLocation(j, row)).getRepresentation());
-        }
-        return sb.toString();
-    }
-
-    public String getWhitePieceResult() {
-        return getLineResult(1);
-    }
-
-    public String getBlackPieceResult() {
-        return getLineResult(rowSize - 2);
-    }
-
-    public String showBoard() {
         StringBuilder stringBuilder = new StringBuilder();
-        String location;
-        for (int i = rowSize - 1; i >= 0; i--) {
-            for (int j = 0; j < colSize; j++) {
-                location = coordinatesToLocation(j, i);
-                if (pieceMap.containsKey(location)) {
-                    stringBuilder.append(getRepresentationAt(location));
-                } else {
-                    stringBuilder.append(".");
-                }
-            }
-            stringBuilder.append(NEWLINE);
+        for (Piece piece : chessBoard.get(row).rankList) {
+            stringBuilder.append(piece.getRepresentation());
         }
         return stringBuilder.toString();
     }
 
-    private char getRepresentationAt(String location) {
-        char representation;
-        representation = pieceMap.get(location).getRepresentation();
-        return representation;
+    public String getWhitePieceResult() {
+        return getLineResult(rowSize - 2);
+    }
+
+    public String getBlackPieceResult() {
+        return getLineResult(1);
+    }
+
+    public String showBoard() {
+        StringBuilder stringBuilder = new StringBuilder();
+        int count = 0;
+        for (Piece piece : getAllPieceList()) {
+            stringBuilder.append(piece.getRepresentation());
+            count++;
+            if (count % colSize == 0) {
+                stringBuilder.append(NEWLINE);
+            }
+        }
+        return stringBuilder.toString();
     }
 }

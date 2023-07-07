@@ -58,7 +58,7 @@ public class GameManager {
     private void addPiece() {
         color = gameMenu.askColor();
         location = gameMenu.askLocation();
-        board.add(color, location);
+        board.add(Piece.createWhitePawn(), location);
     }
 
     private void findPiece() {

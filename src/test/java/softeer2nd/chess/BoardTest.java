@@ -36,12 +36,12 @@ public class BoardTest {
         assertEquals(piece, board.findPiece(location));
     }
 
-    private void verifyAddPawn(Piece.Color color, int x, int y) throws Exception {
+    private void verifyAddPawn(Piece.Color color, String location) {
         Piece piece = makePawn(color);
-        board.add(piece, x, y);
+        board.add(piece, location);
         count++;
         assertEquals(count, board.pieceCount());
-        assertEquals(piece, board.findPiece(x, y));
+        assertEquals(piece, board.findPiece(location));
     }
 
     @Test
@@ -53,9 +53,9 @@ public class BoardTest {
 
     @Test
     @DisplayName("폰이 체스판의 특정 위치에 정상적으로 추가되어야 한다")
-    public void addPawnByLocation() throws Exception {
-        verifyAddPawn(Piece.Color.WHITE, 5, 5);
-        verifyAddPawn(Piece.Color.BLACK, 5, 4);
+    public void addPawnByLocation() {
+        verifyAddPawn(Piece.Color.WHITE, "C3");
+        verifyAddPawn(Piece.Color.BLACK, "D3");
     }
 
     @Test
@@ -64,6 +64,13 @@ public class BoardTest {
         board = new Board();
         assertEquals("pppppppp", board.getWhitePieceResult());
         assertEquals("PPPPPPPP", board.getBlackPieceResult());
+    }
+
+    @Test
+    @DisplayName("체스판 초기화 시 말이 32개 생성된다")
+    public void pieceCount() {
+        board = new Board();
+        assertEquals(board.pieceCount(), 32);
     }
 
     @Test

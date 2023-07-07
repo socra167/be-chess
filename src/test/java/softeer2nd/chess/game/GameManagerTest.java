@@ -49,10 +49,4 @@ public class GameManagerTest {
                 appendNewLine(GameMenu.MAIN_INFORM);
         verifyIO(inputMsg, expectedOutput);
     }
-
-    @Test
-    @DisplayName("메뉴로 출력을 선택하면 체스판의 전체 상태가 출력된다.")
-    public void printByMenu() {
-
-    }
 }
