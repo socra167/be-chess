@@ -12,6 +12,16 @@ public class Board {
 
     private List<Rank> chessBoard;
 
+    public int getPieceCount(Piece.Color color, Piece.Type type) {
+        int count = 0;
+        for (Piece piece : getAllPieceList()) {
+            if (piece.getColor() == color && piece.getType() == type) {
+                count++;
+            }
+        }
+        return count;
+    }
+
     private class Rank {
         private List<Piece> rankList;
 
