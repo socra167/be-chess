@@ -2,6 +2,8 @@ package softeer2nd.chess;
 
 import softeer2nd.chess.pieces.Piece;
 import java.util.*;
+import java.util.stream.Collectors;
+
 import static softeer2nd.chess.utils.StringUtils.*;
 
 public class Board {
@@ -166,6 +168,7 @@ public class Board {
     }
 
     private void locationToCoordinates(String location, int[] coordiantes) {
+        location = location.toUpperCase();
         if (isAvailableLocation(location)) {
             coordiantes[0] = rowSize - Integer.parseInt(location.substring(1));
             coordiantes[1] = location.charAt(0) - 'A';
@@ -216,11 +219,7 @@ public class Board {
     }
 
     private List<Piece> getAllPieceList() {
-        List<Piece> pieceList = new ArrayList<>();
-        for (Rank rank : chessBoard) {
-            pieceList.addAll(rank.rankList);
-        }
-        return Collections.unmodifiableList(pieceList);
+        return chessBoard.stream().flatMap(rank -> rank.rankList.stream()).collect(Collectors.toList());
     }
 
     public Piece findPiece(String location) {
