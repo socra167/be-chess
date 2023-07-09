@@ -53,7 +53,7 @@ public class GameManager {
 
     private void addPiece() {
         String location = gameMenu.askLocation();
-        board.add(Piece.createWhitePawn(), location);
+        board.move(Piece.createWhitePawn(), location);
     }
 
     private void findPiece() {

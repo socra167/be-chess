@@ -22,6 +22,7 @@ public class Board {
         }
 
     }
+
     public Board() {
         this(DEFAULT_ROW_SIZE, DEFAULT_COL_SIZE);
     }
@@ -38,8 +39,7 @@ public class Board {
     public void initialize(int row, int col) {
         rowSize = row;
         colSize = col;
-        chessBoard.clear();
-        fillWithBlank();
+        initializeEmpty();
         setWhitePawn();
         setBlackPawn();
         setWhiteKnight("B1", "G1");
@@ -55,13 +55,14 @@ public class Board {
     }
 
     public long getPieceCount(Piece.Color color, Piece.Type type) {
-        return (int)(getAllPieceList().stream()
+        return (int) (getAllPieceList().stream()
                 .filter(piece -> piece.isColor(color))
                 .filter(piece -> piece.isType(type))
                 .count());
     }
 
-    private void fillWithBlank() {
+    public void initializeEmpty() {
+        chessBoard.clear();
         for (int row = 0; row < rowSize; row++) {
             chessBoard.add(new Rank());
             for (int col = 0; col < colSize; col++) {
@@ -72,56 +73,54 @@ public class Board {
 
     private void setWhitePawn() {
         for (int col = 0; col < colSize; col++) {
-            add(Piece.createWhitePawn(), rowSize - 2, col);
+            move(Piece.createWhitePawn(), rowSize - 2, col);
         }
     }
 
     private void setBlackPawn() {
         for (int col = 0; col < colSize; col++) {
-            add(Piece.createBlackPawn(), 1, col);
+            move(Piece.createBlackPawn(), 1, col);
         }
     }
 
-    private void setWhiteKnight(String ... locations) {
-        Arrays.stream(locations).forEach(location -> add(Piece.createWhiteKnight(), location));
+    private void setWhiteKnight(String... locations) {
+        Arrays.stream(locations).forEach(location -> move(Piece.createWhiteKnight(), location));
     }
 
-    private void setBlackKnight(String ... locations) {
-        Arrays.stream(locations).forEach(location -> add(Piece.createBlackKnight(), location));
-
+    private void setBlackKnight(String... locations) {
+        Arrays.stream(locations).forEach(location -> move(Piece.createBlackKnight(), location));
     }
 
-    private void setWhiteRook(String ... locations) {
-        Arrays.stream(locations).forEach(location -> add(Piece.createWhiteRook(), location));
-
+    private void setWhiteRook(String... locations) {
+        Arrays.stream(locations).forEach(location -> move(Piece.createWhiteRook(), location));
     }
 
-    private void setBlackRook(String ... locations) {
-        Arrays.stream(locations).forEach(location -> add(Piece.createBlackRook(), location));
+    private void setBlackRook(String... locations) {
+        Arrays.stream(locations).forEach(location -> move(Piece.createBlackRook(), location));
     }
 
-    private void setWhiteBishop(String ... locations) {
-        Arrays.stream(locations).forEach(location -> add(Piece.createWhiteBishop(), location));
+    private void setWhiteBishop(String... locations) {
+        Arrays.stream(locations).forEach(location -> move(Piece.createWhiteBishop(), location));
     }
 
-    private void setBlackBishop(String ... locations) {
-        Arrays.stream(locations).forEach(location -> add(Piece.createBlackBishop(), location));
+    private void setBlackBishop(String... locations) {
+        Arrays.stream(locations).forEach(location -> move(Piece.createBlackBishop(), location));
     }
 
-    private void setWhiteQueen(String ... locations) {
-        Arrays.stream(locations).forEach(location -> add(Piece.createWhiteQueen(), location));
+    private void setWhiteQueen(String... locations) {
+        Arrays.stream(locations).forEach(location -> move(Piece.createWhiteQueen(), location));
     }
 
-    private void setBlackQueen(String ... locations) {
-        Arrays.stream(locations).forEach(location -> add(Piece.createBlackQueen(), location));
+    private void setBlackQueen(String... locations) {
+        Arrays.stream(locations).forEach(location -> move(Piece.createBlackQueen(), location));
     }
 
-    private void setWhiteKing(String ... locations) {
-        Arrays.stream(locations).forEach(location -> add(Piece.createWhiteKing(), location));
+    private void setWhiteKing(String... locations) {
+        Arrays.stream(locations).forEach(location -> move(Piece.createWhiteKing(), location));
     }
 
-    private void setBlackKing(String ... locations) {
-        Arrays.stream(locations).forEach(location -> add(Piece.createBlackKing(), location));
+    private void setBlackKing(String... locations) {
+        Arrays.stream(locations).forEach(location -> move(Piece.createBlackKing(), location));
     }
 
     public String findEmpty() throws RuntimeException { // 체스판의 비어 있는 공간 중 맨 앞의 키 반환
@@ -138,34 +137,33 @@ public class Board {
     }
 
     private String coordinatesToLocation(int row, int col) {
-        return String.valueOf((char)('A' + rowSize - 1 - row)) + (col + 1);
+        return String.valueOf((char) ('A' + rowSize - 1 - row)) + (col + 1);
     }
 
     private void locationToCoordinates(String location, int[] coordiantes) {
         location = location.toUpperCase();
-        if (isAvailableLocation(location)) {
-            coordiantes[0] = rowSize - Integer.parseInt(location.substring(1));
-            coordiantes[1] = location.charAt(0) - 'A';
-        }
+        coordiantes[0] = rowSize - Integer.parseInt(location.substring(1));
+        coordiantes[1] = location.charAt(0) - 'A';
     }
 
     public String addEmpty(Piece piece) { // 체스판에 빈 공간 중 맨 앞에 폰을 추가
         String location;
         location = findEmpty();
-        add(piece, location);
+        move(piece, location);
         return location;
     }
 
-    public void add(Piece piece, String location) {
+    public void move(Piece piece, String location) {
         int[] coordiantes = new int[2];
+        location = location.toUpperCase();
         if (isAvailableLocation(location)) {
             locationToCoordinates(location, coordiantes);
-            add(piece, coordiantes[0], coordiantes[1]);
+            move(piece, coordiantes[0], coordiantes[1]);
             chessBoard.get(coordiantes[0]).rankList.set(coordiantes[1], piece);
         }
     }
 
-    private void add(Piece piece, int row, int col) {
+    private void move(Piece piece, int row, int col) {
         chessBoard.get(row).rankList.set(col, piece);
     }
 
@@ -173,7 +171,7 @@ public class Board {
         StringBuilder stringBuilder = new StringBuilder();
         String regex;
         stringBuilder.append("[A-][1-]");
-        stringBuilder.insert(3, (char)('A' + colSize));
+        stringBuilder.insert(3, (char) ('A' + colSize));
         stringBuilder.insert(8, rowSize);
         regex = stringBuilder.toString();
         if (location.matches(regex)) {
@@ -193,7 +191,9 @@ public class Board {
     }
 
     private List<Piece> getAllPieceList() {
-        return chessBoard.stream().flatMap(rank -> rank.rankList.stream()).collect(Collectors.toList());
+        return chessBoard.stream()
+                .flatMap(rank -> rank.rankList.stream())
+                .collect(Collectors.toList());
     }
 
     public Piece findPiece(String location) {
@@ -219,15 +219,9 @@ public class Board {
     }
 
     public String showBoard() {
-        StringBuilder stringBuilder = new StringBuilder();
-        int count = 0;
-        for (Piece piece : getAllPieceList()) {
-            stringBuilder.append(piece.getRepresentation());
-            count++;
-            if (count % colSize == 0) {
-                stringBuilder.append(NEWLINE);
-            }
-        }
-        return stringBuilder.toString();
+        return getAllPieceList().stream()
+                .map(piece -> String.valueOf(piece.getRepresentation()))
+                .collect(Collectors.joining())
+                .replaceAll(".{" + colSize + "}", "$0" + NEWLINE);
     }
 }

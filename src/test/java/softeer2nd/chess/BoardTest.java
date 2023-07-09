@@ -40,7 +40,7 @@ public class BoardTest {
 
     private void verifyAddPawn(Piece.Color color, String location) {
         Piece piece = makePawn(color);
-        board.add(piece, location);
+        board.move(piece, location);
         count++;
         assertEquals(count, board.pieceCount());
         assertEquals(piece, board.findPiece(location));
@@ -118,12 +118,10 @@ public class BoardTest {
     @DisplayName("기물을 체스 판의 임의의 위치에 추가할 수 있다")
     public void move() throws Exception {
         board.initializeEmpty();
-
         String position = "b5";
         Piece piece = Piece.createBlackRook();
-        board.move(position, piece);
-
-        assertEquals(piece, board.findPiece(position));
+        board.move(piece, position);
         System.out.println(board.showBoard());
+        assertEquals(piece, board.findPiece(position));
     }
 }
