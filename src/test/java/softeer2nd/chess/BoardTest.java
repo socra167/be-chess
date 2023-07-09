@@ -21,13 +21,10 @@ class BoardTest {
     }
 
     private Piece makePawn(Piece.Color color) {
-        Piece piece;
-        if (color == Piece.Color.WHITE) {
-            piece = Piece.createWhitePawn();
-        } else {
-            piece = Piece.createBlackPawn();
+        if (color.equals(Piece.Color.WHITE)) {
+            return Piece.createWhitePawn();
         }
-        return piece;
+        return Piece.createBlackPawn();
     }
 
     private void verifyAddPawn(Piece.Color color) {
@@ -47,7 +44,7 @@ class BoardTest {
     }
 
     @Nested
-    @DisplayName("체스판을 초기화 하면")
+    @DisplayName("체스판 초기화 시")
     class AfterInitialize {
         @Test
         @DisplayName("흰색 Pawn 열과 검은색 Pawn 열의 결과가 정상이어야 한다")
@@ -68,7 +65,6 @@ class BoardTest {
         @DisplayName("전체 상태를 출력하면 말이 순서에 맞게 놓인 상태로 출력된다")
         void create() {
             board.initialize();
-            System.out.println(board.showBoard());
             assertEquals(32, board.pieceCount());
             String blankRank = appendNewLine("........");
             assertEquals(
@@ -121,7 +117,6 @@ class BoardTest {
         String position = "b5";
         Piece piece = Piece.createBlackRook();
         board.move(piece, position);
-        System.out.println(board.showBoard());
         assertEquals(piece, board.findPiece(position));
     }
 
@@ -145,8 +140,6 @@ class BoardTest {
 
         assertEquals(15.0, board.calculatePoint(Piece.Color.BLACK), 0.01);
         assertEquals(8.5, board.calculatePoint(Piece.Color.WHITE), 0.01);
-
-        System.out.println(board.showBoard());
     }
 
     private void addPiece(String position, Piece piece) {
