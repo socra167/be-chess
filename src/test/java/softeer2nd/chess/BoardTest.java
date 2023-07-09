@@ -10,12 +10,12 @@ import softeer2nd.chess.pieces.Piece.Type;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static softeer2nd.chess.utils.StringUtils.appendNewLine;
 
-public class BoardTest {
-    public Board board;
+class BoardTest {
+    private Board board;
     private int count;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         board = new Board();
         count = board.pieceCount();
     }
@@ -48,10 +48,10 @@ public class BoardTest {
 
     @Nested
     @DisplayName("체스판을 초기화 하면")
-    public class AfterInitialize {
+    class AfterInitialize {
         @Test
         @DisplayName("흰색 Pawn 열과 검은색 Pawn 열의 결과가 정상이어야 한다")
-        public void initialize() {
+        void initialize() {
             board = new Board();
             assertEquals("pppppppp", board.getWhitePieceResult());
             assertEquals("PPPPPPPP", board.getBlackPieceResult());
@@ -59,14 +59,14 @@ public class BoardTest {
 
         @Test
         @DisplayName("Blank가 아닌 기물이 32개 생성된다")
-        public void pieceCount() {
+        void pieceCount() {
             board = new Board();
             assertEquals(board.pieceCount(), 32);
         }
 
         @Test
         @DisplayName("전체 상태를 출력하면 말이 순서에 맞게 놓인 상태로 출력된다")
-        public void create() {
+        void create() {
             board.initialize();
             System.out.println(board.showBoard());
             assertEquals(32, board.pieceCount());
@@ -83,21 +83,21 @@ public class BoardTest {
 
     @Test
     @DisplayName("체스판의 빈 공간에 폰을 추가하면 체스판의 기물 수가 커지고, 추가하고자 한 폰은 체스판에 추가된 폰과 일치해야 한다")
-    public void createPawn() {
+    void createPawn() {
         verifyAddPawn(Piece.Color.WHITE);
         verifyAddPawn(Piece.Color.BLACK);
     }
 
     @Test
     @DisplayName("폰이 체스판의 특정 위치에 정상적으로 추가되어야 한다")
-    public void addPawnByLocation() {
+    void addPawnByLocation() {
         verifyAddPawn(Piece.Color.WHITE, "C3");
         verifyAddPawn(Piece.Color.BLACK, "D3");
     }
 
     @Test
     @DisplayName("기물과 색에 해당하는 기물의 수를 반환할 수 있다")
-    public void getPieceCount() {
+    void getPieceCount() {
         assertEquals(8, board.getPieceCount(Piece.Color.WHITE, Type.PAWN));
         assertEquals(2, board.getPieceCount(Piece.Color.WHITE, Type.ROOK));
         assertEquals(1, board.getPieceCount(Piece.Color.WHITE, Type.KING));
@@ -106,7 +106,7 @@ public class BoardTest {
 
     @Test
     @DisplayName("위치를 지정해 기물을 조회할 수 있다")
-    public void findPiece() throws Exception {
+    void findPiece() throws Exception {
         board.initialize();
         assertEquals(Piece.createBlackRook(), board.findPiece("a8"));
         assertEquals(Piece.createBlackRook(), board.findPiece("h8"));
@@ -116,12 +116,37 @@ public class BoardTest {
 
     @Test
     @DisplayName("기물을 체스 판의 임의의 위치에 추가할 수 있다")
-    public void move() throws Exception {
+    void move() throws Exception {
         board.initializeEmpty();
         String position = "b5";
         Piece piece = Piece.createBlackRook();
         board.move(piece, position);
         System.out.println(board.showBoard());
         assertEquals(piece, board.findPiece(position));
+    }
+
+    @Test
+    @DisplayName("체스 판의 점수 결과를 계산할 수 있다")
+    void calculatePoint() throws Exception {
+        board.initializeEmpty();
+
+        addPiece("b6", Piece.createBlackPawn());
+        addPiece("e6", Piece.createBlackQueen());
+        addPiece("b8", Piece.createBlackKing());
+        addPiece("c8", Piece.createBlackBishop());
+
+        addPiece("f2", Piece.createWhitePawn());
+        addPiece("g2", Piece.createWhitePawn());
+        addPiece("e1", Piece.createWhiteRook());
+        addPiece("f1", Piece.createWhiteKing());
+
+        assertEquals(15.0, board.calculatePoint(Piece.Color.BLACK), 0.01);
+        assertEquals(7.0, board.calculatePoint(Piece.Color.WHITE), 0.01);
+
+        System.out.println(board.showBoard());
+    }
+
+    private void addPiece(String position, Piece piece) {
+        board.move(piece, position);
     }
 }
