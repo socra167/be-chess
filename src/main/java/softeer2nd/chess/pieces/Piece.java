@@ -1,20 +1,11 @@
 package softeer2nd.chess.pieces;
 
 public class Piece {
-    private Color color;
-    private Type type;
+    private final Color color;
+    private final Type type;
 
     public enum Color {
-        WHITE("white"), BLACK("black"), NOCOLOR("no color");
-
-        private final String name;
-
-        Color(String name) {
-            this.name = name;
-        }
-        public String getName() {
-            return name;
-        }
+        WHITE, BLACK, NOCOLOR;
     }
     public enum Type {
         PAWN('p', 'P'),
@@ -24,12 +15,14 @@ public class Piece {
         QUEEN('q', 'Q'),
         KING('k', 'K'),
         NO_PIECE('.', '.');
+
         private final char whiteRepresentation;
         private final char blackRepresentation;
         Type(char whiteRepresentation, char blackRepresentation) {
             this.whiteRepresentation = whiteRepresentation;
             this.blackRepresentation = blackRepresentation;
         }
+
         public char getWhiteRepresentation() {
             return whiteRepresentation;
         }
@@ -93,47 +86,40 @@ public class Piece {
     }
 
     private static Piece createWhite(Type type) {
-        Piece piece = new Piece(Color.WHITE, type);
-        return piece;
+        return new Piece(Color.WHITE, type);
     }
 
     private static Piece createBlack(Type type) {
-        Piece piece = new Piece(Color.BLACK, type);
-        return piece;
+        return new Piece(Color.BLACK, type);
     }
 
     public static Piece createBlank() {
-        Piece piece = new Piece(Color.NOCOLOR, Type.NO_PIECE);
-        return piece;
+        return new Piece(Color.NOCOLOR, Type.NO_PIECE);
+    }
+
+    public boolean isType(Type type) {
+        return this.type == type;
+    }
+
+    public boolean isColor(Color color) {
+        return this.color == color;
     }
 
     public boolean isWhite() {
-        if (color == Color.WHITE) {
-            return true;
-        }
-        return false;
+        return isColor(Color.WHITE);
     }
 
     public boolean isBlack() {
-        if (color == Color.BLACK) {
-            return true;
-        }
-        return false;
+        return isColor(Color.BLACK);
     }
 
     public boolean isBlank() {
-        if (color == Color.NOCOLOR) {
-            return true;
-        }
-        return false;
+        return isColor(Color.NOCOLOR);
     }
 
-    public Color getColor() {
-        return color;
-    }
-
-    public Type getType() {
-        return type;
+    @Override
+    public boolean equals(Object o) {
+        return o instanceof Piece && ((Piece) o).isColor(color) && ((Piece) o).isType(type);
     }
 
     public char getRepresentation() {
