@@ -7,6 +7,7 @@ public class Piece {
     public enum Color {
         WHITE, BLACK, NOCOLOR;
     }
+
     public enum Type {
         PAWN('p', 'P', 1.0),
         ROOK('r', 'R', 5.0),
@@ -33,9 +34,13 @@ public class Piece {
         private char getBlackRepresentation() {
             return blackRepresentation;
         }
-        public double getDefaultPoint() { return defaultPoint; }
+
+        public double getDefaultPoint() {
+            return defaultPoint;
+        }
 
     }
+
     private Piece(Color color, Type name) {
         this.color = color;
         this.type = name;
