@@ -14,6 +14,35 @@ public class Board {
 
     private final List<Rank> chessBoard;
 
+    public double calculatePoint(Piece.Color color) {
+        double score = getAllPieceList().stream()
+                .filter(piece -> piece.isColor(color))
+                .mapToDouble(Piece::getDefaultPoint)
+                .sum();
+        score -= (getCountOfVerticalPawns(color) / 2.0 * Piece.Type.PAWN.getDefaultPoint());
+        return score;
+    }
+
+    private int getCountOfVerticalPawns(Piece.Color color) {
+        int result = 0;
+        int[] columnCount = new int[colSize];
+        List<Piece> pieceList = getAllPieceList();
+        Piece piece;
+
+        for (int index = 0; index < pieceList.size(); index++) {
+            piece = pieceList.get(index);
+            if (piece.isType(Piece.Type.PAWN) && piece.isColor(color)) {
+                columnCount[index % colSize]++;
+            }
+        }
+        for (int count : columnCount) {
+            if (1 < count) {
+                result += count;
+            }
+        }
+        return result;
+    }
+
     private class Rank {
 
         private List<Piece> rankList;
