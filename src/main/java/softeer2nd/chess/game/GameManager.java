@@ -2,7 +2,9 @@ package softeer2nd.chess.game;
 
 import softeer2nd.chess.Board;
 import softeer2nd.chess.pieces.Piece;
+
 import java.io.InputStream;
+
 import static softeer2nd.chess.utils.StringUtils.printBlankSpace;
 
 public class GameManager {
@@ -22,7 +24,7 @@ public class GameManager {
         if (!gameMenu.checkStart()) {
             return;
         }
-        while(true) {
+        while (true) {
             printBoard();
             gameMenu.printCuttingLine();
             switch (gameMenu.issueMenu()) {

@@ -1,6 +1,7 @@
 package softeer2nd.chess;
 
 import softeer2nd.chess.pieces.Piece;
+
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -46,6 +47,7 @@ public class Board {
     private class Rank {
 
         private List<Piece> rankList;
+
         Rank() {
             rankList = new ArrayList<>();
         }

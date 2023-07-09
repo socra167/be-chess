@@ -1,6 +1,7 @@
 package softeer2nd.chess.game;
 
 import org.junit.jupiter.api.*;
+
 import java.io.*;
 
 import static org.assertj.core.api.Assertions.*;
