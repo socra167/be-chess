@@ -113,4 +113,17 @@ public class BoardTest {
         assertEquals(Piece.createWhiteRook(), board.findPiece("a1"));
         assertEquals(Piece.createWhiteRook(), board.findPiece("h1"));
     }
+
+    @Test
+    @DisplayName("기물을 체스 판의 임의의 위치에 추가할 수 있다")
+    public void move() throws Exception {
+        board.initializeEmpty();
+
+        String position = "b5";
+        Piece piece = Piece.createBlackRook();
+        board.move(position, piece);
+
+        assertEquals(piece, board.findPiece(position));
+        System.out.println(board.showBoard());
+    }
 }
