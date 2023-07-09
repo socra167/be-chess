@@ -6,12 +6,8 @@ import java.io.InputStream;
 import static softeer2nd.chess.utils.StringUtils.printBlankSpace;
 
 public class GameManager {
-    GameMenu gameMenu;
-    Board board;
-    Piece piece;
-    int[] boardSize;
-    String color;
-    String location;
+    private final GameMenu gameMenu;
+    private final Board board;
 
     public GameManager() {
         this(System.in);
@@ -51,19 +47,18 @@ public class GameManager {
     }
 
     private void initializeBoard() {
-        boardSize = gameMenu.askBoardSize();
+        int[] boardSize = gameMenu.askBoardSize();
         board.initialize(boardSize[0], boardSize[1]);
     }
 
     private void addPiece() {
-        color = gameMenu.askColor();
-        location = gameMenu.askLocation();
+        String location = gameMenu.askLocation();
         board.add(Piece.createWhitePawn(), location);
     }
 
     private void findPiece() {
-        location = gameMenu.askLocation();
-        piece = board.findPiece(location);
-        System.out.println(piece.getColor() + " " + piece.getType().name());
+        String location = gameMenu.askLocation();
+        Piece piece = board.findPiece(location);
+        System.out.println(piece.getRepresentation());
     }
 }

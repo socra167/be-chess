@@ -12,26 +12,16 @@ public class Board {
     private int rowSize; // 가능한 범위 4 ~ 26
     private int colSize; // 가능한 범위 1 ~ *
 
-    private List<Rank> chessBoard;
-
-    public int getPieceCount(Piece.Color color, Piece.Type type) {
-        int count = 0;
-        for (Piece piece : getAllPieceList()) {
-            if (piece.getColor() == color && piece.getType() == type) {
-                count++;
-            }
-        }
-        return count;
-    }
+    private final List<Rank> chessBoard;
 
     private class Rank {
-        private List<Piece> rankList;
 
+        private List<Piece> rankList;
         Rank() {
             rankList = new ArrayList<>();
         }
-    }
 
+    }
     public Board() {
         this(DEFAULT_ROW_SIZE, DEFAULT_COL_SIZE);
     }
@@ -50,8 +40,8 @@ public class Board {
         colSize = col;
         chessBoard.clear();
         fillWithBlank();
-        setWhitePawn(rowSize - 2);
-        setBlackPawn(1);
+        setWhitePawn();
+        setBlackPawn();
         setWhiteKnight("B1", "G1");
         setBlackKnight("B8", "G8");
         setWhiteRook("A1", "H1");
@@ -64,6 +54,13 @@ public class Board {
         setBlackKing("E8");
     }
 
+    public long getPieceCount(Piece.Color color, Piece.Type type) {
+        return (int)(getAllPieceList().stream()
+                .filter(piece -> piece.isColor(color))
+                .filter(piece -> piece.isType(type))
+                .count());
+    }
+
     private void fillWithBlank() {
         for (int row = 0; row < rowSize; row++) {
             chessBoard.add(new Rank());
@@ -73,98 +70,75 @@ public class Board {
         }
     }
 
-    private void setWhitePawn(int row) {
+    private void setWhitePawn() {
         for (int col = 0; col < colSize; col++) {
-            add(Piece.createWhitePawn(), row, col);
+            add(Piece.createWhitePawn(), rowSize - 2, col);
         }
     }
 
-    private void setBlackPawn(int row) {
+    private void setBlackPawn() {
         for (int col = 0; col < colSize; col++) {
-            add(Piece.createBlackPawn(), row, col);
+            add(Piece.createBlackPawn(), 1, col);
         }
     }
 
     private void setWhiteKnight(String ... locations) {
-        for (String location : locations) {
-            add(Piece.createWhiteKnight(), location);
-        }
+        Arrays.stream(locations).forEach(location -> add(Piece.createWhiteKnight(), location));
     }
 
     private void setBlackKnight(String ... locations) {
-        for (String location : locations) {
-            add(Piece.createBlackKnight(), location);
-        }
+        Arrays.stream(locations).forEach(location -> add(Piece.createBlackKnight(), location));
+
     }
 
     private void setWhiteRook(String ... locations) {
-        for (String location : locations) {
-            add(Piece.createWhiteRook(), location);
-        }
+        Arrays.stream(locations).forEach(location -> add(Piece.createWhiteRook(), location));
+
     }
 
     private void setBlackRook(String ... locations) {
-        for (String location : locations) {
-            add(Piece.createBlackRook(), location);
-        }
+        Arrays.stream(locations).forEach(location -> add(Piece.createBlackRook(), location));
     }
 
     private void setWhiteBishop(String ... locations) {
-        for (String location : locations) {
-            add(Piece.createWhiteBishop(), location);
-        }
+        Arrays.stream(locations).forEach(location -> add(Piece.createWhiteBishop(), location));
     }
 
     private void setBlackBishop(String ... locations) {
-        for (String location : locations) {
-            add(Piece.createBlackBishop(), location);
-        }
+        Arrays.stream(locations).forEach(location -> add(Piece.createBlackBishop(), location));
     }
 
     private void setWhiteQueen(String ... locations) {
-        for (String location : locations) {
-            add(Piece.createWhiteQueen(), location);
-        }
+        Arrays.stream(locations).forEach(location -> add(Piece.createWhiteQueen(), location));
     }
 
     private void setBlackQueen(String ... locations) {
-        for (String location : locations) {
-            add(Piece.createBlackQueen(), location);
-        }
+        Arrays.stream(locations).forEach(location -> add(Piece.createBlackQueen(), location));
     }
 
     private void setWhiteKing(String ... locations) {
-        for (String location : locations) {
-            add(Piece.createWhiteKing(), location);
-        }
+        Arrays.stream(locations).forEach(location -> add(Piece.createWhiteKing(), location));
     }
 
     private void setBlackKing(String ... locations) {
-        for (String location : locations) {
-            add(Piece.createBlackKing(), location);
-        }
+        Arrays.stream(locations).forEach(location -> add(Piece.createBlackKing(), location));
     }
 
     public String findEmpty() throws RuntimeException { // 체스판의 비어 있는 공간 중 맨 앞의 키 반환
         String location;
-        StringBuilder stringBuilder = new StringBuilder();
         for (int row = rowSize - 1; row >= 0; row--) {
             for (int col = 0; col < colSize; col++) {
                 location = coordinatesToLocation(col, row);
                 if (findPiece(location).isBlank()) {
                     return location;
                 }
-                stringBuilder.setLength(0);
             }
         }
         throw new RuntimeException("비어 있는 공간이 없음");
     }
 
     private String coordinatesToLocation(int row, int col) {
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append((char)('A' + rowSize - 1 - row));
-        stringBuilder.append(col + 1);
-        return stringBuilder.toString();
+        return String.valueOf((char)('A' + rowSize - 1 - row)) + (col + 1);
     }
 
     private void locationToCoordinates(String location, int[] coordiantes) {
