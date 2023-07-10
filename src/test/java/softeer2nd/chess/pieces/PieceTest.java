@@ -5,21 +5,22 @@ import org.junit.jupiter.api.*;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
+import static softeer2nd.chess.pieces.Piece.*;
 
 class PieceTest {
     @Test
     @DisplayName("색에 알맞은 폰이 생성되어야 한다")
     void create() {
-        verifyPawn(Piece.Color.WHITE);
-        verifyPawn(Piece.Color.BLACK);
+        verifyPawn(Color.WHITE);
+        verifyPawn(Color.BLACK);
     }
 
-    private void verifyPawn(Piece.Color color) {
+    private void verifyPawn(Color color) {
         Piece piece;
-        if (color == Piece.Color.WHITE) {
-            piece = Piece.createWhitePawn();
+        if (color == Color.WHITE) {
+            piece = Pawn.createPiece(Color.WHITE);
         } else {
-            piece = Piece.createBlackPawn();
+            piece = Pawn.createPiece(Color.BLACK);
         }
         assertThat(piece.isColor(color));
     }
@@ -27,26 +28,26 @@ class PieceTest {
     @Test
     @DisplayName("생성된 Piece의 Color와 Representation이 일치한다")
     void create_piece_check() {
-        verifyPawn(Piece.createWhitePawn(), Piece.Color.WHITE, Piece.createWhitePawn().getRepresentation());
-        verifyPawn(Piece.createBlackPawn(), Piece.Color.BLACK, Piece.createBlackPawn().getRepresentation());
+        verifyPawn(Pawn.createPiece(Color.WHITE), Color.WHITE, Pawn.createPiece(Color.WHITE).getRepresentation());
+        verifyPawn(Pawn.createPiece(Color.BLACK), Color.BLACK, Pawn.createPiece(Color.BLACK).getRepresentation());
 
-        verifyPawn(Piece.createWhiteKnight(), Piece.Color.WHITE, Piece.createWhiteKnight().getRepresentation());
-        verifyPawn(Piece.createBlackKnight(), Piece.Color.BLACK, Piece.createBlackKnight().getRepresentation());
+        verifyPawn(Knight.createPiece(Color.WHITE), Color.WHITE, Knight.createPiece(Color.WHITE).getRepresentation());
+        verifyPawn(Knight.createPiece(Color.BLACK), Color.BLACK, Knight.createPiece(Color.BLACK).getRepresentation());
 
-        verifyPawn(Piece.createWhiteRook(), Piece.Color.WHITE, Piece.createWhiteRook().getRepresentation());
-        verifyPawn(Piece.createBlackRook(), Piece.Color.BLACK, Piece.createBlackRook().getRepresentation());
+        verifyPawn(Rook.createPiece(Color.WHITE), Color.WHITE, Rook.createPiece(Color.WHITE).getRepresentation());
+        verifyPawn(Rook.createPiece(Color.BLACK), Color.BLACK, Rook.createPiece(Color.BLACK).getRepresentation());
 
-        verifyPawn(Piece.createWhiteBishop(), Piece.Color.WHITE, Piece.createWhiteBishop().getRepresentation());
-        verifyPawn(Piece.createBlackBishop(), Piece.Color.BLACK, Piece.createBlackBishop().getRepresentation());
+        verifyPawn(Bishop.createPiece(Color.WHITE), Color.WHITE, Bishop.createPiece(Color.WHITE).getRepresentation());
+        verifyPawn(Bishop.createPiece(Color.BLACK), Color.BLACK, Bishop.createPiece(Color.BLACK).getRepresentation());
 
-        verifyPawn(Piece.createWhiteQueen(), Piece.Color.WHITE, Piece.createWhiteQueen().getRepresentation());
-        verifyPawn(Piece.createBlackQueen(), Piece.Color.BLACK, Piece.createBlackQueen().getRepresentation());
+        verifyPawn(Queen.createPiece(Color.WHITE), Color.WHITE, Queen.createPiece(Color.WHITE).getRepresentation());
+        verifyPawn(Queen.createPiece(Color.BLACK), Color.BLACK, Queen.createPiece(Color.BLACK).getRepresentation());
 
-        verifyPawn(Piece.createWhiteKing(), Piece.Color.WHITE, Piece.createWhiteKing().getRepresentation());
-        verifyPawn(Piece.createBlackKing(), Piece.Color.BLACK, Piece.createBlackKing().getRepresentation());
+        verifyPawn(King.createPiece(Color.WHITE), Color.WHITE, King.createPiece(Color.WHITE).getRepresentation());
+        verifyPawn(King.createPiece(Color.BLACK), Color.BLACK, King.createPiece(Color.BLACK).getRepresentation());
     }
 
-    private void verifyPawn(final Piece piece, final Piece.Color color, final char representation) {
+    private void verifyPawn(final Piece piece, final Color color, final char representation) {
         assertTrue(piece.isColor(color));
         assertEquals(representation, piece.getRepresentation());
     }
@@ -54,8 +55,8 @@ class PieceTest {
     @Test
     @DisplayName("검은색 말과 흰색 말을 구분할 수 있다")
     void checkColor() {
-        Piece whitePawn = Piece.createWhitePawn();
-        Piece blackPawn = Piece.createBlackPawn();
+        Piece whitePawn = Pawn.createPiece(Color.WHITE);
+        Piece blackPawn = Pawn.createPiece(Color.BLACK);
         assertThat(whitePawn.isWhite()).isEqualTo(true);
         assertThat(whitePawn.isBlack()).isEqualTo(false);
         assertThat(blackPawn.isWhite()).isEqualTo(false);
@@ -65,18 +66,18 @@ class PieceTest {
     @Test
     @DisplayName("같은 종류이고 색이 다른 Piece 쌍을 생성하면 종류가 일치해야 한다")
     void create_piece() {
-        verifyPawn(Piece.createWhitePawn(), Piece.createBlackPawn(), Type.PAWN);
-        verifyPawn(Piece.createWhiteKnight(), Piece.createBlackKnight(), Type.KNIGHT);
-        verifyPawn(Piece.createWhiteRook(), Piece.createBlackRook(), Type.ROOK);
-        verifyPawn(Piece.createWhiteBishop(), Piece.createBlackBishop(), Type.BISHOP);
-        verifyPawn(Piece.createWhiteQueen(), Piece.createBlackQueen(), Type.QUEEN);
-        verifyPawn(Piece.createWhiteKing(), Piece.createBlackKing(), Type.KING);
+        verifyPawn(Pawn.createPiece(Color.WHITE), Pawn.createPiece(Color.BLACK), Type.PAWN);
+        verifyPawn(Knight.createPiece(Color.WHITE), Knight.createPiece(Color.BLACK), Type.KNIGHT);
+        verifyPawn(Rook.createPiece(Color.WHITE), Rook.createPiece(Color.BLACK), Type.ROOK);
+        verifyPawn(Bishop.createPiece(Color.WHITE), Bishop.createPiece(Color.BLACK), Type.BISHOP);
+        verifyPawn(Queen.createPiece(Color.WHITE), Queen.createPiece(Color.BLACK), Type.QUEEN);
+        verifyPawn(King.createPiece(Color.WHITE), King.createPiece(Color.BLACK), Type.KING);
     }
 
     @Test
     @DisplayName("기물이 존재하지 않는 Piece를 생성하면 White 또는 Black이 아니어야 한다")
     void create_blankPiece() {
-        Piece blank = Piece.createBlank();
+        Piece blank = Blank.createPiece();
         assertFalse(blank.isWhite());
         assertFalse(blank.isBlack());
         assertTrue(blank.isType(Type.NO_PIECE));

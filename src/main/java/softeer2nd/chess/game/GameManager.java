@@ -1,10 +1,12 @@
 package softeer2nd.chess.game;
 
 import softeer2nd.chess.Board;
+import softeer2nd.chess.pieces.Pawn;
 import softeer2nd.chess.pieces.Piece;
 
 import java.io.InputStream;
 
+import static softeer2nd.chess.pieces.Piece.*;
 import static softeer2nd.chess.utils.StringUtils.printBlankSpace;
 
 public class GameManager {
@@ -55,7 +57,7 @@ public class GameManager {
 
     private void addPiece() {
         String location = gameMenu.askLocation();
-        board.move(Piece.createWhitePawn(), location);
+        board.move(Pawn.createPiece(Color.WHITE), location);
     }
 
     private void findPiece() {

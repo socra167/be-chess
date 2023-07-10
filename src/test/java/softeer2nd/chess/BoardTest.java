@@ -1,15 +1,15 @@
 package softeer2nd.chess;
 
+import com.sun.source.tree.WhileLoopTree;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import softeer2nd.chess.pieces.Piece;
+import softeer2nd.chess.pieces.*;
 import softeer2nd.chess.pieces.Piece.Type;
 
-import javax.swing.text.Position;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static softeer2nd.chess.pieces.Piece.*;
 import static softeer2nd.chess.utils.StringUtils.appendNewLine;
 
 class BoardTest {
@@ -22,14 +22,15 @@ class BoardTest {
         count = board.pieceCount();
     }
 
-    private Piece makePawn(Piece.Color color) {
-        if (color.equals(Piece.Color.WHITE)) {
-            return Piece.createWhitePawn();
+    private Piece makePawn(Color color) {
+        if (color.equals(Color.WHITE)) {
+            return Pawn.createPiece(Color.WHITE);
         }
-        return Piece.createBlackPawn();
+        Piece piece = Pawn.createPiece(Color.BLACK);
+        return piece;
     }
 
-    private void verifyAddPawn(Piece.Color color) {
+    private void verifyAddPawn(Color color) {
         Piece piece = makePawn(color);
         String location = board.addEmpty(piece);
         count++;
@@ -37,7 +38,7 @@ class BoardTest {
         assertEquals(piece, board.findPiece(location));
     }
 
-    private void verifyAddPawn(Piece.Color color, String location) {
+    private void verifyAddPawn(Color color, String location) {
         Piece piece = makePawn(color);
         board.move(piece, location);
         count++;
@@ -82,42 +83,42 @@ class BoardTest {
     @Test
     @DisplayName("체스판의 빈 공간에 폰을 추가하면 체스판의 기물 수가 커지고, 추가하고자 한 폰은 체스판에 추가된 폰과 일치해야 한다")
     void createPawn() {
-        verifyAddPawn(Piece.Color.WHITE);
-        verifyAddPawn(Piece.Color.BLACK);
+        verifyAddPawn(Color.WHITE);
+        verifyAddPawn(Color.BLACK);
     }
 
     @Test
     @DisplayName("폰이 체스판의 특정 위치에 정상적으로 추가되어야 한다")
     void addPawnByLocation() {
-        verifyAddPawn(Piece.Color.WHITE, "C3");
-        verifyAddPawn(Piece.Color.BLACK, "D3");
+        verifyAddPawn(Color.WHITE, "C3");
+        verifyAddPawn(Color.BLACK, "D3");
     }
 
     @Test
     @DisplayName("기물과 색에 해당하는 기물의 수를 반환할 수 있다")
     void getPieceCount() {
-        assertEquals(8, board.getPieceCount(Piece.Color.WHITE, Type.PAWN));
-        assertEquals(2, board.getPieceCount(Piece.Color.WHITE, Type.ROOK));
-        assertEquals(1, board.getPieceCount(Piece.Color.WHITE, Type.KING));
-        assertEquals(1, board.getPieceCount(Piece.Color.BLACK, Type.KING));
+        assertEquals(8, board.getPieceCount(Color.WHITE, Type.PAWN));
+        assertEquals(2, board.getPieceCount(Color.WHITE, Type.ROOK));
+        assertEquals(1, board.getPieceCount(Color.WHITE, Type.KING));
+        assertEquals(1, board.getPieceCount(Color.BLACK, Type.KING));
     }
 
     @Test
     @DisplayName("위치를 지정해 기물을 조회할 수 있다")
     void findPiece() throws Exception {
         board.initialize();
-        assertEquals(Piece.createBlackRook(), board.findPiece("a8"));
-        assertEquals(Piece.createBlackRook(), board.findPiece("h8"));
-        assertEquals(Piece.createWhiteRook(), board.findPiece("a1"));
-        assertEquals(Piece.createWhiteRook(), board.findPiece("h1"));
+        assertEquals(Rook.createPiece(Color.BLACK), board.findPiece("a8"));
+        assertEquals(Rook.createPiece(Color.BLACK), board.findPiece("h8"));
+        assertEquals(Rook.createPiece(Color.WHITE), board.findPiece("a1"));
+        assertEquals(Rook.createPiece(Color.WHITE), board.findPiece("h1"));
     }
 
     @Test
     @DisplayName("기물을 체스 판의 임의의 위치에 추가할 수 있다")
-    void move() throws Exception {
+    void movePiece() throws Exception {
         board.initializeEmpty();
         String position = "b5";
-        Piece piece = Piece.createBlackRook();
+        Piece piece = Rook.createPiece(Color.BLACK);
         board.move(piece, position);
         assertEquals(piece, board.findPiece(position));
     }
@@ -127,21 +128,21 @@ class BoardTest {
     void calculatePoint() throws Exception {
         board.initializeEmpty();
 
-        addPiece("b6", Piece.createBlackPawn());
-        addPiece("e6", Piece.createBlackQueen());
-        addPiece("b8", Piece.createBlackKing());
-        addPiece("c8", Piece.createBlackRook());
+        addPiece("b6", Pawn.createPiece(Color.BLACK));
+        addPiece("e6", Queen.createPiece(Color.BLACK));
+        addPiece("b8", King.createPiece(Color.BLACK));
+        addPiece("c8", Rook.createPiece(Color.BLACK));
 
-        addPiece("f2", Piece.createWhitePawn());
-        addPiece("g2", Piece.createWhitePawn());
-        addPiece("g3", Piece.createWhitePawn());
-        addPiece("g4", Piece.createWhitePawn());
-        addPiece("c4", Piece.createWhitePawn());
-        addPiece("e1", Piece.createWhiteRook());
-        addPiece("f1", Piece.createWhiteKing());
+        addPiece("f2", Pawn.createPiece(Color.WHITE));
+        addPiece("g2", Pawn.createPiece(Color.WHITE));
+        addPiece("g3", Pawn.createPiece(Color.WHITE));
+        addPiece("g4", Pawn.createPiece(Color.WHITE));
+        addPiece("c4", Pawn.createPiece(Color.WHITE));
+        addPiece("e1", Rook.createPiece(Color.WHITE));
+        addPiece("f1", King.createPiece(Color.WHITE));
 
-        assertEquals(15.0, board.calculatePoint(Piece.Color.BLACK), 0.01);
-        assertEquals(8.5, board.calculatePoint(Piece.Color.WHITE), 0.01);
+        assertEquals(15.0, board.calculatePoint(Color.BLACK), 0.01);
+        assertEquals(8.5, board.calculatePoint(Color.WHITE), 0.01);
     }
 
     private void addPiece(String position, Piece piece) {
@@ -152,10 +153,12 @@ class BoardTest {
     @DisplayName("기물을 현재 위치에서 다른 위치로 이동시킬 수 있다")
     void move() throws Exception {
         board.initialize();
+
         String sourcePosition = "b2";
         String targetPosition = "b3";
+
         board.move(sourcePosition, targetPosition);
-        assertEquals(Piece.createBlank(new Position(sourcePosition)), board.findPiece(sourcePosition));
-        assertEquals(Piece.createWhitePawn(new Position(targetPosition)), board.findPiece(targetPosition));
+        assertEquals(Blank.createPiece(new Position(sourcePosition)), board.findPiece(sourcePosition));
+        assertEquals(Pawn.createPiece(new Position(targetPosition), Color.WHITE), board.findPiece(targetPosition));
     }
 }

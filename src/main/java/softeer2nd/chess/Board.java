@@ -1,10 +1,11 @@
 package softeer2nd.chess;
 
-import softeer2nd.chess.pieces.Piece;
+import softeer2nd.chess.pieces.*;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static softeer2nd.chess.pieces.Piece.*;
 import static softeer2nd.chess.utils.StringUtils.*;
 
 public class Board {
@@ -15,16 +16,16 @@ public class Board {
 
     private final List<Rank> chessBoard;
 
-    public double calculatePoint(Piece.Color color) {
+    public double calculatePoint(Color color) {
         double score = getAllPieceList().stream()
                 .filter(piece -> piece.isColor(color))
                 .mapToDouble(Piece::getDefaultPoint)
                 .sum();
-        score -= (getCountOfVerticalPawns(color) / 2.0 * Piece.Type.PAWN.getDefaultPoint());
+        score -= (getCountOfVerticalPawns(color) / 2.0 * Type.PAWN.getDefaultPoint());
         return score;
     }
 
-    private int getCountOfVerticalPawns(Piece.Color color) {
+    private int getCountOfVerticalPawns(Color color) {
         int result = 0;
         int[] columnCount = new int[colSize];
         List<Piece> pieceList = getAllPieceList();
@@ -32,7 +33,7 @@ public class Board {
 
         for (int index = 0; index < pieceList.size(); index++) {
             piece = pieceList.get(index);
-            if (piece.isType(Piece.Type.PAWN) && piece.isColor(color)) {
+            if (piece.isType(Type.PAWN) && piece.isColor(color)) {
                 columnCount[index % colSize]++;
             }
         }
@@ -52,8 +53,8 @@ public class Board {
             rankList = new ArrayList<>();
         }
 
-    }
 
+    }
     public Board() {
         this(DEFAULT_ROW_SIZE, DEFAULT_COL_SIZE);
     }
@@ -85,7 +86,7 @@ public class Board {
         setBlackKing("E8");
     }
 
-    public long getPieceCount(Piece.Color color, Piece.Type type) {
+    public long getPieceCount(Color color, Type type) {
         return (int) (getAllPieceList().stream()
                 .filter(piece -> piece.isColor(color))
                 .filter(piece -> piece.isType(type))
@@ -97,61 +98,61 @@ public class Board {
         for (int row = 0; row < rowSize; row++) {
             chessBoard.add(new Rank());
             for (int col = 0; col < colSize; col++) {
-                chessBoard.get(row).rankList.add(Piece.createBlank());
+                chessBoard.get(row).rankList.add(Blank.createPiece());
             }
         }
     }
 
     private void setWhitePawn() {
         for (int col = 0; col < colSize; col++) {
-            move(Piece.createWhitePawn(), rowSize - 2, col);
+            move(Pawn.createPiece(Color.WHITE), rowSize - 2, col);
         }
     }
 
     private void setBlackPawn() {
         for (int col = 0; col < colSize; col++) {
-            move(Piece.createBlackPawn(), 1, col);
+            move(Pawn.createPiece(Color.BLACK), 1, col);
         }
     }
 
     private void setWhiteKnight(String... locations) {
-        Arrays.stream(locations).forEach(location -> move(Piece.createWhiteKnight(), location));
+        Arrays.stream(locations).forEach(location -> move(Knight.createPiece(Color.WHITE), location));
     }
 
     private void setBlackKnight(String... locations) {
-        Arrays.stream(locations).forEach(location -> move(Piece.createBlackKnight(), location));
+        Arrays.stream(locations).forEach(location -> move(Knight.createPiece(Color.BLACK), location));
     }
 
     private void setWhiteRook(String... locations) {
-        Arrays.stream(locations).forEach(location -> move(Piece.createWhiteRook(), location));
+        Arrays.stream(locations).forEach(location -> move(Rook.createPiece(Color.WHITE), location));
     }
 
     private void setBlackRook(String... locations) {
-        Arrays.stream(locations).forEach(location -> move(Piece.createBlackRook(), location));
+        Arrays.stream(locations).forEach(location -> move(Rook.createPiece(Color.BLACK), location));
     }
 
     private void setWhiteBishop(String... locations) {
-        Arrays.stream(locations).forEach(location -> move(Piece.createWhiteBishop(), location));
+        Arrays.stream(locations).forEach(location -> move(Bishop.createPiece(Color.WHITE), location));
     }
 
     private void setBlackBishop(String... locations) {
-        Arrays.stream(locations).forEach(location -> move(Piece.createBlackBishop(), location));
+        Arrays.stream(locations).forEach(location -> move(Bishop.createPiece(Color.BLACK), location));
     }
 
     private void setWhiteQueen(String... locations) {
-        Arrays.stream(locations).forEach(location -> move(Piece.createWhiteQueen(), location));
+        Arrays.stream(locations).forEach(location -> move(Queen.createPiece(Color.WHITE), location));
     }
 
     private void setBlackQueen(String... locations) {
-        Arrays.stream(locations).forEach(location -> move(Piece.createBlackQueen(), location));
+        Arrays.stream(locations).forEach(location -> move(Queen.createPiece(Color.BLACK), location));
     }
 
     private void setWhiteKing(String... locations) {
-        Arrays.stream(locations).forEach(location -> move(Piece.createWhiteKing(), location));
+        Arrays.stream(locations).forEach(location -> move(King.createPiece(Color.WHITE), location));
     }
 
     private void setBlackKing(String... locations) {
-        Arrays.stream(locations).forEach(location -> move(Piece.createBlackKing(), location));
+        Arrays.stream(locations).forEach(location -> move(King.createPiece(Color.BLACK), location));
     }
 
     public String findEmpty() throws RuntimeException { // 체스판의 비어 있는 공간 중 맨 앞의 키 반환
@@ -182,6 +183,11 @@ public class Board {
         location = findEmpty();
         move(piece, location);
         return location;
+    }
+
+    public void move(String sourcePosition, String targetPosition) {
+        move(findPiece(sourcePosition), targetPosition);
+        move(Blank.createPiece(), sourcePosition);
     }
 
     public void move(Piece piece, String location) {

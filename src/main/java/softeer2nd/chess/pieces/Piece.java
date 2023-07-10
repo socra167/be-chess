@@ -1,8 +1,15 @@
 package softeer2nd.chess.pieces;
 
+import softeer2nd.chess.Board;
+import softeer2nd.chess.Position;
+
+import javax.swing.text.html.HTMLDocument;
+
 public class Piece {
-    private final Color color;
-    private final Type type;
+    protected Color color;
+    protected Type type;
+
+    private Position position;
 
     public enum Color {
         WHITE, BLACK, NOCOLOR;
@@ -39,71 +46,6 @@ public class Piece {
             return defaultPoint;
         }
 
-    }
-
-    private Piece(Color color, Type name) {
-        this.color = color;
-        this.type = name;
-    }
-
-    public static Piece createWhitePawn() {
-        return createWhite(Type.PAWN);
-    }
-
-    public static Piece createBlackPawn() {
-        return createBlack(Type.PAWN);
-    }
-
-    public static Piece createWhiteKnight() {
-        return createWhite(Type.KNIGHT);
-    }
-
-    public static Piece createBlackKnight() {
-        return createBlack(Type.KNIGHT);
-    }
-
-    public static Piece createWhiteRook() {
-        return createWhite(Type.ROOK);
-    }
-
-    public static Piece createBlackRook() {
-        return createBlack(Type.ROOK);
-    }
-
-    public static Piece createWhiteBishop() {
-        return createWhite(Type.BISHOP);
-    }
-
-    public static Piece createBlackBishop() {
-        return createBlack(Type.BISHOP);
-    }
-
-    public static Piece createWhiteQueen() {
-        return createWhite(Type.QUEEN);
-    }
-
-    public static Piece createBlackQueen() {
-        return createBlack(Type.QUEEN);
-    }
-
-    public static Piece createWhiteKing() {
-        return createWhite(Type.KING);
-    }
-
-    public static Piece createBlackKing() {
-        return createBlack(Type.KING);
-    }
-
-    private static Piece createWhite(Type type) {
-        return new Piece(Color.WHITE, type);
-    }
-
-    private static Piece createBlack(Type type) {
-        return new Piece(Color.BLACK, type);
-    }
-
-    public static Piece createBlank() {
-        return new Piece(Color.NOCOLOR, Type.NO_PIECE);
     }
 
     public boolean isType(Type type) {
