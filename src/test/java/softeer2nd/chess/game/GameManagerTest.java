@@ -48,4 +48,38 @@ class GameManagerTest {
                 appendNewLine(GameMenu.MAIN_INFORM);
         verifyIO(inputMsg, expectedOutput);
     }
+
+    @Test
+    @DisplayName("기물을 이동시킬 수 있다")
+    void movePiece() {
+        final String inputMsg = "0\n1\nb2\nb3\n-1\n";
+        final String expectedOutput = appendNewLine(GameMenu.START_INFORM) +
+                appendNewLine("RNBQKBNR") +
+                appendNewLine("PPPPPPPP") +
+                appendNewLine("........") +
+                appendNewLine("........") +
+                appendNewLine("........") +
+                appendNewLine("........") +
+                appendNewLine("pppppppp") +
+                appendNewLine("rnbqkbnr") +
+                appendNewLine("") +
+                appendNewLine(GameMenu.CUTTING_LINE) +
+                appendNewLine(GameMenu.MAIN_INFORM) +
+                appendNewLine(GameMenu.SOURCE_LOCATION_INFORM) +
+                appendNewLine(GameMenu.TARGET_LOCATION_INFORM) +
+                appendNewLine(GameMenu.BLANK_LINES) +
+                appendNewLine("RNBQKBNR") +
+                appendNewLine("PPPPPPPP") +
+                appendNewLine("........") +
+                appendNewLine("........") +
+                appendNewLine("........") +
+                appendNewLine(".p......") +
+                appendNewLine("p.pppppp") +
+                appendNewLine("rnbqkbnr") +
+                appendNewLine("") +
+                appendNewLine(GameMenu.CUTTING_LINE) +
+                appendNewLine(GameMenu.MAIN_INFORM);
+        verifyIO(inputMsg, expectedOutput);
+    }
+
 }

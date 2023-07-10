@@ -1,13 +1,9 @@
 package softeer2nd.chess.game;
 
 import softeer2nd.chess.Board;
-import softeer2nd.chess.pieces.Pawn;
 import softeer2nd.chess.pieces.Piece;
 
 import java.io.InputStream;
-
-import static softeer2nd.chess.pieces.Piece.*;
-import static softeer2nd.chess.utils.StringUtils.printBlankSpace;
 
 public class GameManager {
     private final GameMenu gameMenu;
@@ -33,8 +29,8 @@ public class GameManager {
                 case GameMenu.INITIALIZE_BOARD:
                     initializeBoard();
                     break;
-                case GameMenu.ADD_PIECE:
-                    addPiece();
+                case GameMenu.MOVE_PIECE:
+                    movePiece();
                     break;
                 case GameMenu.FIND_PIECE:
                     findPiece();
@@ -42,7 +38,7 @@ public class GameManager {
                 case GameMenu.EXIT:
                     return;
             }
-            printBlankSpace();
+            gameMenu.printBlankSpace();
         }
     }
 
@@ -55,9 +51,10 @@ public class GameManager {
         board.initialize(boardSize[0], boardSize[1]);
     }
 
-    private void addPiece() {
-        String location = gameMenu.askLocation();
-        board.move(Pawn.createPiece(Color.WHITE), location);
+    private void movePiece() {
+        String sourcePosition = gameMenu.askSourcePostion();
+        String targetPosition = gameMenu.askTargetPosition();
+        board.move(sourcePosition, targetPosition);
     }
 
     private void findPiece() {
