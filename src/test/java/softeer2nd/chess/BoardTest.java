@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Test;
 import softeer2nd.chess.pieces.Piece;
 import softeer2nd.chess.pieces.Piece.Type;
 
+import javax.swing.text.Position;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static softeer2nd.chess.utils.StringUtils.appendNewLine;
 
@@ -144,5 +146,16 @@ class BoardTest {
 
     private void addPiece(String position, Piece piece) {
         board.move(piece, position);
+    }
+
+    @Test
+    @DisplayName("기물을 현재 위치에서 다른 위치로 이동시킬 수 있다")
+    void move() throws Exception {
+        board.initialize();
+        String sourcePosition = "b2";
+        String targetPosition = "b3";
+        board.move(sourcePosition, targetPosition);
+        assertEquals(Piece.createBlank(new Position(sourcePosition)), board.findPiece(sourcePosition));
+        assertEquals(Piece.createWhitePawn(new Position(targetPosition)), board.findPiece(targetPosition));
     }
 }
