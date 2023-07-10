@@ -5,11 +5,10 @@ import softeer2nd.chess.Position;
 
 import javax.swing.text.html.HTMLDocument;
 
-public class Piece {
+public abstract class Piece {
     protected Color color;
     protected Type type;
-
-    private Position position;
+    protected Position position;
 
     public enum Color {
         WHITE, BLACK, NOCOLOR;

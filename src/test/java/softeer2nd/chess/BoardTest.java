@@ -159,6 +159,6 @@ class BoardTest {
 
         board.move(sourcePosition, targetPosition);
         assertEquals(Blank.createPiece(new Position(sourcePosition)), board.findPiece(sourcePosition));
-        assertEquals(Pawn.createPiece(new Position(targetPosition), Color.WHITE), board.findPiece(targetPosition));
+        assertEquals(Pawn.createPiece(Color.WHITE, new Position(targetPosition)), board.findPiece(targetPosition));
     }
 }
