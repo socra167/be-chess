@@ -10,11 +10,15 @@ public abstract class Piece {
     protected Type type;
     protected Position position;
     protected List<Direction> validMoves;
+    protected boolean oneSquareMovement;
 
     public List<Direction> getValidMoves() {
         return validMoves;
     }
 
+    public boolean isOneSquareMovement() {
+        return oneSquareMovement;
+    }
     public enum Color {
         WHITE, BLACK, NOCOLOR;
     }

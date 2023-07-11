@@ -32,5 +32,6 @@ public class Queen extends Piece {
 
     private void initValidMoves() {
         validMoves = Direction.everyDirection();
+        oneSquareMovement = false;
     }
 }

@@ -28,5 +28,6 @@ public class Bishop extends Piece {
 
     private void initValidMoves() {
         validMoves = Direction.diagonalDirection();
+        oneSquareMovement = false;
     }
 }

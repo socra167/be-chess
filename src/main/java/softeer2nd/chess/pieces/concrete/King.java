@@ -33,6 +33,7 @@ public class King extends Piece {
 
     private void initValidMoves() {
         validMoves = Direction.everyDirection();
+        oneSquareMovement = true;
     }
 
 }

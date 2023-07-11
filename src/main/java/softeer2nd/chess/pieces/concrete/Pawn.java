@@ -29,6 +29,7 @@ public class Pawn extends Piece {
     }
 
     private void initValidMoves() {
+        oneSquareMovement = true;
         if (isWhite()) {
             validMoves = Direction.whitePawnDirection();
             return;

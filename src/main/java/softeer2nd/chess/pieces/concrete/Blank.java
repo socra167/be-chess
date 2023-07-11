@@ -32,5 +32,6 @@ public class Blank extends Piece {
 
     private void initValidMoves() {
         validMoves = new ArrayList<>();
+        oneSquareMovement = true;
     }
 }

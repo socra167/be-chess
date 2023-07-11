@@ -31,6 +31,7 @@ public class Knight extends Piece {
 
     private void initValidMoves() {
         validMoves = Direction.knightDirection();
+        oneSquareMovement = true;
     }
 
 }

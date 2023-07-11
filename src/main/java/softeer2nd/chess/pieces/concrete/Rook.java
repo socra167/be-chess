@@ -25,5 +25,6 @@ public class Rook extends Piece {
 
     private void initValidMoves() {
         validMoves = Direction.linearDirection();
+        oneSquareMovement = false;
     }
 }
