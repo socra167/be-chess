@@ -1,6 +1,6 @@
 package softeer2nd.chess.game;
 
-import softeer2nd.chess.Board;
+import softeer2nd.chess.board.Board;
 import softeer2nd.chess.pieces.Piece;
 
 import java.io.InputStream;

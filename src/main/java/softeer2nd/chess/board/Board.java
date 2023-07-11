@@ -1,6 +1,7 @@
-package softeer2nd.chess;
+package softeer2nd.chess.board;
 
 import softeer2nd.chess.pieces.*;
+import softeer2nd.chess.pieces.concrete.*;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -205,12 +206,7 @@ public class Board {
     }
 
     public boolean isAvailableLocation(String location) throws RuntimeException {
-        StringBuilder stringBuilder = new StringBuilder();
-        String regex;
-        stringBuilder.append("[A-][1-]");
-        stringBuilder.insert(3, (char) ('A' + colSize));
-        stringBuilder.insert(8, rowSize);
-        regex = stringBuilder.toString();
+        String regex = "[A-" + (char) ('A' + colSize) + "][1-" + rowSize + "]";
         if (location.matches(regex)) {
             return true;
         }

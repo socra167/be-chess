@@ -1,14 +1,19 @@
 package softeer2nd.chess.pieces;
 
-import softeer2nd.chess.Board;
-import softeer2nd.chess.Position;
+import java.util.List;
+import java.util.stream.Stream;
 
-import javax.swing.text.html.HTMLDocument;
+import static softeer2nd.chess.pieces.Direction.*;
 
 public abstract class Piece {
     protected Color color;
     protected Type type;
     protected Position position;
+    protected List<Direction> validMoves;
+
+    public List<Direction> getValidMoves() {
+        return validMoves;
+    }
 
     public enum Color {
         WHITE, BLACK, NOCOLOR;
