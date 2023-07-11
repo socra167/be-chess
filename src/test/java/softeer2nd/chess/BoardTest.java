@@ -1,14 +1,14 @@
 package softeer2nd.chess;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import softeer2nd.chess.board.Board;
 import softeer2nd.chess.pieces.*;
 import softeer2nd.chess.pieces.Piece.Type;
 import softeer2nd.chess.pieces.concrete.*;
 
+import java.util.List;
+
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static softeer2nd.chess.pieces.Piece.*;
 import static softeer2nd.chess.utils.StringUtils.appendNewLine;
@@ -161,5 +161,23 @@ class BoardTest {
         board.move(sourcePosition, targetPosition);
         assertEquals(Blank.createPiece(new Position(sourcePosition)), board.findPiece(sourcePosition));
         assertEquals(Pawn.createPiece(Color.WHITE, new Position(targetPosition)), board.findPiece(targetPosition));
+    }
+
+    @Test
+    @DisplayName("기물이 현재 위치에서 이동 가능한 곳이 어디인지 확인할 수 있다")
+    void movableSpace() {
+        board.initialize();
+        board.move(Pawn.createPiece(Color.WHITE), "c3");
+        board.getMovalbeSpace("c3");
+
+        assertThat(board.getMovalbeSpace("c3")).equals(List.of("b4", "c4", "d4"));
+
+        board.move(Pawn.createPiece(Color.BLACK), "b4");
+        board.move(Pawn.createPiece(Color.BLACK), "c4");
+        board.move(Pawn.createPiece(Color.BLACK), "d4");
+        assertThat(board.getMovalbeSpace("c3")).equals(List.of("b4", "d4"));
+
+        board.move(Pawn.createPiece(Color.WHITE), "b4");
+        assertThat(board.getMovalbeSpace("c3")).equals(List.of("d4"));
     }
 }
