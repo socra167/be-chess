@@ -1,9 +1,6 @@
 package softeer2nd.chess.pieces;
 
 import java.util.List;
-import java.util.stream.Stream;
-
-import static softeer2nd.chess.pieces.Direction.*;
 
 public abstract class Piece {
     protected Color color;
@@ -19,10 +16,11 @@ public abstract class Piece {
     public boolean isOneSquareMovement() {
         return oneSquareMovement;
     }
+
     public enum Color {
         WHITE, BLACK, NOCOLOR;
-    }
 
+    }
     public enum Type {
         PAWN('p', 'P', 1.0),
         ROOK('r', 'R', 5.0),
@@ -33,9 +31,9 @@ public abstract class Piece {
         NO_PIECE('.', '.', 0.0);
 
         private final char whiteRepresentation;
+
         private final char blackRepresentation;
         private final double defaultPoint;
-
         Type(char whiteRepresentation, char blackRepresentation, double defaultPoint) {
             this.whiteRepresentation = whiteRepresentation;
             this.blackRepresentation = blackRepresentation;
@@ -54,8 +52,8 @@ public abstract class Piece {
             return defaultPoint;
         }
 
-    }
 
+    }
     public boolean isType(Type type) {
         return this.type == type;
     }
@@ -74,6 +72,10 @@ public abstract class Piece {
 
     public boolean isBlank() {
         return isColor(Color.NOCOLOR);
+    }
+
+    public boolean isAlly(Piece piece) {
+        return color == piece.color;
     }
 
     @Override

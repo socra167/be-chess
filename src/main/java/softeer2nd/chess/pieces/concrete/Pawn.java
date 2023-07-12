@@ -4,8 +4,6 @@ import softeer2nd.chess.pieces.Direction;
 import softeer2nd.chess.pieces.Position;
 import softeer2nd.chess.pieces.Piece;
 
-import java.util.List;
-
 public class Pawn extends Piece {
     private Pawn(Color color) {
         this.color = color;

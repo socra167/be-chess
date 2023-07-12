@@ -4,10 +4,6 @@ import softeer2nd.chess.pieces.Direction;
 import softeer2nd.chess.pieces.Position;
 import softeer2nd.chess.pieces.Piece;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Stream;
-
 public class King extends Piece {
 
     private King(Color color) {

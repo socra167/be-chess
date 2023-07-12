@@ -2,8 +2,12 @@ package softeer2nd.chess;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import softeer2nd.chess.pieces.Piece;
+import softeer2nd.chess.pieces.concrete.King;
 
 import static org.assertj.core.api.Assertions.*;
+import static softeer2nd.chess.pieces.Piece.*;
+import static softeer2nd.chess.pieces.concrete.King.createPiece;
 
 class HelloTest {
     @Test
@@ -13,25 +17,27 @@ class HelloTest {
         assertThat(a).isEqualTo(777);
     }
 
-    abstract class Parent {
-        int a = 2;
-        abstract public void doit();
-        abstract public void whata();
+    class A {
+        int value;
+        public void printa() {
+            System.out.println("a");
+        }
     }
 
-    class Child extends Parent {
-        public void doit() {
-            System.out.println("hello");
+    class B extends A {
+        int value = 1;
+        public void printb() {
+            System.out.println("b");
         }
-        public void whata() {
-            System.out.println(a);
-        }
+    }
+
+    class C extends A {
+
     }
 
     @Test
-    void 테스트() {
-        Parent p = new Child();
-        p.doit();
-        p.whata();
+    void myTest() {
+        Piece piece = King.createPiece(Color.WHITE);
+        System.out.println(piece.isType(Type.KING));
     }
 }

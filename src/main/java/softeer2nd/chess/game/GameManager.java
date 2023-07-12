@@ -1,6 +1,9 @@
 package softeer2nd.chess.game;
 
+import static softeer2nd.chess.board.BoardView.*;
+
 import softeer2nd.chess.board.Board;
+import softeer2nd.chess.board.BoardView;
 import softeer2nd.chess.pieces.Piece;
 
 import java.io.InputStream;
@@ -37,13 +40,15 @@ public class GameManager {
                     break;
                 case GameMenu.EXIT:
                     return;
+                default:
+                    break;
             }
             gameMenu.printBlankSpace();
         }
     }
 
     private void printBoard() {
-        System.out.println(board.showBoard());
+        System.out.println(showBoard(board));
     }
 
     private void initializeBoard() {

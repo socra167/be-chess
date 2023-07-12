@@ -21,8 +21,7 @@ public class GameMenu {
     public static final String TARGET_LOCATION_INFORM = "기물을 이동시킬 위치를 입력하세요. (예: A3)";
     private int choice;
     private String colorChoice;
-    private String location;
-    private int[] boardSize; // {row, col}
+    private int[] boardSize;
     private Scanner scanner;
 
     GameMenu(InputStream inputStream) {
