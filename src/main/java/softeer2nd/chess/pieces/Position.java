@@ -40,4 +40,8 @@ public class Position {
     public static String coordinatesToLocation(int xPos, int yPos) {
         return ((char)('A' + xPos)) + String.valueOf(8 - yPos);
     }
+
+    public static boolean isInvalid(String keyword) {
+        return keyword.matches("[A-H][1-8]]");
+    }
 }

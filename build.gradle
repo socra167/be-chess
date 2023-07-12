@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'jacoco'
 }
 
 group 'softeer2nd'
@@ -17,4 +18,13 @@ dependencies {
 
 test {
     useJUnitPlatform()
+}
+
+jacoco {
+    // JaCoCo 버전
+    toolVersion = '0.8.5'
+
+//  테스트결과 리포트를 저장할 경로 변경
+//  default는 "$/jacoco"
+//  reportsDir = file("$buildDir/customJacocoReportDir")
 }

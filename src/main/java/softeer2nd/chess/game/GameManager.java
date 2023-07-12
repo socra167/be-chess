@@ -1,70 +1,65 @@
 package softeer2nd.chess.game;
 
 import static softeer2nd.chess.board.BoardView.*;
+import static softeer2nd.chess.utils.StringUtils.*;
 
 import softeer2nd.chess.board.Board;
-import softeer2nd.chess.board.BoardView;
-import softeer2nd.chess.pieces.Piece;
-
-import java.io.InputStream;
+import softeer2nd.chess.pieces.Position;
 
 public class GameManager {
-    private final GameMenu gameMenu;
-    private final Board board;
+	private final GameMenu gameMenu;
+	private final Board board;
+	private Status status;
 
-    public GameManager() {
-        this(System.in);
-    }
+	public GameManager() {
+		gameMenu = new GameMenu();
+		board = new Board();
+		status = Status.newInstance();
+	}
 
-    public GameManager(InputStream inputStream) {
-        gameMenu = new GameMenu(inputStream);
-        board = new Board();
-    }
+	public void startGame() {
+		do {
+			executeCommand(gameMenu.getCommand());
+			printBoard();
+			gameMenu.printBlankSpace();
+		} while (status.isPlaying());
+	}
 
-    public void startGame() {
-        if (!gameMenu.checkStart()) {
-            return;
-        }
-        while (true) {
-            printBoard();
-            gameMenu.printCuttingLine();
-            switch (gameMenu.issueMenu()) {
-                case GameMenu.INITIALIZE_BOARD:
-                    initializeBoard();
-                    break;
-                case GameMenu.MOVE_PIECE:
-                    movePiece();
-                    break;
-                case GameMenu.FIND_PIECE:
-                    findPiece();
-                    break;
-                case GameMenu.EXIT:
-                    return;
-                default:
-                    break;
-            }
-            gameMenu.printBlankSpace();
-        }
-    }
+	public void executeCommand(String[] keywords) {
+		Command command = Command.searchCommand(keywords[0]);
 
-    private void printBoard() {
-        System.out.println(showBoard(board));
-    }
+		if (command.equals(Command.START_GAME)) {
+			board.initialize();
+			status.setPlaying();
+			return;
+		}
+		if (command.equals(Command.END_GAME)) {
+			status.setEnd();
+			return;
+		}
+		if (command.equals(Command.MOVE_PIECE)) {
+			movePiece(keywords);
+			return;
+		}
+		gameMenu.informInvalidCommand();
+	}
 
-    private void initializeBoard() {
-        int[] boardSize = gameMenu.askBoardSize();
-        board.initialize(boardSize[0], boardSize[1]);
-    }
+	private void printBoard() {
+		System.out.println(showBoard(board) + BLANK_LINES);
+	}
 
-    private void movePiece() {
-        String sourcePosition = gameMenu.askSourcePostion();
-        String targetPosition = gameMenu.askTargetPosition();
-        board.move(sourcePosition, targetPosition);
-    }
+	private void movePiece(String[] keywords) {
+		if (keywords.length != 3) {
+			gameMenu.informInvalidKeywordCount();
+			return;
+		}
+		if (Position.isInvalid(keywords[1]) || Position.isInvalid(keywords[2])) {
+			gameMenu.informInvalidLocation();
+			return;
+		}
 
-    private void findPiece() {
-        String location = gameMenu.askLocation();
-        Piece piece = board.findPiece(location);
-        System.out.println(piece.getRepresentation());
-    }
+		Position sourcePosition = new Position(keywords[1]);
+		Position targetPosition = new Position(keywords[2]);
+		board.move(sourcePosition, targetPosition);
+	}
 }
