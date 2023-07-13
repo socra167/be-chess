@@ -223,7 +223,7 @@ public class Board {
 			if (currentPiece.isAlly(piece)) {
 				return true;
 			}
-			if (currentPiece.isEnemy(piece) && !currentPiece.equals(targetPosition)) {
+			if (currentPiece.isEnemy(piece) && !currentPosition.equals(targetPosition)) {
 				return true;
 			}
 		}
