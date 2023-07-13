@@ -35,7 +35,7 @@ class GameManagerTest {
                 appendNewLine("pppppppp") +
                 appendNewLine("rnbqkbnr");
 
-        String actualOutput = gameManager.checkStart(startCommand);
+        String actualOutput = gameManager.executeCommand(startCommand);
         assertThat(status.isPlaying()).isTrue();
         assertThat(actualOutput).isEqualTo(expectedOutput);
     }
@@ -53,7 +53,7 @@ class GameManagerTest {
     @DisplayName("move 명령어로 기물을 이동시킬 수 있어야 한다")
     void movePiece() {
         final String[] startCommand = {"start"};
-        gameManager.checkStart(startCommand);
+        gameManager.executeCommand(startCommand);
 
         final String[] moveCommand = {"move", "b2", "b3"};
         final String expectedOutput =

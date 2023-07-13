@@ -15,9 +15,11 @@ public class Status {
 	public void setPlaying() {
 		playing = true;
 	}
+
 	public void setEnd() {
 		playing = false;
 	}
+
 	public static Status newInstance() {
 		return status;
 	}

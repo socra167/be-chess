@@ -63,4 +63,20 @@ public enum Direction {
     public static List<Direction> blackPawnDirection() {
         return Arrays.asList(SOUTH, SOUTHEAST, SOUTHWEST, DOUBLE_SOUTH);
     }
+
+    public static Direction findDirection(int xDiff, int yDiff) {
+        if (xDiff != 0) {
+            xDiff /= Math.abs(xDiff);
+        }
+        if (yDiff != 0) {
+            yDiff /= Math.abs(yDiff);
+        }
+
+        for (Direction direction : Direction.values()) {
+            if ( direction.xDegree == xDiff && direction.yDegree == yDiff ) {
+                return direction;
+            }
+        }
+        throw new RuntimeException("조회하려는 Direction이 존재하지 않습니다.");
+    }
 }

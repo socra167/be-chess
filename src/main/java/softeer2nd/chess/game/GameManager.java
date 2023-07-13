@@ -6,6 +6,7 @@ import static softeer2nd.chess.utils.StringUtils.*;
 import softeer2nd.chess.board.Board;
 import softeer2nd.chess.board.BoardView;
 import softeer2nd.chess.pieces.Position;
+import softeer2nd.chess.utils.StringUtils;
 
 public class GameManager {
 	private final GameMenu gameMenu;
@@ -19,29 +20,11 @@ public class GameManager {
 	}
 
 	public void makeGame() {
-		while (!status.isPlaying()) {
-			checkStart(gameMenu.getCommand());
-		}
-
 		do {
 			printBoard();
 			executeCommand(gameMenu.getCommand());
 			gameMenu.printBlankSpace();
 		} while (status.isPlaying());
-	}
-
-	public String checkStart(String[] keywords) {
-		Command command = Command.searchCommand(keywords[0]);
-		if (command.equals(Command.START_GAME)) {
-			board.initialize();
-			status.setPlaying();
-			return BoardView.showBoard(board);
-		}
-		if (command.equals(Command.END_GAME)) {
-			System.exit(0);
-		}
-		gameMenu.informStartGameFirst();
-		return NEWLINE;
 	}
 
 	public String executeCommand(String[] keywords) {
@@ -56,6 +39,10 @@ public class GameManager {
 			status.setEnd();
 			return BoardView.showBoard(board);
 		}
+		if (!status.isPlaying()) {
+			gameMenu.informStartGameFirst();
+			return BLANK_LINES;
+		}
 		if (command.equals(Command.MOVE_PIECE)) {
 			movePiece(keywords);
 			return BoardView.showBoard(board);
@@ -65,7 +52,9 @@ public class GameManager {
 	}
 
 	private void printBoard() {
-		System.out.println(showBoard(board) + BLANK_LINES);
+		if (status.isPlaying()) {
+			System.out.println(showBoard(board));
+		}
 	}
 
 	private void movePiece(String[] keywords) {
@@ -80,6 +69,11 @@ public class GameManager {
 
 		Position sourcePosition = new Position(keywords[1]);
 		Position targetPosition = new Position(keywords[2]);
+
+		if (!board.isMovable(sourcePosition, targetPosition)) {
+			gameMenu.informIllegalMove();
+			return;
+		}
 		board.move(sourcePosition, targetPosition);
 	}
 

@@ -18,8 +18,8 @@ public abstract class Piece {
 	public enum Color {
 		WHITE, BLACK, NOCOLOR;
 
-	}
 
+	}
 	public enum Type {
 		PAWN('p', 1.0),
 		ROOK('r', 5.0),
@@ -30,6 +30,7 @@ public abstract class Piece {
 		NO_PIECE('.', 0.0);
 
 		private final char whiteRepresentation;
+
 		private final double defaultPoint;
 
 		Type(char whiteRepresentation, double defaultPoint) {
@@ -53,8 +54,8 @@ public abstract class Piece {
 			return defaultPoint;
 		}
 
-	}
 
+	}
 	public boolean isType(Type type) {
 		return this.type == type;
 	}
@@ -69,6 +70,21 @@ public abstract class Piece {
 
 	public boolean isBlack() {
 		return isColor(Color.BLACK);
+	}
+
+	private boolean isBlank() {
+		return isColor(Color.NOCOLOR);
+	}
+
+	public boolean isAlly(Piece piece) {
+		return piece.isColor(color);
+	}
+
+	public boolean isEnemy(Piece piece) {
+		if (isColor(Color.NOCOLOR) || piece.isColor(Color.NOCOLOR)) {
+			return false;
+		}
+		return !isAlly(piece);
 	}
 
 	public abstract boolean isMovable(Position sourcePosition, Position targetPosition);

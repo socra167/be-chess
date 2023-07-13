@@ -62,7 +62,7 @@ public class Position {
 	}
 
 	public static boolean isInvalidKeyword(String keyword) {
-		return !keyword.matches("[A-H][1-8]");
+		return !keyword.toUpperCase().matches("[A-H][1-8]");
 	}
 
 	public boolean isValid() {
@@ -83,6 +83,13 @@ public class Position {
 		xPos += direction.getXDegree();
 		yPos += direction.getYDegree();
 		location = coordinatesToLocation(xPos, yPos);
+	}
+
+	public static int[] calculateDiff(Position sourcePosition, Position targetPosition) {
+		int[] difference = new int[2];
+		difference[0] = targetPosition.xPos - sourcePosition.xPos;
+		difference[1] = targetPosition.yPos - sourcePosition.yPos;
+		return difference;
 	}
 
 }
