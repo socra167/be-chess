@@ -1,47 +1,88 @@
 package softeer2nd.chess.pieces;
 
+import static softeer2nd.chess.board.Board.*;
+
+import java.util.Objects;
+
 public class Position {
-    private String location;
-    private int xPos;
-    private int yPos;
+	private String location;
 
-    public int getX() {
-        return xPos;
-    }
+	private int xPos;
+	private int yPos;
 
-    public int getY() {
-        return yPos;
-    }
+	public int getX() {
+		return xPos;
+	}
 
-    public String getLocation() {
-        return location;
-    }
+	public int getY() {
+		return yPos;
+	}
 
-    public Position(String location) {
-        this.location = location.toUpperCase();
-        xPos = locationToXpos(this.location);
-        yPos = locationToYpos(this.location);
-    }
+	public String getLocation() {
+		return location;
+	}
 
-    public Position(int xPos, int yPos) {
-        this.xPos = xPos;
-        this.yPos = yPos;
-        location = coordinatesToLocation(this.xPos, this.yPos);
-    }
+	public Position(String location) {
+		this.location = location.toUpperCase();
+		xPos = locationToXpos(this.location);
+		yPos = locationToYpos(this.location);
+	}
 
-    public static int locationToXpos(String location) {
-        return location.charAt(0) - 'A';
-    }
+	public Position(int xPos, int yPos) {
+		this.xPos = xPos;
+		this.yPos = yPos;
+		location = coordinatesToLocation(this.xPos, this.yPos);
+	}
 
-    public static int locationToYpos(String location) {
-        return 8 - Integer.parseInt(location.substring(1));
-    }
+	@Override
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
+		Position position = (Position)o;
+		return xPos == position.xPos && yPos == position.yPos && Objects.equals(location, position.location);
+	}
 
-    public static String coordinatesToLocation(int xPos, int yPos) {
-        return ((char)('A' + xPos)) + String.valueOf(8 - yPos);
-    }
+	@Override
+	public int hashCode() {
+		return Objects.hash(location, xPos, yPos);
+	}
 
-    public static boolean isInvalid(String keyword) {
-        return keyword.matches("[A-H][1-8]]");
-    }
+	public static int locationToXpos(String location) {
+		return location.charAt(0) - 'A';
+	}
+
+	public static int locationToYpos(String location) {
+		return 8 - Integer.parseInt(location.substring(1));
+	}
+
+	public static String coordinatesToLocation(int xPos, int yPos) {
+		return ((char)('A' + xPos)) + String.valueOf(8 - yPos);
+	}
+
+	public static boolean isValidKeyword(String keyword) {
+		return keyword.matches("[A-H][1-8]]");
+	}
+
+	public boolean isValid() {
+		if (xPos < 0 || DEFAULT_SIZE < xPos) {
+			return false;
+		}
+		if (yPos < 0 || DEFAULT_SIZE < yPos) {
+			return false;
+		}
+		return true;
+	}
+
+	public Position getMoved(Direction direction) {
+		return new Position(xPos + direction.getXDegree(), yPos + direction.getYDegree());
+	}
+
+	public void moveTo(Direction direction) {
+		xPos += direction.getXDegree();
+		yPos += direction.getYDegree();
+		location = coordinatesToLocation(xPos, yPos);
+	}
+
 }

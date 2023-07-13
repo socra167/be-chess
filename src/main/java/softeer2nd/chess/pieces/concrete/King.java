@@ -1,6 +1,8 @@
 package softeer2nd.chess.pieces.concrete;
 
+import softeer2nd.chess.pieces.Direction;
 import softeer2nd.chess.pieces.Piece;
+import softeer2nd.chess.pieces.Position;
 
 public class King extends Piece {
 
@@ -13,4 +15,15 @@ public class King extends Piece {
         return new King(color);
     }
 
+    @Override
+    public boolean isMovable(Position sourcePosition, Position targetPosition) {
+        Position currentPosition;
+        for (Direction direction : Direction.everyDirection()) {
+            currentPosition = sourcePosition.getMoved(direction);
+            if (currentPosition.equals(targetPosition)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

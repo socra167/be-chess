@@ -73,7 +73,7 @@ public class GameManager {
 			gameMenu.informInvalidKeywordCount();
 			return;
 		}
-		if (Position.isInvalid(keywords[1]) || Position.isInvalid(keywords[2])) {
+		if (!Position.isValidKeyword(keywords[1]) || Position.isValidKeyword(keywords[2])) {
 			gameMenu.informInvalidLocation();
 			return;
 		}

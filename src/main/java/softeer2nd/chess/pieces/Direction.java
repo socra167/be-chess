@@ -12,6 +12,8 @@ public enum Direction {
     SOUTHWEST(-1, 1),
     WEST(-1, 0),
     NORTHWEST(-1, -1),
+    DOUBLE_NORTH(0, -2),
+    DOUBLE_SOUTH(0, 2),
 
     NNE(1, -2),
     NNW(-1, -2),
@@ -30,11 +32,11 @@ public enum Direction {
         this.yDegree = yDegree;
     }
 
-    public int getxDegree() {
+    public int getXDegree() {
         return xDegree;
     }
 
-    public int getyDegree() {
+    public int getYDegree() {
         return yDegree;
     }
 
@@ -55,10 +57,10 @@ public enum Direction {
     }
 
     public static List<Direction> whitePawnDirection() {
-        return Arrays.asList(NORTH, NORTHEAST, NORTHWEST);
+        return Arrays.asList(NORTH, NORTHEAST, NORTHWEST, DOUBLE_NORTH);
     }
 
     public static List<Direction> blackPawnDirection() {
-        return Arrays.asList(SOUTH, SOUTHEAST, SOUTHWEST);
+        return Arrays.asList(SOUTH, SOUTHEAST, SOUTHWEST, DOUBLE_SOUTH);
     }
 }

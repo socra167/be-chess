@@ -1,5 +1,7 @@
 package softeer2nd.chess.pieces;
 
+import java.util.List;
+
 public abstract class Piece {
 	protected Color color;
 	protected Type type;
@@ -69,13 +71,7 @@ public abstract class Piece {
 		return isColor(Color.BLACK);
 	}
 
-	public boolean isBlank() {
-		return isColor(Color.NOCOLOR);
-	}
-
-	public boolean isAlly(Piece piece) {
-		return color == piece.color;
-	}
+	public abstract boolean isMovable(Position sourcePosition, Position targetPosition);
 
 	public char getRepresentation() {
 		if (color.equals(Color.BLACK)) {
