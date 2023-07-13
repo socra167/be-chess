@@ -21,8 +21,8 @@ class GameManagerTest {
     @Test
     @DisplayName("start가 입력되면 게임이 시작되고 체스판이 생성되어야 한다")
     void startGame() {
-        Status status = Status.newInstance();
-        assertThat(status.isPlaying()).isFalse();
+        GameStatus gameStatus = GameStatus.newInstance();
+        assertThat(gameStatus.isPlaying()).isFalse();
 
         final String[] startCommand = {"start"};
         final String expectedOutput =
@@ -36,15 +36,15 @@ class GameManagerTest {
                 appendNewLine("rnbqkbnr");
 
         String actualOutput = gameManager.executeCommand(startCommand);
-        assertThat(status.isPlaying()).isTrue();
+        assertThat(gameStatus.isPlaying()).isTrue();
         assertThat(actualOutput).isEqualTo(expectedOutput);
     }
 
     @Test
     @DisplayName("게임 진행 중 end가 입력되면 게임이 종료되어야 한다")
     void endGame() {
-        Status status = Status.newInstance();
-        status.setPlaying();
+        GameStatus gameStatus = GameStatus.newInstance();
+        gameStatus.setPlaying();
         final String[] endCommand = {"end"};
         gameManager.executeCommand(endCommand);
     }

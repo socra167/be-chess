@@ -11,6 +11,7 @@ public class GameMenu {
 	private static final String INVALID_KEYWORD_COUNT_MESSAGE = "입력한 명령어의 수가 정확하지 않습니다.";
 	private static final String INVALID_LOCATION_MESSAGE = "입력한 위치가 정확하지 않습니다.";
 	private static final String ILLEGAL_MOVE_MESSAGE = "이동이 불가능합니다.";
+	private static final String  INVALID_TURN_MESSAGE = "다른 플레이어의 차례입니다.";
 	private static Scanner scanner = new Scanner(System.in);
 
 	public static void setScannerRead(InputStream inputStream) {
@@ -44,5 +45,9 @@ public class GameMenu {
 
 	public void informStartGameFirst() {
 		System.out.println(START_GAME_FIRST_MESSAGE);
+	}
+
+	public void informInvalidTurn() {
+		System.out.println(INVALID_TURN_MESSAGE);
 	}
 }

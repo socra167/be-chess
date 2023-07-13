@@ -238,6 +238,19 @@ public class Board {
 			if (isNoEnemyOnDiagonal(piece, sourcePosition, targetPosition)) {
 				return true;
 			}
+			if (isConflictOnFrontEnemy(piece, sourcePosition, targetPosition)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private boolean isConflictOnFrontEnemy(Piece piece, Position sourcePosition, Position targetPosition) {
+		if (targetPosition.getX() != sourcePosition.getX()) {
+			return false;
+		}
+		if (piece.isEnemy(findPiece(targetPosition))) {
+			return true;
 		}
 		return false;
 	}
@@ -263,5 +276,9 @@ public class Board {
 			return false;
 		}
 		return true;
+	}
+
+	public boolean checkColor(Position position, Color color) {
+		return findPiece(position).isColor(color);
 	}
 }

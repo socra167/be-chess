@@ -5,26 +5,33 @@ import static softeer2nd.chess.utils.StringUtils.*;
 
 import softeer2nd.chess.board.Board;
 import softeer2nd.chess.board.BoardView;
+import softeer2nd.chess.pieces.Piece;
 import softeer2nd.chess.pieces.Position;
-import softeer2nd.chess.utils.StringUtils;
 
 public class GameManager {
 	private final GameMenu gameMenu;
 	private final Board board;
-	private Status status;
+	private GameStatus gameStatus;
 
 	public GameManager() {
 		gameMenu = new GameMenu();
 		board = new Board();
-		status = Status.newInstance();
+		gameStatus = GameStatus.newInstance();
 	}
 
 	public void makeGame() {
-		do {
+		checkStart();
+		while(gameStatus.isPlaying()) {
 			printBoard();
 			executeCommand(gameMenu.getCommand());
 			gameMenu.printBlankSpace();
-		} while (status.isPlaying());
+		}
+	}
+
+	private void checkStart() {
+		while(!gameStatus.isPlaying()) {
+			executeCommand(gameMenu.getCommand());
+		}
 	}
 
 	public String executeCommand(String[] keywords) {
@@ -32,14 +39,15 @@ public class GameManager {
 
 		if (command.equals(Command.START_GAME)) {
 			board.initialize();
-			status.setPlaying();
+			gameStatus.setPlaying();
+			gameStatus.initPlayer();
 			return BoardView.showBoard(board);
 		}
 		if (command.equals(Command.END_GAME)) {
-			status.setEnd();
+			gameStatus.setEnd();
 			return BoardView.showBoard(board);
 		}
-		if (!status.isPlaying()) {
+		if (!gameStatus.isPlaying()) {
 			gameMenu.informStartGameFirst();
 			return BLANK_LINES;
 		}
@@ -52,7 +60,7 @@ public class GameManager {
 	}
 
 	private void printBoard() {
-		if (status.isPlaying()) {
+		if (gameStatus.isPlaying()) {
 			System.out.println(showBoard(board));
 		}
 	}
@@ -70,11 +78,23 @@ public class GameManager {
 		Position sourcePosition = new Position(keywords[1]);
 		Position targetPosition = new Position(keywords[2]);
 
+		if (isInvalidTurn(sourcePosition)) {
+			gameMenu.informInvalidTurn();
+			return;
+		}
 		if (!board.isMovable(sourcePosition, targetPosition)) {
 			gameMenu.informIllegalMove();
 			return;
 		}
 		board.move(sourcePosition, targetPosition);
+		gameStatus.switchTurn();
+	}
+
+	private boolean isInvalidTurn(Position sourcePosition) {
+		if (gameStatus.isTurnWhite()) {
+			return board.checkColor(sourcePosition, Piece.Color.BLACK);
+		}
+		return board.checkColor(sourcePosition, Piece.Color.WHITE);
 	}
 
 	private boolean isInvalidCount(String[] keywords) {
