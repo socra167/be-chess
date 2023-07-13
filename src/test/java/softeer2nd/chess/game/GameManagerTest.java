@@ -7,33 +7,26 @@ import java.io.*;
 import static org.assertj.core.api.Assertions.*;
 import static softeer2nd.chess.utils.StringUtils.*;
 
+import softeer2nd.chess.board.Board;
+
 class GameManagerTest {
-    private static ByteArrayOutputStream outputMessage;
 
-    private void verifyIO(String inputMsg, String expectedOutput) {
-        InputStream inputStream = new ByteArrayInputStream(inputMsg.getBytes());
-        outputMessage = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(outputMessage));
-        GameManager gameManager = new GameManager();
-        gameManager.startGame();
-        assertThat(outputMessage.toString()).hasToString(expectedOutput);
-    }
-
+    private GameManager gameManager;
+    private Board board;
     @BeforeEach
-    void setOutputStream() {
-        outputMessage = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(outputMessage));
-    }
-
-    @AfterEach
-    void restoreOutputStream() {
-        System.setOut(new PrintStream(new FileOutputStream(FileDescriptor.out)));
+    void setUp() {
+        gameManager = new GameManager();
+        board = new Board();
+        board.initialize();
     }
 
     @Test
-    @DisplayName("게임을 시작하면 초기 체스판 상태가 출력된다")
+    @DisplayName("start가 입력되면 게임이 시작되고 체스판이 생성되어야 한다")
     void startGame() {
-        final String inputMsg = "start\nend\n";
+        Status status = Status.newInstance();
+        assertThat(status.isPlaying()).isFalse();
+
+        final String[] startCommand = {"start"};
         final String expectedOutput =
                 appendNewLine("RNBQKBNR") +
                 appendNewLine("PPPPPPPP") +
@@ -42,26 +35,29 @@ class GameManagerTest {
                 appendNewLine("........") +
                 appendNewLine("........") +
                 appendNewLine("pppppppp") +
-                appendNewLine("rnbqkbnr") +
-                appendNewLine("");
-        verifyIO(inputMsg, expectedOutput);
+                appendNewLine("rnbqkbnr");
+
+        String actualOutput = gameManager.checkStart(startCommand);
+        assertThat(status.isPlaying()).isTrue();
+        assertThat(actualOutput).isEqualTo(expectedOutput);
     }
 
     @Test
-    @DisplayName("기물을 이동시킬 수 있다")
+    @DisplayName("게임 진행 중 end가 입력되면 게임이 종료되어야 한다")
+    void endGame() {
+        Status status = Status.newInstance();
+        status.setPlaying();
+        final String[] endCommand = {"end"};
+        gameManager.executeCommand(endCommand);
+    }
+
+    @Test
+    @DisplayName("move 명령어로 기물을 이동시킬 수 있어야 한다")
     void movePiece() {
-        final String inputMsg = "0\n1\nb2\nb3\n-1\n";
+        final String[] startCommand = {"start"};
+        gameManager.executeCommand(startCommand);
+        final String[] moveCommand = {"move", "b2", "b3"};
         final String expectedOutput =
-                appendNewLine("RNBQKBNR") +
-                appendNewLine("PPPPPPPP") +
-                appendNewLine("........") +
-                appendNewLine("........") +
-                appendNewLine("........") +
-                appendNewLine("........") +
-                appendNewLine("pppppppp") +
-                appendNewLine("rnbqkbnr") +
-                appendNewLine("") +
-                appendNewLine(CUTTING_LINE) +
                 appendNewLine("RNBQKBNR") +
                 appendNewLine("PPPPPPPP") +
                 appendNewLine("........") +
@@ -69,9 +65,9 @@ class GameManagerTest {
                 appendNewLine("........") +
                 appendNewLine(".p......") +
                 appendNewLine("p.pppppp") +
-                appendNewLine("rnbqkbnr") +
-                appendNewLine("");
-        verifyIO(inputMsg, expectedOutput);
-    }
+                appendNewLine("rnbqkbnr");
 
+        String actualOutput = gameManager.executeCommand(moveCommand);
+        assertThat(actualOutput).isEqualTo(expectedOutput);
+    }
 }
