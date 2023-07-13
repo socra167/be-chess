@@ -5,17 +5,12 @@ import org.junit.jupiter.api.*;
 import static org.assertj.core.api.Assertions.*;
 import static softeer2nd.chess.utils.StringUtils.*;
 
-import softeer2nd.chess.board.Board;
-
 class GameManagerTest {
 
     private GameManager gameManager;
-    private Board board;
     @BeforeEach
     void setUp() {
         gameManager = new GameManager();
-        board = new Board();
-        board.initialize();
     }
 
     @Test
@@ -45,16 +40,14 @@ class GameManagerTest {
     void endGame() {
         GameStatus gameStatus = GameStatus.newInstance();
         gameStatus.setPlaying();
-        final String[] endCommand = {"end"};
-        gameManager.executeCommand(endCommand);
+        execute("end");
+        assertThat(gameStatus.isPlaying()).isFalse();
     }
 
     @Test
     @DisplayName("move 명령어로 기물을 이동시킬 수 있어야 한다")
     void movePiece() {
-        final String[] startCommand = {"start"};
-        gameManager.executeCommand(startCommand);
-
+        execute("start");
         final String[] moveCommand = {"move", "b2", "b3"};
         final String expectedOutput =
                 appendNewLine("RNBQKBNR") +
@@ -66,6 +59,33 @@ class GameManagerTest {
                 appendNewLine("p.pppppp") +
                 appendNewLine("rnbqkbnr");
 
+        verifyExecution(moveCommand, expectedOutput);
+    }
+
+    @Test
+    @DisplayName("move 명령어로 기물이 이동할 수 없는 위치로 이동시킬 수 없어야 한다")
+    void invalidMovePiece() {
+        execute("start");
+        final String[] moveCommand = {"move", "b2", "c3"};
+        final String expectedOutput =
+            appendNewLine("RNBQKBNR") +
+                appendNewLine("PPPPPPPP") +
+                appendNewLine("........") +
+                appendNewLine("........") +
+                appendNewLine("........") +
+                appendNewLine("........") +
+                appendNewLine("pppppppp") +
+                appendNewLine("rnbqkbnr");
+
+        verifyExecution(moveCommand, expectedOutput);
+    }
+
+    private void execute(String singleCommand) {
+        final String[] command = {singleCommand};
+        gameManager.executeCommand(command);
+    }
+
+    private void verifyExecution(String[] moveCommand, String expectedOutput) {
         String actualOutput = gameManager.executeCommand(moveCommand);
         assertThat(actualOutput).isEqualTo(expectedOutput);
     }

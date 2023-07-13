@@ -61,7 +61,7 @@ public class GameManager {
 
 	private void printBoard() {
 		if (gameStatus.isPlaying()) {
-			System.out.println(showBoard(board));
+			System.out.println(showBoardWithIndex(board));
 		}
 	}
 

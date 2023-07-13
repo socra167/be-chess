@@ -23,7 +23,7 @@ class PieceTest {
         } else {
             piece = Pawn.createPiece(Color.BLACK);
         }
-        assertThat(piece.isColor(color));
+        assertThat(piece.isColor(color)).isTrue();
     }
 
     @Test
@@ -58,10 +58,10 @@ class PieceTest {
     void checkColor() {
         Piece whitePawn = Pawn.createPiece(Color.WHITE);
         Piece blackPawn = Pawn.createPiece(Color.BLACK);
-        assertThat(whitePawn.isWhite()).isEqualTo(true);
-        assertThat(whitePawn.isBlack()).isEqualTo(false);
-        assertThat(blackPawn.isWhite()).isEqualTo(false);
-        assertThat(blackPawn.isBlack()).isEqualTo(true);
+        assertThat(whitePawn.isWhite()).isTrue();
+        assertThat(whitePawn.isBlack()).isFalse();
+        assertThat(blackPawn.isWhite()).isFalse();
+        assertThat(blackPawn.isBlack()).isTrue();
     }
 
     @Test
