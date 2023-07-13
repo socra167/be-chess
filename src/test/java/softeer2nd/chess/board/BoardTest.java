@@ -81,10 +81,10 @@ class BoardTest {
     @DisplayName("위치를 지정해 기물을 조회할 수 있다")
     void findPiece() throws Exception {
         board.initialize();
-        assertEquals(Rook.createPiece(Color.BLACK), board.findPiece("a8"));
-        assertEquals(Rook.createPiece(Color.BLACK), board.findPiece("h8"));
-        assertEquals(Rook.createPiece(Color.WHITE), board.findPiece("a1"));
-        assertEquals(Rook.createPiece(Color.WHITE), board.findPiece("h1"));
+        assertThat(Rook.createPiece(Color.BLACK)).isEqualToComparingFieldByFieldRecursively(board.findPiece("a8"));
+        assertThat(Rook.createPiece(Color.BLACK)).isEqualToComparingFieldByFieldRecursively(board.findPiece("h8"));
+        assertThat(Rook.createPiece(Color.WHITE)).isEqualToComparingFieldByFieldRecursively(board.findPiece("a1"));
+        assertThat(Rook.createPiece(Color.WHITE)).isEqualToComparingFieldByFieldRecursively(board.findPiece("h1"));
     }
 
     @Test

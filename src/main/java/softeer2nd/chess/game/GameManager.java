@@ -19,7 +19,10 @@ public class GameManager {
 	}
 
 	public void makeGame() {
-		checkStart(gameMenu.getCommand());
+		while (!status.isPlaying()) {
+			checkStart(gameMenu.getCommand());
+		}
+
 		do {
 			printBoard();
 			executeCommand(gameMenu.getCommand());
@@ -29,19 +32,16 @@ public class GameManager {
 
 	public String checkStart(String[] keywords) {
 		Command command = Command.searchCommand(keywords[0]);
-
-		while(!status.isPlaying()) {
-			if (command.equals(Command.START_GAME)) {
-				board.initialize();
-				status.setPlaying();
-				return BoardView.showBoard(board);
-			}
-			if (command.equals(Command.END_GAME)) {
-				System.exit(0);
-			}
-			gameMenu.informStartGameFirst();
+		if (command.equals(Command.START_GAME)) {
+			board.initialize();
+			status.setPlaying();
+			return BoardView.showBoard(board);
 		}
-		return BoardView.showBoard(board);
+		if (command.equals(Command.END_GAME)) {
+			System.exit(0);
+		}
+		gameMenu.informStartGameFirst();
+		return NEWLINE;
 	}
 
 	public String executeCommand(String[] keywords) {
@@ -69,11 +69,11 @@ public class GameManager {
 	}
 
 	private void movePiece(String[] keywords) {
-		if (keywords.length != 3) {
+		if (isInvalidCount(keywords)) {
 			gameMenu.informInvalidKeywordCount();
 			return;
 		}
-		if (!Position.isValidKeyword(keywords[1]) || Position.isValidKeyword(keywords[2])) {
+		if (isInvalidPosition(keywords)) {
 			gameMenu.informInvalidLocation();
 			return;
 		}
@@ -81,5 +81,13 @@ public class GameManager {
 		Position sourcePosition = new Position(keywords[1]);
 		Position targetPosition = new Position(keywords[2]);
 		board.move(sourcePosition, targetPosition);
+	}
+
+	private boolean isInvalidCount(String[] keywords) {
+		return keywords.length != 3;
+	}
+
+	private boolean isInvalidPosition(String[] keywords) {
+		return Position.isInvalidKeyword(keywords[1]) || Position.isInvalidKeyword(keywords[2]);
 	}
 }

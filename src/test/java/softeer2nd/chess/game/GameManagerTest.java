@@ -2,8 +2,6 @@ package softeer2nd.chess.game;
 
 import org.junit.jupiter.api.*;
 
-import java.io.*;
-
 import static org.assertj.core.api.Assertions.*;
 import static softeer2nd.chess.utils.StringUtils.*;
 
@@ -55,7 +53,8 @@ class GameManagerTest {
     @DisplayName("move 명령어로 기물을 이동시킬 수 있어야 한다")
     void movePiece() {
         final String[] startCommand = {"start"};
-        gameManager.executeCommand(startCommand);
+        gameManager.checkStart(startCommand);
+
         final String[] moveCommand = {"move", "b2", "b3"};
         final String expectedOutput =
                 appendNewLine("RNBQKBNR") +

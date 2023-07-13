@@ -4,7 +4,7 @@ public enum Command {
 	START_GAME("start"),
 	END_GAME("end"),
 	MOVE_PIECE("move"),
-	NOT_ANOUNCED("");
+	NOT_ANNOUNCED("");
 	private String keyword;
 	Command(String keyword) {
 		this.keyword = keyword;
@@ -16,6 +16,6 @@ public enum Command {
 				return command;
 			}
 		}
-		 return NOT_ANOUNCED;
+		 return NOT_ANNOUNCED;
 	}
 }

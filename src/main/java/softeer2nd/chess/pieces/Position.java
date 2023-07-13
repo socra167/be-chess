@@ -61,8 +61,8 @@ public class Position {
 		return ((char)('A' + xPos)) + String.valueOf(8 - yPos);
 	}
 
-	public static boolean isValidKeyword(String keyword) {
-		return keyword.matches("[A-H][1-8]]");
+	public static boolean isInvalidKeyword(String keyword) {
+		return !keyword.matches("[A-H][1-8]");
 	}
 
 	public boolean isValid() {
