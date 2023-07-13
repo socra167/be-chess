@@ -16,28 +16,4 @@ class HelloTest {
         int a = 777;
         assertThat(a).isEqualTo(777);
     }
-
-    class A {
-        int value;
-        public void printa() {
-            System.out.println("a");
-        }
-    }
-
-    class B extends A {
-        int value = 1;
-        public void printb() {
-            System.out.println("b");
-        }
-    }
-
-    class C extends A {
-
-    }
-
-    @Test
-    void myTest() {
-        Piece piece = King.createPiece(Color.WHITE);
-        System.out.println(piece.isType(Type.KING));
-    }
 }

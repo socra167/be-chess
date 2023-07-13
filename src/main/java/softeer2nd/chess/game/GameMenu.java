@@ -2,6 +2,7 @@ package softeer2nd.chess.game;
 
 import static softeer2nd.chess.utils.StringUtils.*;
 
+import java.io.InputStream;
 import java.util.Scanner;
 
 public class GameMenu {
@@ -9,7 +10,11 @@ public class GameMenu {
 	private static final String INVALID_KEYWORD_COUNT_MESSAGE = "입력한 명령어의 수가 정확하지 않습니다.";
 	private static final String INVALID_LOCATION_MESSAGE = "입력한 위치가 정확하지 않습니다.";
 	private static final String ILLEGAL_MOVE_MESSAGE = "이동이 불가능합니다.";
-	private Scanner scanner = new Scanner(System.in);
+	private static Scanner scanner = new Scanner(System.in);
+
+	public static void setScannerRead(InputStream inputStream) {
+		scanner = new Scanner(inputStream);
+	}
 
 	public String[] getCommand() {
 		String inputs = scanner.nextLine();

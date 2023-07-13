@@ -1,16 +1,13 @@
-package softeer2nd.chess;
+package softeer2nd.chess.board;
 
 import org.junit.jupiter.api.*;
-import softeer2nd.chess.board.Board;
 import softeer2nd.chess.pieces.*;
 import softeer2nd.chess.pieces.Piece.Type;
 import softeer2nd.chess.pieces.concrete.*;
 
 import static org.assertj.core.api.AssertionsForClassTypes.*;
 import static org.junit.jupiter.api.Assertions.*;
-import static softeer2nd.chess.board.BoardView.*;
 import static softeer2nd.chess.pieces.Piece.*;
-import static softeer2nd.chess.utils.StringUtils.appendNewLine;
 
 class BoardTest {
     private Board board;
@@ -52,21 +49,6 @@ class BoardTest {
         void pieceCount() {
             board.initialize();
             assertEquals(32, board.pieceCount());
-        }
-
-        @Test
-        @DisplayName("전체 상태를 출력하면 말이 순서에 맞게 놓인 상태로 출력된다")
-        void create() {
-            board.initialize();
-            assertEquals(32, board.pieceCount());
-            String blankRank = appendNewLine("........");
-            assertEquals(
-                    appendNewLine("RNBQKBNR") +
-                            appendNewLine("PPPPPPPP") +
-                            blankRank + blankRank + blankRank + blankRank +
-                            appendNewLine("pppppppp") +
-                            appendNewLine("rnbqkbnr"),
-                    showBoard(board));
         }
     }
 
