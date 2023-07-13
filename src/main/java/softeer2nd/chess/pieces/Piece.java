@@ -1,25 +1,14 @@
 package softeer2nd.chess.pieces;
 
-import java.util.List;
-
 public abstract class Piece {
 	protected Color color;
 	protected Type type;
 
-	public static Type searchType(char representation) {
-		for (Type type : Type.values()) {
-			if (type.isRepresentation(representation)) {
-				return type;
-			}
-		}
-		return Type.NO_PIECE;
-	}
-
 	public enum Color {
 		WHITE, BLACK, NOCOLOR;
 
-
 	}
+
 	public enum Type {
 		PAWN('p', 1.0),
 		ROOK('r', 5.0),
@@ -28,7 +17,6 @@ public abstract class Piece {
 		QUEEN('q', 9.0),
 		KING('k', 0.0),
 		NO_PIECE('.', 0.0);
-
 		private final char whiteRepresentation;
 
 		private final double defaultPoint;
@@ -54,8 +42,17 @@ public abstract class Piece {
 			return defaultPoint;
 		}
 
+		public static Type searchType(char representation) {
+			for (Type type : Type.values()) {
+				if (type.isRepresentation(representation)) {
+					return type;
+				}
+			}
+			return Type.NO_PIECE;
+		}
 
 	}
+
 	public boolean isType(Type type) {
 		return this.type == type;
 	}
@@ -70,10 +67,6 @@ public abstract class Piece {
 
 	public boolean isBlack() {
 		return isColor(Color.BLACK);
-	}
-
-	private boolean isBlank() {
-		return isColor(Color.NOCOLOR);
 	}
 
 	public boolean isAlly(Piece piece) {

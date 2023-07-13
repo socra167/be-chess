@@ -7,6 +7,7 @@ import java.util.List;
 import softeer2nd.chess.pieces.Piece;
 
 public class BoardScore {
+	private static final double HALF = 0.5;
 
 	private BoardScore() {
 	}
@@ -17,7 +18,7 @@ public class BoardScore {
 			.filter(piece -> piece.isColor(color))
 			.mapToDouble(Piece::getDefaultPoint)
 			.sum();
-		score -= (getCountOfVerticalPawns(board, color) / 2.0 * Piece.Type.PAWN.getDefaultPoint());
+		score -= (getCountOfVerticalPawns(board, color) * HALF * Piece.Type.PAWN.getDefaultPoint());
 		return score;
 	}
 

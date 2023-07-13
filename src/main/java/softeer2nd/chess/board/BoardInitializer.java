@@ -48,7 +48,7 @@ public class BoardInitializer {
 		int statIndex = yPos * DEFAULT_SIZE + xPos;
 
 		char representation = boardStat.charAt(statIndex);
-		Piece.Type type = Piece.searchType(representation);
+		Piece.Type type = Piece.Type.searchType(representation);
 		Piece.Color color = Character.isUpperCase(representation) ? Piece.Color.BLACK : Piece.Color.WHITE;
 
 		rank.setPiece(createPiece(type, color), xPos);

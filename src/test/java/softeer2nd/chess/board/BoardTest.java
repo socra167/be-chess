@@ -1,6 +1,7 @@
 package softeer2nd.chess.board;
 
 import org.junit.jupiter.api.*;
+
 import softeer2nd.chess.pieces.*;
 import softeer2nd.chess.pieces.Piece.Type;
 import softeer2nd.chess.pieces.concrete.*;
@@ -10,129 +11,350 @@ import static org.junit.jupiter.api.Assertions.*;
 import static softeer2nd.chess.pieces.Piece.*;
 
 class BoardTest {
-    private Board board;
-    private int currentPieceCount;
+	private Board board;
+	private int currentPieceCount;
 
-    @BeforeEach
-    void setUp() {
-        board = new Board();
-        currentPieceCount = board.pieceCount();
-    }
+	@Nested
+	@DisplayName("체스판에서")
+	class OnChessBoard {
+		@BeforeEach
+		void setUp() {
+			board = new Board();
+			currentPieceCount = board.pieceCount();
+		}
 
-    private void verifyAddPawn(Color color) {
-        Piece piece = Pawn.createPiece(color);
-        String location = board.addPiece(piece);
-        currentPieceCount++;
-        assertEquals(currentPieceCount, board.pieceCount());
-        assertEquals(piece, board.findPiece(location));
-    }
+		private void verifyAddPawn(Color color) {
+			Piece piece = Pawn.createPiece(color);
+			String location = board.addPiece(piece);
+			currentPieceCount++;
+			assertEquals(currentPieceCount, board.pieceCount());
+			assertEquals(piece, board.findPiece(location));
+		}
 
-    private void verifyAddPawn(Color color, String location) {
-        Piece piece = Pawn.createPiece(color);
-        board.move(piece, location);
-        assertEquals(piece, board.findPiece(location));
-    }
+		private void verifyAddPawn(Color color, String location) {
+			Piece piece = Pawn.createPiece(color);
+			board.move(piece, location);
+			assertEquals(piece, board.findPiece(location));
+		}
 
-    @Nested
-    @DisplayName("체스판 초기화 시")
-    class AfterInitialize {
-        @Test
-        @DisplayName("흰색 Pawn 열과 검은색 Pawn 열의 결과가 정상이어야 한다")
-        void initialize() {
-            BoardInitializer.initialize(board);
-            assertEquals("pppppppp", board.getWhitePieceResult());
-            assertEquals("PPPPPPPP", board.getBlackPieceResult());
-        }
+		@Test
+		@DisplayName("체스판의 빈 공간에 폰을 추가하면 체스판의 기물 수가 커지고, 추가하고자 한 폰은 체스판에 추가된 폰과 일치해야 한다")
+		void createPawn() {
+			verifyAddPawn(Color.WHITE);
+			verifyAddPawn(Color.BLACK);
+		}
 
-        @Test
-        @DisplayName("Blank가 아닌 기물이 32개 생성된다")
-        void pieceCount() {
-            BoardInitializer.initialize(board);
-            assertEquals(32, board.pieceCount());
-        }
-    }
+		@Test
+		@DisplayName("폰이 체스판의 특정 위치에 정상적으로 추가되어야 한다")
+		void addPawnByLocation() {
+			BoardInitializer.initialize(board);
+			verifyAddPawn(Color.WHITE, "C3");
+			verifyAddPawn(Color.BLACK, "D3");
+		}
 
-    @Test
-    @DisplayName("체스판의 빈 공간에 폰을 추가하면 체스판의 기물 수가 커지고, 추가하고자 한 폰은 체스판에 추가된 폰과 일치해야 한다")
-    void createPawn() {
-        verifyAddPawn(Color.WHITE);
-        verifyAddPawn(Color.BLACK);
-    }
+		@Test
+		@DisplayName("기물과 색에 해당하는 기물의 수를 반환할 수 있다")
+		void getPieceCount() {
+			BoardInitializer.initialize(board);
+			assertEquals(8, board.getPieceCount(Color.WHITE, Type.PAWN));
+			assertEquals(2, board.getPieceCount(Color.WHITE, Type.ROOK));
+			assertEquals(1, board.getPieceCount(Color.WHITE, Type.KING));
+			assertEquals(1, board.getPieceCount(Color.BLACK, Type.KING));
+		}
 
-    @Test
-    @DisplayName("폰이 체스판의 특정 위치에 정상적으로 추가되어야 한다")
-    void addPawnByLocation() {
-        BoardInitializer.initialize(board);
-        verifyAddPawn(Color.WHITE, "C3");
-        verifyAddPawn(Color.BLACK, "D3");
-    }
+		@Test
+		@DisplayName("위치를 지정해 기물을 조회할 수 있다")
+		void findPiece() {
+			BoardInitializer.initialize(board);
+			assertThat(Rook.createPiece(Color.BLACK)).isEqualToComparingFieldByFieldRecursively(board.findPiece("a8"));
+			assertThat(Rook.createPiece(Color.BLACK)).isEqualToComparingFieldByFieldRecursively(board.findPiece("h8"));
+			assertThat(Rook.createPiece(Color.WHITE)).isEqualToComparingFieldByFieldRecursively(board.findPiece("a1"));
+			assertThat(Rook.createPiece(Color.WHITE)).isEqualToComparingFieldByFieldRecursively(board.findPiece("h1"));
+		}
 
-    @Test
-    @DisplayName("기물과 색에 해당하는 기물의 수를 반환할 수 있다")
-    void getPieceCount() {
-        BoardInitializer.initialize(board);
-        assertEquals(8, board.getPieceCount(Color.WHITE, Type.PAWN));
-        assertEquals(2, board.getPieceCount(Color.WHITE, Type.ROOK));
-        assertEquals(1, board.getPieceCount(Color.WHITE, Type.KING));
-        assertEquals(1, board.getPieceCount(Color.BLACK, Type.KING));
-    }
+		@Test
+		@DisplayName("기물을 체스 판의 임의의 위치에 추가할 수 있다")
+		void movePiece() throws Exception {
+			BoardInitializer.initialize(board);
+			String position = "b5";
+			Piece piece = Rook.createPiece(Color.BLACK);
+			board.move(piece, position);
+			assertEquals(piece, board.findPiece(position));
+		}
 
-    @Test
-    @DisplayName("위치를 지정해 기물을 조회할 수 있다")
-    void findPiece() {
-        BoardInitializer.initialize(board);
-        assertThat(Rook.createPiece(Color.BLACK)).isEqualToComparingFieldByFieldRecursively(board.findPiece("a8"));
-        assertThat(Rook.createPiece(Color.BLACK)).isEqualToComparingFieldByFieldRecursively(board.findPiece("h8"));
-        assertThat(Rook.createPiece(Color.WHITE)).isEqualToComparingFieldByFieldRecursively(board.findPiece("a1"));
-        assertThat(Rook.createPiece(Color.WHITE)).isEqualToComparingFieldByFieldRecursively(board.findPiece("h1"));
-    }
+		@Test
+		@DisplayName("기물을 현재 위치에서 다른 위치로 이동시킬 수 있어야 한다")
+		void move() {
+			BoardInitializer.initialize(board);
 
-    @Test
-    @DisplayName("기물을 체스 판의 임의의 위치에 추가할 수 있다")
-    void movePiece() throws Exception {
-        BoardInitializer.initialize(board);
-        String position = "b5";
-        Piece piece = Rook.createPiece(Color.BLACK);
-        board.move(piece, position);
-        assertEquals(piece, board.findPiece(position));
-    }
+			String sourcePosition = "b2";
+			String targetPosition = "b3";
 
-    @Test
-    @DisplayName("체스 판의 점수 결과를 계산할 수 있다")
-    void calculatePoint() {
-        BoardInitializer.initializeEmpty(board) ;
+			board.move(sourcePosition, targetPosition);
+			assertThat(Blank.createPiece()).isEqualToComparingFieldByFieldRecursively(board.findPiece(sourcePosition));
+			assertThat(Pawn.createPiece(Color.WHITE)).isEqualToComparingFieldByFieldRecursively(
+				board.findPiece(targetPosition));
+		}
 
-        addPiece("b6", Pawn.createPiece(Color.BLACK));
-        addPiece("e6", Queen.createPiece(Color.BLACK));
-        addPiece("b8", King.createPiece(Color.BLACK));
-        addPiece("c8", Rook.createPiece(Color.BLACK));
+	}
 
-        addPiece("f2", Pawn.createPiece(Color.WHITE));
-        addPiece("g2", Pawn.createPiece(Color.WHITE));
-        addPiece("g3", Pawn.createPiece(Color.WHITE));
-        addPiece("g4", Pawn.createPiece(Color.WHITE));
-        addPiece("c4", Pawn.createPiece(Color.WHITE));
-        addPiece("e1", Rook.createPiece(Color.WHITE));
-        addPiece("f1", King.createPiece(Color.WHITE));
+	@Nested
+	@DisplayName("기물이 이동 가능한 위치인지 확인할 수 있어야 한다")
+	class CheckPieceMovable {
 
-        assertEquals(15.0, BoardScore.calculatePoint(board, Color.BLACK), 0.01);
-        assertEquals(8.5, BoardScore.calculatePoint(board, Color.WHITE), 0.01);
-    }
+		@BeforeEach
+		void initBoard() {
+			board = new Board();
+			BoardInitializer.initialize(board);
+		}
 
-    private void addPiece(String position, Piece piece) {
-        board.move(piece, position);
-    }
+		@Test
+		@DisplayName("기물은 아군 기물이 가로막는 경우 이동할 수 없다")
+		void blockByAlly() {
+			checkNotMovable("a1", "b1");
+		}
 
-    @Test
-    @DisplayName("기물을 현재 위치에서 다른 위치로 이동시킬 수 있다")
-    void move() {
-        BoardInitializer.initialize(board);
+		private void checkMovable(final String sourceLocation, final String targetLocation) {
+			Position sourcePosition = new Position(sourceLocation);
+			Position targetPosition = new Position(targetLocation);
+			assertThat(board.isMovable(sourcePosition, targetPosition)).isTrue();
+		}
 
-        String sourcePosition = "b2";
-        String targetPosition = "b3";
+		private void checkNotMovable(final String sourceLocation, final String targetLocation) {
+			Position sourcePosition = new Position(sourceLocation);
+			Position targetPosition = new Position(targetLocation);
+			assertThat(board.isMovable(sourcePosition, targetPosition)).isFalse();
+		}
 
-        board.move(sourcePosition, targetPosition);
-        assertThat(Blank.createPiece()).isEqualToComparingFieldByFieldRecursively(board.findPiece(sourcePosition));
-        assertThat(Pawn.createPiece(Color.WHITE)).isEqualToComparingFieldByFieldRecursively(board.findPiece(targetPosition));
-    }
+		@Nested
+		@DisplayName("Pawn이")
+		class CheckMovablePawn {
+			@BeforeEach
+			void initEmpty() {
+				board = new Board();
+				BoardInitializer.initializeEmpty(board);
+			}
+
+			@Test
+			@DisplayName("처음 이동할 때 두 칸 이동할 수 있다")
+			void firstDoubleMove() {
+				board.move(Pawn.createPiece(Color.WHITE), "d2");
+				board.move(Pawn.createPiece(Color.BLACK), "e7");
+				checkMovable("d2", "d4");
+				checkMovable("e7", "e5");
+			}
+
+			@Test
+			@DisplayName("첫 이동이 아닐 때 두 칸 이동할 수 없다")
+			void invalidDoubleMove() {
+				board.move(Pawn.createPiece(Color.WHITE), "d2");
+				board.move("d2", "d3");
+				checkNotMovable("d3", "d5");
+			}
+
+			@Test
+			@DisplayName("대각선에 적 기물이 있을 경우 이동할 수 있다")
+			void diagonalMove() {
+				board.move(Pawn.createPiece(Color.WHITE), "d4");
+				board.move(Pawn.createPiece(Color.BLACK), "e5");
+				checkMovable("d4", "e5");
+			}
+
+			@Test
+			@DisplayName("대각선에 적 기물이 없는 경우 이동할 수 없다")
+			void invalidDiagonalMove() {
+				board.move(Pawn.createPiece(Color.WHITE), "d4");
+				checkNotMovable("d4", "e5");
+			}
+		}
+
+		@Nested
+		@DisplayName("Bishop이")
+		class checkMovableBishop {
+			@BeforeEach
+			void initEmpty() {
+				board = new Board();
+				BoardInitializer.initializeEmpty(board);
+			}
+
+			@Test
+			@DisplayName("대각선으로 이동할 수 있다")
+			void diagonalMove() {
+				board.move(Bishop.createPiece(Color.WHITE), "d4");
+				checkMovable("d4", "e5");
+				checkMovable("d4", "f6");
+				checkMovable("d4", "g7");
+				checkMovable("d4", "c3");
+				checkMovable("d4", "b2");
+				checkMovable("d4", "a1");
+			}
+
+			@Test
+			@DisplayName("대각선이 아닌 곳으로 이동 할 수 없다")
+			void invalidMove() {
+				board.move(Bishop.createPiece(Color.WHITE), "d4");
+				checkNotMovable("d4", "d8");
+				checkNotMovable("d4", "d7");
+				checkNotMovable("d4", "d6");
+				checkNotMovable("d4", "e4");
+				checkNotMovable("d4", "f4");
+				checkNotMovable("d4", "g4");
+			}
+		}
+
+		@Nested
+		@DisplayName("Rook이")
+		class checkMovableRook {
+
+			@BeforeEach
+			void initEmpty() {
+				board = new Board();
+				BoardInitializer.initializeEmpty(board);
+			}
+
+			@Test
+			@DisplayName("직선으로 이동할 수 있다")
+			void linearMove() {
+				board.move(Rook.createPiece(Color.WHITE), "d4");
+				checkMovable("d4", "e4");
+				checkMovable("d4", "f4");
+				checkMovable("d4", "g4");
+				checkMovable("d4", "h4");
+				checkMovable("d4", "d1");
+				checkMovable("d4", "d2");
+				checkMovable("d4", "d3");
+				checkMovable("d4", "d5");
+			}
+
+			@Test
+			@DisplayName("직선이 아닌 곳으로 이동할 수 없다")
+			void invalidMove() {
+				board.move(Rook.createPiece(Color.WHITE), "d4");
+				checkNotMovable("d4", "e5");
+				checkNotMovable("d4", "f6");
+				checkNotMovable("d4", "g7");
+				checkNotMovable("d4", "c3");
+				checkNotMovable("d4", "b2");
+				checkNotMovable("d4", "a1");
+			}
+		}
+
+		@Nested
+		@DisplayName("Knight가")
+		class checkMovableKnight {
+			@BeforeEach
+			void initEmpty() {
+				board = new Board();
+				BoardInitializer.initializeEmpty(board);
+			}
+
+			@Test
+			@DisplayName("전진 후 대각선 위치로 이동할 수 있다")
+			void knightMove() {
+				board.move(Knight.createPiece(Color.WHITE), "d4");
+				checkMovable("d4", "e6");
+				checkMovable("d4", "c6");
+				checkMovable("d4", "b5");
+				checkMovable("d4", "b3");
+				checkMovable("d4", "c2");
+				checkMovable("d4", "e2");
+				checkMovable("d4", "f5");
+				checkMovable("d4", "f3");
+			}
+
+			@Test
+			@DisplayName("전진 후 대각선 위치가 아닌 곳으로 이동할 수 없다")
+			void invalidKnightMove() {
+				board.move(Knight.createPiece(Color.WHITE), "d4");
+				checkNotMovable("d4", "d5");
+			}
+
+		}
+
+		@Nested
+		@DisplayName("Queen이")
+		class checkMovableQueen {
+			@BeforeEach
+			void initEmpty() {
+				board = new Board();
+				BoardInitializer.initializeEmpty(board);
+			}
+
+			@Test
+			@DisplayName("대각선으로 이동할 수 있다")
+			void diagonalMove() {
+				board.move(Queen.createPiece(Color.WHITE), "d4");
+				checkMovable("d4", "e5");
+				checkMovable("d4", "f6");
+				checkMovable("d4", "g7");
+				checkMovable("d4", "c3");
+				checkMovable("d4", "b2");
+				checkMovable("d4", "a1");
+			}
+
+			@Test
+			@DisplayName("직선으로 이동할 수 있다")
+			void linearMove() {
+				board.move(Queen.createPiece(Color.WHITE), "d4");
+				checkMovable("d4", "e4");
+				checkMovable("d4", "f4");
+				checkMovable("d4", "g4");
+				checkMovable("d4", "h4");
+				checkMovable("d4", "d1");
+				checkMovable("d4", "d2");
+				checkMovable("d4", "d3");
+				checkMovable("d4", "d5");
+			}
+
+			@Test
+			@DisplayName("직선이나 대각선이 아닌 곳으로 이동할 수 없다")
+			void invalidMove() {
+				board.move(Queen.createPiece(Color.WHITE), "d4");
+				checkNotMovable("d4", "e1");
+				checkNotMovable("d4", "e2");
+				checkNotMovable("d4", "c1");
+				checkNotMovable("d4", "c2");
+				checkNotMovable("d4", "c6");
+				checkNotMovable("d4", "c7");
+				checkNotMovable("d4", "e6");
+				checkNotMovable("d4", "e7");
+			}
+		}
+
+		@Nested
+		@DisplayName("King이")
+		class checkMovableKing {
+			@BeforeEach
+			void initEmpty() {
+				board = new Board();
+				BoardInitializer.initializeEmpty(board);
+			}
+
+			@Test
+			@DisplayName("모든 방향으로 한 칸 이동할 수 있다")
+			void everyMove() {
+				board.move(King.createPiece(Color.WHITE), "d4");
+				checkMovable("d4", "c5");
+				checkMovable("d4", "d5");
+				checkMovable("d4", "e5");
+				checkMovable("d4", "c3");
+				checkMovable("d4", "d3");
+				checkMovable("d4", "e3");
+				checkMovable("d4", "c4");
+				checkMovable("d4", "e4");
+			}
+
+			@Test
+			@DisplayName("한 칸 이상 이동할 수 없다")
+			void invalidMove() {
+				board.move(King.createPiece(Color.WHITE), "d4");
+				checkNotMovable("d4", "f4");
+				checkNotMovable("d4", "f5");
+				checkNotMovable("d4", "f6");
+				checkNotMovable("d4", "g7");
+				checkNotMovable("d4", "h8");
+				checkNotMovable("d4", "b4");
+			}
+		}
+	}
 }
