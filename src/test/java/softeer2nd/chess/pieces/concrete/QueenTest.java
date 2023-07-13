@@ -10,7 +10,7 @@ import softeer2nd.chess.pieces.Direction;
 import softeer2nd.chess.pieces.Piece;
 import softeer2nd.chess.pieces.Position;
 
-public class QueenTest {
+class QueenTest {
 
 	private Piece queen;
 

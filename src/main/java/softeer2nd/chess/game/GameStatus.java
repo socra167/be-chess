@@ -1,8 +1,6 @@
 package softeer2nd.chess.game;
 
-import static softeer2nd.chess.board.Player.*;
-
-import softeer2nd.chess.board.Player;
+import static softeer2nd.chess.game.Player.*;
 
 public class GameStatus {
 	private static final GameStatus GAME_STATUS = new GameStatus();

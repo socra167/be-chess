@@ -11,7 +11,7 @@ import softeer2nd.chess.pieces.Direction;
 import softeer2nd.chess.pieces.Piece;
 import softeer2nd.chess.pieces.Position;
 
-public class KnightTest {
+class KnightTest {
 
 	private Piece knight;
 	@BeforeEach

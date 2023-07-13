@@ -11,8 +11,6 @@ import static softeer2nd.chess.pieces.Piece.*;
 public class Board {
 
 	public static final int DEFAULT_SIZE = 8;
-	private static final String DEFAULT_BOARD =
-		"RNBQKBN" + "RPPPPPPPP" + "........" + "........" + "........" + "........" + "pppppppp" + "rnbqkbnr";
 	private final List<Rank> chessBoard;
 
 	public Piece findPiece(String location) {
@@ -23,83 +21,20 @@ public class Board {
 		return chessBoard.get(position.getY()).getPiece(position.getX());
 	}
 
-	public double calculatePoint(Color color) {
-		double score = getAllPieceList().stream()
-			.filter(piece -> piece.isColor(color))
-			.mapToDouble(Piece::getDefaultPoint)
-			.sum();
-		score -= (getCountOfVerticalPawns(color) / 2.0 * Type.PAWN.getDefaultPoint());
-		return score;
+	public void clearBoard() {
+		chessBoard.clear();
 	}
 
-	private int getCountOfVerticalPawns(Color color) {
-		int result = 0;
-		int[] columnCount = new int[DEFAULT_SIZE];
-		List<Piece> pieceList = getAllPieceList();
-		Piece piece;
+	public void addRank(Rank rank) {
+		chessBoard.add(rank);
+	}
 
-		for (int index = 0; index < pieceList.size(); index++) {
-			piece = pieceList.get(index);
-			if (piece.isType(Type.PAWN) && piece.isColor(color)) {
-				columnCount[index % DEFAULT_SIZE]++;
-			}
-		}
-		for (int count : columnCount) {
-			if (1 < count) {
-				result += count;
-			}
-		}
-		return result;
+	public Rank getRank(int row) {
+		return chessBoard.get(row);
 	}
 
 	public Board() {
 		chessBoard = new ArrayList<>();
-	}
-
-	public void initialize() {
-		initializeEmpty();
-		initAs(DEFAULT_BOARD);
-	}
-
-	public void initAs(String boardStat) {
-		for (int yPos = 0; yPos < DEFAULT_SIZE; yPos++) {
-			for (int xPos = 0; xPos < DEFAULT_SIZE; xPos++) {
-				initRank(boardStat, xPos, yPos);
-			}
-		}
-	}
-
-	private void initRank(String boardStat, int xPos, int yPos) {
-		Rank rank = chessBoard.get(yPos);
-		int statIndex = yPos * DEFAULT_SIZE + xPos;
-
-		char representation = boardStat.charAt(statIndex);
-		Type type = Piece.searchType(representation);
-		Color color = Character.isUpperCase(representation) ? Color.BLACK : Color.WHITE;
-
-		rank.setPiece(createPiece(type, color), xPos);
-	}
-
-	private Piece createPiece(Type type, Color color) {
-		if (type.equals(Type.PAWN)) {
-			return Pawn.createPiece(color);
-		}
-		if (type.equals(Type.KNIGHT)) {
-			return Knight.createPiece(color);
-		}
-		if (type.equals(Type.BISHOP)) {
-			return Bishop.createPiece(color);
-		}
-		if (type.equals(Type.ROOK)) {
-			return Rook.createPiece(color);
-		}
-		if (type.equals(Type.QUEEN)) {
-			return Queen.createPiece(color);
-		}
-		if (type.equals(Type.KING)) {
-			return King.createPiece(color);
-		}
-		return Blank.createPiece();
 	}
 
 	public long getPieceCount(Color color, Type type) {
@@ -107,16 +42,6 @@ public class Board {
 			.filter(piece -> piece.isColor(color))
 			.filter(piece -> piece.isType(type))
 			.count());
-	}
-
-	public void initializeEmpty() {
-		chessBoard.clear();
-		for (int row = 0; row < DEFAULT_SIZE; row++) {
-			chessBoard.add(new Rank());
-			for (int col = 0; col < DEFAULT_SIZE; col++) {
-				chessBoard.get(row).addPiece(Blank.createPiece());
-			}
-		}
 	}
 
 	public void move(Piece piece, String location) {

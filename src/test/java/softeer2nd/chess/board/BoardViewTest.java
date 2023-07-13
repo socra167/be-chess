@@ -20,7 +20,8 @@ class BoardViewTest {
 	@Test
 	@DisplayName("체스판을 초기화하고 전체 상태를 출력하면 말이 순서에 맞게 놓인 상태로 출력된다")
 	void create() {
-		board.initialize();
+		BoardInitializer.initialize(board);
+
 		assertEquals(32, board.pieceCount());
 		String blankRank = appendNewLine("........");
 		assertEquals(

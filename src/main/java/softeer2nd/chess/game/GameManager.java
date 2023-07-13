@@ -4,6 +4,7 @@ import static softeer2nd.chess.board.BoardView.*;
 import static softeer2nd.chess.utils.StringUtils.*;
 
 import softeer2nd.chess.board.Board;
+import softeer2nd.chess.board.BoardInitializer;
 import softeer2nd.chess.board.BoardView;
 import softeer2nd.chess.pieces.Piece;
 import softeer2nd.chess.pieces.Position;
@@ -38,7 +39,7 @@ public class GameManager {
 		Command command = Command.searchCommand(keywords[0]);
 
 		if (command.equals(Command.START_GAME)) {
-			board.initialize();
+			BoardInitializer.initialize(board);
 			gameStatus.setPlaying();
 			gameStatus.initPlayer();
 			return BoardView.showBoard(board);
