@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 public class BoardInitializerTest {
 
 	private Board board;
-	private int currentPieceCount;
 
 	@Nested
 	@DisplayName("체스판 초기화 시")
@@ -18,7 +17,6 @@ public class BoardInitializerTest {
 		@BeforeEach
 		void setUp() {
 			board = new Board();
-			currentPieceCount = board.pieceCount();
 		}
 
 		@Test

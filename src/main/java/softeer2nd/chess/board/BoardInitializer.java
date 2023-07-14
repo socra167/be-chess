@@ -18,7 +18,7 @@ public class BoardInitializer {
 
 	public static final String BLANK_LINE = "........";
 	public static final String DEFAULT_BOARD =
-		"RNBQKBN" + "RPPPPPPPP" + BLANK_LINE + BLANK_LINE + BLANK_LINE + BLANK_LINE + "pppppppp" + "rnbqkbnr";
+		"RNBQKBNR" + "PPPPPPPP" + BLANK_LINE + BLANK_LINE + BLANK_LINE + BLANK_LINE + "pppppppp" + "rnbqkbnr";
 
 	public static void initialize(Board board) {
 		initializeEmpty(board);
