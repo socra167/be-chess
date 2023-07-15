@@ -74,7 +74,7 @@ public class GameManager {
 	private void movePiece(String[] keywords) throws IllegalArgumentException {
 		if (isInvalidCount(keywords)) {
 			gameMenu.informInvalidKeywordCount();
-			return;
+			throw new IllegalArgumentException("입력한 위치의 수가 잘못되었습니다");
 		}
 		if (isInvalidPosition(keywords)) {
 			gameMenu.informInvalidLocation();
