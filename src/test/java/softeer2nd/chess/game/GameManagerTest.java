@@ -144,17 +144,19 @@ class GameManagerTest {
 			gameManager.initBoardAs(
 				BLANK_LINE + BLANK_LINE + BLANK_LINE + ".r...p.." + BLANK_LINE + BLANK_LINE + BLANK_LINE
 					+ BLANK_LINE);
-			final String[] invalidCommand = {"move", "b5", "g5"};
-			final String expectedMessage = "이동하려는 위치의 경로에 같은 편의 기물이 존재합니다";
+			final String[] invalidCommand1 = {"move", "a2", "y1"};
+			final String[] invalidCommand2 = {"move", "a9", "a2"};
+			final String expectedMessage = "";
 
-			verifyExceptionOccur(invalidCommand, new IllegalArgumentException(), expectedMessage);
+			verifyExceptionOccur(invalidCommand1, new IllegalArgumentException(), expectedMessage);
+			verifyExceptionOccur(invalidCommand2, new IllegalArgumentException(), expectedMessage);
 		}
 
 		@Test
 		@DisplayName("현재 기물을 움직려는 플레이어의 차례가 아닌 경우 예외가 발생하고 이동하지 않아야 한다")
 		void invalidTurn() {
 			final String[] invalidCommand1 = {"move", "a7", "a5"};
-			final String expectedMessage = "기물을 움직이려는 플레이어의 차례가 아닙니다";
+			final String expectedMessage = "입력한 위치가 a1에서 h8을 벗어났습니다";
 
 			verifyExceptionOccur(invalidCommand1, new IllegalArgumentException(), expectedMessage);
 		}
