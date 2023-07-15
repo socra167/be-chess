@@ -22,7 +22,7 @@ public class BoardInitializer {
 
 	public static void initialize(Board board) {
 		initializeEmpty(board);
-		initAs(board);
+		initAs(board, DEFAULT_BOARD);
 	}
 
 	public static void initializeEmpty(Board chessBoard) {
@@ -35,10 +35,10 @@ public class BoardInitializer {
 		}
 	}
 
-	public static void initAs(Board board) {
+	public static void initAs(Board board, String boardStat) {
 		for (int yPos = 0; yPos < DEFAULT_SIZE; yPos++) {
 			for (int xPos = 0; xPos < DEFAULT_SIZE; xPos++) {
-				initRank(board, DEFAULT_BOARD, xPos, yPos);
+				initRank(board, boardStat, xPos, yPos);
 			}
 		}
 	}
