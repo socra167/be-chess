@@ -3,6 +3,7 @@ package softeer2nd.chess.game;
 import org.junit.jupiter.api.*;
 
 import static org.assertj.core.api.Assertions.*;
+import static softeer2nd.chess.board.BoardInitializer.*;
 import static softeer2nd.chess.utils.StringUtils.*;
 
 class GameManagerTest {
@@ -141,8 +142,8 @@ class GameManagerTest {
 		@DisplayName("이동하려는 위치는 유효하지만 같은 편의 기물이 존재하는 경우 예외가 발생하고 이동하지 않아야 한다")
 		void allyConflictMove() {
 			gameManager.initBoardAs(
-				BLANK_LINES + BLANK_LINES + BLANK_LINES + ".r...p.." + BLANK_LINES + BLANK_LINES + BLANK_LINES
-					+ BLANK_LINES);
+				BLANK_LINE + BLANK_LINE + BLANK_LINE + ".r...p.." + BLANK_LINE + BLANK_LINE + BLANK_LINE
+					+ BLANK_LINE);
 			final String[] invalidCommand1 = {"move", "a2", "y1"};
 			final String[] invalidCommand2 = {"move", "a9", "a2"};
 			final String expectedMessage = "";
