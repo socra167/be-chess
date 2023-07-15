@@ -105,4 +105,8 @@ public class GameManager {
 	private boolean isInvalidPosition(String[] keywords) {
 		return Position.isInvalidKeyword(keywords[1]) || Position.isInvalidKeyword(keywords[2]);
 	}
+
+	public void initBoardAs(String boardStat) {
+		BoardInitializer.initAs(board, boardStat);
+	}
 }
