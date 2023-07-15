@@ -24,7 +24,12 @@ public class GameManager {
 		checkStart();
 		while(gameStatus.isPlaying()) {
 			printBoard();
-			executeCommand(gameMenu.getCommand());
+			try {
+				executeCommand(gameMenu.getCommand());
+			}
+			catch (IllegalArgumentException exception) {
+				System.out.println(exception.getMessage());
+			}
 			gameMenu.printBlankSpace();
 		}
 	}
@@ -35,7 +40,7 @@ public class GameManager {
 		}
 	}
 
-	public String executeCommand(String[] keywords) {
+	public String executeCommand(String[] keywords) throws IllegalArgumentException {
 		Command command = Command.searchCommand(keywords[0]);
 
 		if (command.equals(Command.START_GAME)) {
@@ -66,14 +71,14 @@ public class GameManager {
 		}
 	}
 
-	private void movePiece(String[] keywords) {
+	private void movePiece(String[] keywords) throws IllegalArgumentException {
 		if (isInvalidCount(keywords)) {
 			gameMenu.informInvalidKeywordCount();
 			return;
 		}
 		if (isInvalidPosition(keywords)) {
 			gameMenu.informInvalidLocation();
-			return;
+			throw new IllegalArgumentException("입력한 위치가 a1에서 h8을 벗어났습니다");
 		}
 
 		Position sourcePosition = new Position(keywords[1]);
