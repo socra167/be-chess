@@ -109,10 +109,10 @@ public class Board {
 		return new Position(xPos, yPos);
 	}
 
-	public boolean isMovable(Position sourcePosition, Position targetPosition) {
+	public boolean isMovable(Position sourcePosition, Position targetPosition) throws IllegalArgumentException {
 		Piece piece = findPiece(sourcePosition);
 		if (!piece.isMovable(sourcePosition, targetPosition)) {
-			return false;
+			throw new IllegalArgumentException("기물의 이동 규칙을 따르지 않습니다");
 		}
 		if (isConflict(piece, sourcePosition, targetPosition)) {
 			return false;
