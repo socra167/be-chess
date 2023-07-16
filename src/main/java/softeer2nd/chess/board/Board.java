@@ -6,6 +6,7 @@ import softeer2nd.chess.pieces.concrete.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static softeer2nd.chess.game.GameMenu.*;
 import static softeer2nd.chess.pieces.Piece.*;
 
 public class Board {
@@ -109,10 +110,10 @@ public class Board {
 		return new Position(xPos, yPos);
 	}
 
-	public boolean isMovable(Position sourcePosition, Position targetPosition) {
+	public boolean isMovable(Position sourcePosition, Position targetPosition) throws IllegalArgumentException {
 		Piece piece = findPiece(sourcePosition);
 		if (!piece.isMovable(sourcePosition, targetPosition)) {
-			return false;
+			throw new IllegalArgumentException(ILLEGAL_PIECE_MOVE_POLICY_MESSAGE);
 		}
 		if (isConflict(piece, sourcePosition, targetPosition)) {
 			return false;
@@ -123,9 +124,9 @@ public class Board {
 		return true;
 	}
 
-	private boolean isConflict(Piece piece, Position sourcePosition, Position targetPosition) {
+	private boolean isConflict(Piece piece, Position sourcePosition, Position targetPosition) throws IllegalArgumentException {
 		if (findPiece(targetPosition).isAlly(piece)) {
-			return true;
+			throw new IllegalArgumentException(ALLY_ON_DESTINATION_MESSAGE);
 		}
 		if (piece.isType(Type.KNIGHT)) {
 			return false;
@@ -137,7 +138,7 @@ public class Board {
 
 	}
 
-	private boolean findConflict(Piece piece, Position sourcePosition, Position targetPosition) {
+	private boolean findConflict(Piece piece, Position sourcePosition, Position targetPosition) throws IllegalArgumentException {
 		int[] difference = Position.calculateDiff(sourcePosition, targetPosition);
 		Direction direction = Direction.findDirection(difference[0], difference[1]);
 		Position currentPosition = new Position(sourcePosition.getLocation());
@@ -146,25 +147,25 @@ public class Board {
 			currentPosition.moveTo(direction);
 			currentPiece = findPiece(currentPosition);
 			if (currentPiece.isAlly(piece)) {
-				return true;
+				throw new IllegalArgumentException(ALLY_ON_PATH_MESSAGE);
 			}
 			if (currentPiece.isEnemy(piece) && !currentPosition.equals(targetPosition)) {
-				return true;
+				throw new IllegalArgumentException(ENEMY_ON_PATH_MESSAGE);
 			}
 		}
 		return false;
 	}
 
-	private boolean isIllegalPawnMove(Piece piece, Position sourcePosition, Position targetPosition) {
+	private boolean isIllegalPawnMove(Piece piece, Position sourcePosition, Position targetPosition) throws IllegalArgumentException {
 		if (piece.isType(Type.PAWN)) {
 			if (isNonFirstDoubleMove(piece, sourcePosition, targetPosition)) {
-				return true;
+				throw new IllegalArgumentException(NON_FIRST_DOUBLE_MOVE_MESSAGE);
 			}
 			if (isNoEnemyOnDiagonal(piece, sourcePosition, targetPosition)) {
-				return true;
+				throw new IllegalArgumentException(NO_ENEMY_ON_DIAGONAL_MESSAGE);
 			}
 			if (isConflictOnFrontEnemy(piece, sourcePosition, targetPosition)) {
-				return true;
+				throw new IllegalArgumentException(CONFLICT_ON_FRONT_ENEMY_MESSAGE);
 			}
 		}
 		return false;

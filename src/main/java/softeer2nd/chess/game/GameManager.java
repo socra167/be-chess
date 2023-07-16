@@ -1,7 +1,7 @@
 package softeer2nd.chess.game;
 
 import static softeer2nd.chess.board.BoardView.*;
-import static softeer2nd.chess.utils.StringUtils.*;
+import static softeer2nd.chess.game.GameMenu.*;
 
 import softeer2nd.chess.board.Board;
 import softeer2nd.chess.board.BoardInitializer;
@@ -24,18 +24,27 @@ public class GameManager {
 		checkStart();
 		while(gameStatus.isPlaying()) {
 			printBoard();
-			executeCommand(gameMenu.getCommand());
+			try {
+				executeCommand(gameMenu.getCommand());
+			}
+			catch (IllegalArgumentException exception) {
+				System.out.println(exception.getMessage());
+			}
 			gameMenu.printBlankSpace();
 		}
 	}
 
 	private void checkStart() {
 		while(!gameStatus.isPlaying()) {
-			executeCommand(gameMenu.getCommand());
+			try {
+				executeCommand(gameMenu.getCommand());
+			} catch (IllegalArgumentException exception) {
+				System.out.println(exception.getMessage());
+			}
 		}
 	}
 
-	public String executeCommand(String[] keywords) {
+	public String executeCommand(String[] keywords) throws IllegalArgumentException {
 		Command command = Command.searchCommand(keywords[0]);
 
 		if (command.equals(Command.START_GAME)) {
@@ -45,19 +54,20 @@ public class GameManager {
 			return BoardView.showBoard(board);
 		}
 		if (command.equals(Command.END_GAME)) {
+			if (!gameStatus.isPlaying()) {
+				System.exit(0);
+			}
 			gameStatus.setEnd();
 			return BoardView.showBoard(board);
 		}
 		if (!gameStatus.isPlaying()) {
-			gameMenu.informStartGameFirst();
-			return BLANK_LINES;
+			throw new IllegalArgumentException(START_GAME_FIRST_MESSAGE);
 		}
 		if (command.equals(Command.MOVE_PIECE)) {
 			movePiece(keywords);
 			return BoardView.showBoard(board);
 		}
-		gameMenu.informInvalidCommand();
-		return BoardView.showBoard(board);
+		throw new IllegalArgumentException(INVALID_COMMAND_MESSAGE);
 	}
 
 	private void printBoard() {
@@ -66,29 +76,32 @@ public class GameManager {
 		}
 	}
 
-	private void movePiece(String[] keywords) {
+	private void movePiece(String[] keywords) throws IllegalArgumentException {
 		if (isInvalidCount(keywords)) {
-			gameMenu.informInvalidKeywordCount();
-			return;
+			throw new IllegalArgumentException(INVALID_KEYWORD_COUNT_MESSAGE);
 		}
 		if (isInvalidPosition(keywords)) {
-			gameMenu.informInvalidLocation();
-			return;
+			throw new IllegalArgumentException(INVALID_POSITION_RANGE_MESSAGE);
 		}
 
 		Position sourcePosition = new Position(keywords[1]);
 		Position targetPosition = new Position(keywords[2]);
 
+		if (samePosition(sourcePosition, targetPosition)) {
+			throw new IllegalArgumentException(SAME_POSITION_MESSAGE);
+		}
 		if (isInvalidTurn(sourcePosition)) {
-			gameMenu.informInvalidTurn();
-			return;
+			throw new IllegalArgumentException(INVALID_TURN_MESSAGE);
 		}
 		if (!board.isMovable(sourcePosition, targetPosition)) {
-			gameMenu.informIllegalMove();
 			return;
 		}
 		board.move(sourcePosition, targetPosition);
 		gameStatus.switchTurn();
+	}
+
+	private boolean samePosition(Position sourcePosition, Position targetPosition) {
+		return sourcePosition.equals(targetPosition);
 	}
 
 	private boolean isInvalidTurn(Position sourcePosition) {
