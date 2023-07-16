@@ -142,8 +142,7 @@ class GameManagerTest {
 		@DisplayName("이동하려는 위치는 유효하지만 이동 경로에 같은 편의 기물이 존재하는 경우 예외가 발생하고 이동하지 않아야 한다")
 		void allyConflictMove() {
 			gameManager.initBoardAs(
-				BLANK_LINE + BLANK_LINE + BLANK_LINE + ".r...p.." + BLANK_LINE + BLANK_LINE + BLANK_LINE
-					+ BLANK_LINE);
+				BLANK_LINE + BLANK_LINE + BLANK_LINE + ".r...p.." + BLANK_LINE + BLANK_LINE + BLANK_LINE + BLANK_LINE);
 			final String[] invalidCommand = {"move", "b5", "g5"};
 			final String expectedMessage = "이동하려는 경로에 같은 편의 기물이 존재합니다";
 
@@ -154,8 +153,7 @@ class GameManagerTest {
 		@DisplayName("이동하려는 위치는 유효하지만 목적지에 같은 편의 기물이 존재하는 경우 예외가 발생하고 이동하지 않아야 한다")
 		void allyOnDestination() {
 			gameManager.initBoardAs(
-				BLANK_LINE + BLANK_LINE + BLANK_LINE + ".r...p.." + BLANK_LINE + BLANK_LINE + BLANK_LINE
-					+ BLANK_LINE);
+				BLANK_LINE + BLANK_LINE + BLANK_LINE + ".r...p.." + BLANK_LINE + BLANK_LINE + BLANK_LINE + BLANK_LINE);
 			final String[] invalidCommand = {"move", "b5", "f5"};
 			final String expectedMessage = "이동하려는 위치에 같은 편의 기물이 존재합니다";
 
@@ -166,8 +164,7 @@ class GameManagerTest {
 		@DisplayName("이동하려는 위치는 유효하지만 이동 경로에 적 기물이 존재하는 경우 예외가 발생하고 이동하지 않아야 한다")
 		void enemyConflict() {
 			gameManager.initBoardAs(
-				BLANK_LINE + BLANK_LINE + BLANK_LINE + ".r...P.." + BLANK_LINE + BLANK_LINE + BLANK_LINE
-					+ BLANK_LINE);
+				BLANK_LINE + BLANK_LINE + BLANK_LINE + ".r...P.." + BLANK_LINE + BLANK_LINE + BLANK_LINE + BLANK_LINE);
 			final String[] invalidCommand = {"move", "b5", "g5"};
 			final String expectedMessage = "이동하려는 경로에 적 기물이 존재합니다";
 
@@ -181,6 +178,22 @@ class GameManagerTest {
 			final String expectedMessage = "현재 기물을 움직이려는 플레이어의 차례가 아닙니다";
 
 			verifyExceptionOccur(invalidCommand1, new IllegalArgumentException(), expectedMessage);
+		}
+
+		@Nested
+		@DisplayName("Pawn의")
+		class invalidPawnMove {
+			@Test
+			@DisplayName("첫 이동이 아닐 때 2칸을 이동하려는 경우 예외가 발생하고 이동하지 않아야 한다")
+			void invalidDoubleMove() {
+				gameManager.initBoardAs(
+					BLANK_LINE + BLANK_LINE + BLANK_LINE + ".p...P.." + BLANK_LINE + BLANK_LINE + BLANK_LINE
+						+ BLANK_LINE);
+				final String[] invalidCommand = {"move", "b5", "b7"};
+				final String expectedMessage = "Pawn의 첫 이동이 아닌 경우 2칸을 이동할 수 없습니다";
+
+				verifyExceptionOccur(invalidCommand, new IllegalArgumentException(), expectedMessage);
+			}
 		}
 
 	}
