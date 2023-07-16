@@ -4,6 +4,7 @@ import org.junit.jupiter.api.*;
 
 import static org.assertj.core.api.Assertions.*;
 import static softeer2nd.chess.board.BoardInitializer.*;
+import static softeer2nd.chess.game.GameMenu.*;
 import static softeer2nd.chess.utils.StringUtils.*;
 
 class GameManagerTest {
@@ -86,7 +87,7 @@ class GameManagerTest {
 		void invalidPositionLimit() {
 			final String[] invalidCommand1 = {"move", "a2", "y1"};
 			final String[] invalidCommand2 = {"move", "a9", "a2"};
-			final String expectedMessage = "입력한 위치가 a1에서 h8을 벗어났습니다";
+			final String expectedMessage = INVALID_POSITION_RANGE_MESSAGE;
 
 			verifyExceptionOccur(invalidCommand1, new IllegalArgumentException(), expectedMessage);
 			verifyExceptionOccur(invalidCommand2, new IllegalArgumentException(), expectedMessage);
@@ -97,7 +98,7 @@ class GameManagerTest {
 		void invalidPositionCount() {
 			final String[] invalidCommand1 = {"move", "a2"};
 			final String[] invalidCommand2 = {"move", "a2", "a4", "a5"};
-			final String expectedMessage = "입력한 위치의 수가 잘못되었습니다";
+			final String expectedMessage = INVALID_KEYWORD_COUNT_MESSAGE;
 
 			verifyExceptionOccur(invalidCommand1, new IllegalArgumentException(), expectedMessage);
 			verifyExceptionOccur(invalidCommand2, new IllegalArgumentException(), expectedMessage);
@@ -108,7 +109,7 @@ class GameManagerTest {
 		void samePosition() {
 			final String[] invalidCommand1 = {"move", "a2", "a2"};
 			final String[] invalidCommand2 = {"move", "d2", "d2"};
-			final String expectedMessage = "이동하려는 위치가 현재 위치와 같습니다";
+			final String expectedMessage = SAME_POSITION_MESSAGE;
 
 			verifyExceptionOccur(invalidCommand1, new IllegalArgumentException(), expectedMessage);
 			verifyExceptionOccur(invalidCommand2, new IllegalArgumentException(), expectedMessage);
@@ -119,7 +120,7 @@ class GameManagerTest {
 		void invalidPieceMove() {
 			final String[] invalidCommand1 = {"move", "a2", "b4"};
 			final String[] invalidCommand2 = {"move", "b2", "f3"};
-			final String expectedMessage = "기물의 이동 규칙을 따르지 않습니다";
+			final String expectedMessage = ILLEGAL_PIECE_MOVE_POLICY_MESSAGE;
 
 			verifyExceptionOccur(invalidCommand1, new IllegalArgumentException(), expectedMessage);
 			verifyExceptionOccur(invalidCommand2, new IllegalArgumentException(), expectedMessage);
@@ -131,7 +132,7 @@ class GameManagerTest {
 			gameManager.initBoardAs(
 				BLANK_LINE + BLANK_LINE + BLANK_LINE + ".r...p.." + BLANK_LINE + BLANK_LINE + BLANK_LINE + BLANK_LINE);
 			final String[] invalidCommand = {"move", "b5", "g5"};
-			final String expectedMessage = "이동하려는 경로에 같은 편의 기물이 존재합니다";
+			final String expectedMessage = ALLY_ON_PATH_MESSAGE;
 
 			verifyExceptionOccur(invalidCommand, new IllegalArgumentException(), expectedMessage);
 		}
@@ -142,7 +143,7 @@ class GameManagerTest {
 			gameManager.initBoardAs(
 				BLANK_LINE + BLANK_LINE + BLANK_LINE + ".r...p.." + BLANK_LINE + BLANK_LINE + BLANK_LINE + BLANK_LINE);
 			final String[] invalidCommand = {"move", "b5", "f5"};
-			final String expectedMessage = "이동하려는 위치에 같은 편의 기물이 존재합니다";
+			final String expectedMessage = ALLY_ON_DESTINATION_MESSAGE;
 
 			verifyExceptionOccur(invalidCommand, new IllegalArgumentException(), expectedMessage);
 		}
@@ -153,7 +154,7 @@ class GameManagerTest {
 			gameManager.initBoardAs(
 				BLANK_LINE + BLANK_LINE + BLANK_LINE + ".r...P.." + BLANK_LINE + BLANK_LINE + BLANK_LINE + BLANK_LINE);
 			final String[] invalidCommand = {"move", "b5", "g5"};
-			final String expectedMessage = "이동하려는 경로에 적 기물이 존재합니다";
+			final String expectedMessage = ENEMY_ON_PATH_MESSAGE;
 
 			verifyExceptionOccur(invalidCommand, new IllegalArgumentException(), expectedMessage);
 		}
@@ -162,7 +163,7 @@ class GameManagerTest {
 		@DisplayName("현재 기물을 움직이려는 플레이어의 차례가 아닌 경우 예외가 발생하고 이동하지 않아야 한다")
 		void invalidTurn() {
 			final String[] invalidCommand1 = {"move", "a7", "a5"};
-			final String expectedMessage = "현재 기물을 움직이려는 플레이어의 차례가 아닙니다";
+			final String expectedMessage = INVALID_TURN_MESSAGE;
 
 			verifyExceptionOccur(invalidCommand1, new IllegalArgumentException(), expectedMessage);
 		}
@@ -177,7 +178,7 @@ class GameManagerTest {
 					BLANK_LINE + BLANK_LINE + BLANK_LINE + ".p...P.." + BLANK_LINE + BLANK_LINE + BLANK_LINE
 						+ BLANK_LINE);
 				final String[] invalidCommand = {"move", "b5", "b7"};
-				final String expectedMessage = "Pawn의 첫 이동이 아니므로 2칸을 이동할 수 없습니다";
+				final String expectedMessage = NON_FIRST_DOUBLE_MOVE_MESSAGE;
 
 				verifyExceptionOccur(invalidCommand, new IllegalArgumentException(), expectedMessage);
 			}
@@ -189,7 +190,7 @@ class GameManagerTest {
 					BLANK_LINE + BLANK_LINE + BLANK_LINE + ".p...P.." + BLANK_LINE + BLANK_LINE + BLANK_LINE
 						+ BLANK_LINE);
 				final String[] invalidCommand = {"move", "b5", "c6"};
-				final String expectedMessage = "Pawn의 대각선 위치에 적 기물이 없어 이동할 수 없습니다";
+				final String expectedMessage = NO_ENEMY_ON_DIAGONAL_MESSAGE;
 
 				verifyExceptionOccur(invalidCommand, new IllegalArgumentException(), expectedMessage);
 			}
@@ -201,7 +202,7 @@ class GameManagerTest {
 					BLANK_LINE + BLANK_LINE + BLANK_LINE + "..R....." + "..p....." + BLANK_LINE + BLANK_LINE
 						+ BLANK_LINE);
 				final String[] invalidCommand = {"move", "c4", "c5"};
-				final String expectedMessage = "Pawn의 앞에 적 기물이 있어 이동할 수 없습니다";
+				final String expectedMessage = CONFLICT_ON_FRONT_ENEMY_MESSAGE;
 
 				verifyExceptionOccur(invalidCommand, new IllegalArgumentException(), expectedMessage);
 			}
