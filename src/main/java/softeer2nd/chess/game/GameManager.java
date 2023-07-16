@@ -36,7 +36,11 @@ public class GameManager {
 
 	private void checkStart() {
 		while(!gameStatus.isPlaying()) {
-			executeCommand(gameMenu.getCommand());
+			try {
+				executeCommand(gameMenu.getCommand());
+			} catch (IllegalArgumentException exception) {
+				System.out.println(exception.getMessage());
+			}
 		}
 	}
 
@@ -50,6 +54,9 @@ public class GameManager {
 			return BoardView.showBoard(board);
 		}
 		if (command.equals(Command.END_GAME)) {
+			if (!gameStatus.isPlaying()) {
+				System.exit(0);
+			}
 			gameStatus.setEnd();
 			return BoardView.showBoard(board);
 		}
