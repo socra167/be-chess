@@ -139,12 +139,12 @@ class GameManagerTest {
 		}
 
 		@Test
-		@DisplayName("이동하려는 위치는 유효하지만 같은 편의 기물이 존재하는 경우 예외가 발생하고 이동하지 않아야 한다")
+		@DisplayName("이동하려는 위치는 유효하지만 이동 경로에 같은 편의 기물이 존재하는 경우 예외가 발생하고 이동하지 않아야 한다")
 		void allyConflictMove() {
 			gameManager.initBoardAs(
 				BLANK_LINE + BLANK_LINE + BLANK_LINE + ".r...p.." + BLANK_LINE + BLANK_LINE + BLANK_LINE
 					+ BLANK_LINE);
-			final String[] invalidCommand = {"move", "b5", "f5"};
+			final String[] invalidCommand = {"move", "b5", "g5"};
 			final String expectedMessage = "이동하려는 경로에 같은 편의 기물이 존재합니다";
 
 			verifyExceptionOccur(invalidCommand, new IllegalArgumentException(), expectedMessage);

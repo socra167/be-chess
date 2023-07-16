@@ -123,9 +123,9 @@ public class Board {
 		return true;
 	}
 
-	private boolean isConflict(Piece piece, Position sourcePosition, Position targetPosition) {
+	private boolean isConflict(Piece piece, Position sourcePosition, Position targetPosition) throws IllegalArgumentException {
 		if (findPiece(targetPosition).isAlly(piece)) {
-			return true;
+			throw new IllegalArgumentException("이동하려는 위치에 같은 편의 기물이 존재합니다");
 		}
 		if (piece.isType(Type.KNIGHT)) {
 			return false;
@@ -137,7 +137,7 @@ public class Board {
 
 	}
 
-	private boolean findConflict(Piece piece, Position sourcePosition, Position targetPosition) {
+	private boolean findConflict(Piece piece, Position sourcePosition, Position targetPosition) throws IllegalArgumentException {
 		int[] difference = Position.calculateDiff(sourcePosition, targetPosition);
 		Direction direction = Direction.findDirection(difference[0], difference[1]);
 		Position currentPosition = new Position(sourcePosition.getLocation());
@@ -146,10 +146,10 @@ public class Board {
 			currentPosition.moveTo(direction);
 			currentPiece = findPiece(currentPosition);
 			if (currentPiece.isAlly(piece)) {
-				return true;
+				throw new IllegalArgumentException("이동하려는 경로에 같은 편의 기물이 존재합니다");
 			}
 			if (currentPiece.isEnemy(piece) && !currentPosition.equals(targetPosition)) {
-				return true;
+				throw new IllegalArgumentException("이동하려는 경로에 적 기물이 존재합니다");
 			}
 		}
 		return false;
