@@ -120,7 +120,7 @@ class GameManagerTest {
 		@DisplayName("이동하려는 위치가 기물의 현재 위치와 같은 경우 예외가 발생하고 이동하지 않아야 한다")
 		void samePosition() {
 			final String[] invalidCommand1 = {"move", "a2", "a2"};
-			final String[] invalidCommand2 = {"move", "d2", "d4"};
+			final String[] invalidCommand2 = {"move", "d2", "d2"};
 			final String expectedMessage = "이동하려는 위치가 현재 위치와 같습니다";
 
 			verifyExceptionOccur(invalidCommand1, new IllegalArgumentException(), expectedMessage);

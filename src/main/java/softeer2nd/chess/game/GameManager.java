@@ -84,6 +84,9 @@ public class GameManager {
 		Position sourcePosition = new Position(keywords[1]);
 		Position targetPosition = new Position(keywords[2]);
 
+		if (samePosition(sourcePosition, targetPosition)) {
+			throw new IllegalArgumentException("이동하려는 위치가 현재 위치와 같습니다");
+		}
 		if (isInvalidTurn(sourcePosition)) {
 			gameMenu.informInvalidTurn();
 			return;
@@ -94,6 +97,10 @@ public class GameManager {
 		}
 		board.move(sourcePosition, targetPosition);
 		gameStatus.switchTurn();
+	}
+
+	private boolean samePosition(Position sourcePosition, Position targetPosition) {
+		return sourcePosition.equals(targetPosition);
 	}
 
 	private boolean isInvalidTurn(Position sourcePosition) {
