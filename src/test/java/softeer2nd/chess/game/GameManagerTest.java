@@ -43,7 +43,7 @@ class GameManagerTest {
 	}
 
 	@Test
-	@DisplayName("move 명령어로 기물을 이동시킬 수 있어야 한다")
+	@DisplayName("게임 시작 후 move 명령어로 기물을 이동시킬 수 있어야 한다")
 	void movePiece() {
 		execute("start");
 		final String[] moveCommand = {"move", "b2", "b3"};
@@ -65,21 +65,43 @@ class GameManagerTest {
 		assertThat(actualOutput).isEqualTo(expectedOutput);
 	}
 
+	@Test
+	@DisplayName("게임이 시작되지 않았을 때 start 또는 end 이외의 커맨드가 입력되면 예외가 발생하고 게임이 시작되지 않았다는 메시지를 보여주어야 한다")
+	void gameNotStarted() {
+		final String[] invalidCommand1 = {"move", "a2", "y1"};
+		final String[] invalidCommand2 = {"invalid", "command"};
+		final String expectedMessage = START_GAME_FIRST_MESSAGE;
+
+		verifyExceptionOccur(invalidCommand1, new IllegalArgumentException(), expectedMessage);
+		verifyExceptionOccur(invalidCommand2, new IllegalArgumentException(), expectedMessage);
+	}
+
+	@Test
+	@DisplayName("게임 시작 후 잘못된 명령어가 입력된 경우 예외가 발생하고 잘못된 명령어가 입력되었다는 메시지를 출력햐여 한다")
+	void invalidCommand() {
+		execute("start");
+		final String[] invalidCommand1 = {"moves", "a2", "a4"};
+		final String[] invalidCommand2 = {"invalid", "command"};
+		final String expectedMessage = INVALID_COMMAND_MESSAGE;
+
+		verifyExceptionOccur(invalidCommand1, new IllegalArgumentException(), expectedMessage);
+		verifyExceptionOccur(invalidCommand2, new IllegalArgumentException(), expectedMessage);
+	}
+
+	private void verifyExceptionOccur(String[] invalidCommand, RuntimeException exception, String exceptionMessage) {
+		assertThatThrownBy(() -> {
+			gameManager.executeCommand(invalidCommand);
+		}).isInstanceOf(exception.getClass()).hasMessage(exceptionMessage);
+	}
+
 	@Nested
 	@DisplayName("move 명령어를 사용했을 때")
 	class MovementException {
 
 		@BeforeEach
-		void sepUp() {
+		void setUp() {
 			gameManager = new GameManager();
 			execute("start");
-		}
-
-		private void verifyExceptionOccur(String[] invalidCommand, RuntimeException exception,
-			String exceptionMessage) {
-			assertThatThrownBy(() -> {
-				gameManager.executeCommand(invalidCommand);
-			}).isInstanceOf(exception.getClass()).hasMessage(exceptionMessage);
 		}
 
 		@Test
