@@ -194,6 +194,18 @@ class GameManagerTest {
 
 				verifyExceptionOccur(invalidCommand, new IllegalArgumentException(), expectedMessage);
 			}
+
+			@Test
+			@DisplayName("Pawn의 대각선 위치에 적 기물이 없는데 이동하려는 경우 예외가 발생하고 이동하지 않아야 한다")
+			void invalidDiagonalMove() {
+				gameManager.initBoardAs(
+					BLANK_LINE + BLANK_LINE + BLANK_LINE + ".p...P.." + BLANK_LINE + BLANK_LINE + BLANK_LINE
+						+ BLANK_LINE);
+				final String[] invalidCommand = {"move", "b5", "c6"};
+				final String expectedMessage = "Pawn의 대각선 위치에 적 기물이 없으면 이동할 수 없습니다";
+
+				verifyExceptionOccur(invalidCommand, new IllegalArgumentException(), expectedMessage);
+			}
 		}
 
 	}
