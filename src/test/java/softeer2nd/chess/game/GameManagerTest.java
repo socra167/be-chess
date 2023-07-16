@@ -163,6 +163,18 @@ class GameManagerTest {
 		}
 
 		@Test
+		@DisplayName("이동하려는 위치는 유효하지만 이동 경로에 적 기물이 존재하는 경우 예외가 발생하고 이동하지 않아야 한다")
+		void enemyConflict() {
+			gameManager.initBoardAs(
+				BLANK_LINE + BLANK_LINE + BLANK_LINE + ".r...P.." + BLANK_LINE + BLANK_LINE + BLANK_LINE
+					+ BLANK_LINE);
+			final String[] invalidCommand = {"move", "b5", "g5"};
+			final String expectedMessage = "이동하려는 경로에 적 기물이 존재합니다";
+
+			verifyExceptionOccur(invalidCommand, new IllegalArgumentException(), expectedMessage);
+		}
+
+		@Test
 		@DisplayName("현재 기물을 움직이려는 플레이어의 차례가 아닌 경우 예외가 발생하고 이동하지 않아야 한다")
 		void invalidTurn() {
 			final String[] invalidCommand1 = {"move", "a7", "a5"};
