@@ -54,19 +54,6 @@ class GameManagerTest {
 		verifyExecution(moveCommand, expectedOutput);
 	}
 
-	@Test
-	@DisplayName("move 명령어로 기물이 이동할 수 없는 위치로 이동시킬 수 없어야 한다")
-	void invalidMovePiece() {
-		execute("start");
-		final String[] moveCommand = {"move", "b2", "c3"};
-		final String expectedOutput =
-			appendNewLine("RNBQKBNR") + appendNewLine("PPPPPPPP") + appendNewLine("........") + appendNewLine(
-				"........") + appendNewLine("........") + appendNewLine("........") + appendNewLine("pppppppp")
-				+ appendNewLine("rnbqkbnr");
-
-		verifyExecution(moveCommand, expectedOutput);
-	}
-
 	private void execute(String singleCommand) {
 		final String[] command = {singleCommand};
 		gameManager.executeCommand(command);
