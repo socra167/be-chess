@@ -161,7 +161,7 @@ public class Board {
 				throw new IllegalArgumentException("Pawn의 첫 이동이 아니므로 2칸을 이동할 수 없습니다");
 			}
 			if (isNoEnemyOnDiagonal(piece, sourcePosition, targetPosition)) {
-				return true;
+				throw new IllegalArgumentException("Pawn의 대각선 위치에 적 기물이 없어 이동할 수 없습니다");
 			}
 			if (isConflictOnFrontEnemy(piece, sourcePosition, targetPosition)) {
 				return true;
