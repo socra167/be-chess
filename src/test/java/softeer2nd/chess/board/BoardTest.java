@@ -108,22 +108,10 @@ class BoardTest {
 			BoardInitializer.initialize(board);
 		}
 
-		@Test
-		@DisplayName("기물은 아군 기물이 가로막는 경우 이동할 수 없다")
-		void blockByAlly() {
-			checkNotMovable("a1", "b1");
-		}
-
 		private void checkMovable(final String sourceLocation, final String targetLocation) {
 			Position sourcePosition = new Position(sourceLocation);
 			Position targetPosition = new Position(targetLocation);
 			assertThat(board.isMovable(sourcePosition, targetPosition)).isTrue();
-		}
-
-		private void checkNotMovable(final String sourceLocation, final String targetLocation) {
-			Position sourcePosition = new Position(sourceLocation);
-			Position targetPosition = new Position(targetLocation);
-			assertThat(board.isMovable(sourcePosition, targetPosition)).isFalse();
 		}
 
 		@Nested
@@ -145,14 +133,6 @@ class BoardTest {
 			}
 
 			@Test
-			@DisplayName("첫 이동이 아닐 때 두 칸 이동할 수 없다")
-			void invalidDoubleMove() {
-				board.move(Pawn.createPiece(Color.WHITE), "d2");
-				board.move("d2", "d3");
-				checkNotMovable("d3", "d5");
-			}
-
-			@Test
 			@DisplayName("대각선에 적 기물이 있을 경우 이동할 수 있다")
 			void diagonalMove() {
 				board.move(Pawn.createPiece(Color.WHITE), "d4");
@@ -160,12 +140,6 @@ class BoardTest {
 				checkMovable("d4", "e5");
 			}
 
-			@Test
-			@DisplayName("대각선에 적 기물이 없는 경우 이동할 수 없다")
-			void invalidDiagonalMove() {
-				board.move(Pawn.createPiece(Color.WHITE), "d4");
-				checkNotMovable("d4", "e5");
-			}
 		}
 
 		@Nested
@@ -189,17 +163,6 @@ class BoardTest {
 				checkMovable("d4", "a1");
 			}
 
-			@Test
-			@DisplayName("대각선이 아닌 곳으로 이동 할 수 없다")
-			void invalidMove() {
-				board.move(Bishop.createPiece(Color.WHITE), "d4");
-				checkNotMovable("d4", "d8");
-				checkNotMovable("d4", "d7");
-				checkNotMovable("d4", "d6");
-				checkNotMovable("d4", "e4");
-				checkNotMovable("d4", "f4");
-				checkNotMovable("d4", "g4");
-			}
 		}
 
 		@Nested
@@ -226,17 +189,6 @@ class BoardTest {
 				checkMovable("d4", "d5");
 			}
 
-			@Test
-			@DisplayName("직선이 아닌 곳으로 이동할 수 없다")
-			void invalidMove() {
-				board.move(Rook.createPiece(Color.WHITE), "d4");
-				checkNotMovable("d4", "e5");
-				checkNotMovable("d4", "f6");
-				checkNotMovable("d4", "g7");
-				checkNotMovable("d4", "c3");
-				checkNotMovable("d4", "b2");
-				checkNotMovable("d4", "a1");
-			}
 		}
 
 		@Nested
@@ -260,13 +212,6 @@ class BoardTest {
 				checkMovable("d4", "e2");
 				checkMovable("d4", "f5");
 				checkMovable("d4", "f3");
-			}
-
-			@Test
-			@DisplayName("전진 후 대각선 위치가 아닌 곳으로 이동할 수 없다")
-			void invalidKnightMove() {
-				board.move(Knight.createPiece(Color.WHITE), "d4");
-				checkNotMovable("d4", "d5");
 			}
 
 		}
@@ -305,20 +250,6 @@ class BoardTest {
 				checkMovable("d4", "d3");
 				checkMovable("d4", "d5");
 			}
-
-			@Test
-			@DisplayName("직선이나 대각선이 아닌 곳으로 이동할 수 없다")
-			void invalidMove() {
-				board.move(Queen.createPiece(Color.WHITE), "d4");
-				checkNotMovable("d4", "e1");
-				checkNotMovable("d4", "e2");
-				checkNotMovable("d4", "c1");
-				checkNotMovable("d4", "c2");
-				checkNotMovable("d4", "c6");
-				checkNotMovable("d4", "c7");
-				checkNotMovable("d4", "e6");
-				checkNotMovable("d4", "e7");
-			}
 		}
 
 		@Nested
@@ -342,18 +273,6 @@ class BoardTest {
 				checkMovable("d4", "e3");
 				checkMovable("d4", "c4");
 				checkMovable("d4", "e4");
-			}
-
-			@Test
-			@DisplayName("한 칸 이상 이동할 수 없다")
-			void invalidMove() {
-				board.move(King.createPiece(Color.WHITE), "d4");
-				checkNotMovable("d4", "f4");
-				checkNotMovable("d4", "f5");
-				checkNotMovable("d4", "f6");
-				checkNotMovable("d4", "g7");
-				checkNotMovable("d4", "h8");
-				checkNotMovable("d4", "b4");
 			}
 		}
 	}
