@@ -190,7 +190,7 @@ class GameManagerTest {
 					BLANK_LINE + BLANK_LINE + BLANK_LINE + ".p...P.." + BLANK_LINE + BLANK_LINE + BLANK_LINE
 						+ BLANK_LINE);
 				final String[] invalidCommand = {"move", "b5", "b7"};
-				final String expectedMessage = "Pawn의 첫 이동이 아닌 경우 2칸을 이동할 수 없습니다";
+				final String expectedMessage = "Pawn의 첫 이동이 아니므로 2칸을 이동할 수 없습니다";
 
 				verifyExceptionOccur(invalidCommand, new IllegalArgumentException(), expectedMessage);
 			}
@@ -202,7 +202,19 @@ class GameManagerTest {
 					BLANK_LINE + BLANK_LINE + BLANK_LINE + ".p...P.." + BLANK_LINE + BLANK_LINE + BLANK_LINE
 						+ BLANK_LINE);
 				final String[] invalidCommand = {"move", "b5", "c6"};
-				final String expectedMessage = "Pawn의 대각선 위치에 적 기물이 없으면 이동할 수 없습니다";
+				final String expectedMessage = "Pawn의 대각선 위치에 적 기물이 없어 이동할 수 없습니다";
+
+				verifyExceptionOccur(invalidCommand, new IllegalArgumentException(), expectedMessage);
+			}
+
+			@Test
+			@DisplayName("Pawn의 앞에 적 기물이 있을 때 앞으로 이동하려는 경우 예외가 발생하고 이동하지 않아야 한다")
+			void enemyOnFront() {
+				gameManager.initBoardAs(
+					BLANK_LINE + BLANK_LINE + BLANK_LINE + "..R....." + "..p....." + BLANK_LINE + BLANK_LINE
+						+ BLANK_LINE);
+				final String[] invalidCommand = {"move", "c4", "c5"};
+				final String expectedMessage = "Pawn의 앞에 적 기물이 있어 이동할 수 없습니다";
 
 				verifyExceptionOccur(invalidCommand, new IllegalArgumentException(), expectedMessage);
 			}
