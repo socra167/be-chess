@@ -88,8 +88,7 @@ public class GameManager {
 			throw new IllegalArgumentException("이동하려는 위치가 현재 위치와 같습니다");
 		}
 		if (isInvalidTurn(sourcePosition)) {
-			gameMenu.informInvalidTurn();
-			return;
+			throw new IllegalArgumentException("현재 기물을 움직이려는 플레이어의 차례가 아닙니다");
 		}
 		if (!board.isMovable(sourcePosition, targetPosition)) {
 			gameMenu.informIllegalMove();

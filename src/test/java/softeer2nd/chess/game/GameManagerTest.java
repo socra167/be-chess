@@ -151,7 +151,7 @@ class GameManagerTest {
 		}
 
 		@Test
-		@DisplayName("현재 기물을 움직려는 플레이어의 차례가 아닌 경우 예외가 발생하고 이동하지 않아야 한다")
+		@DisplayName("현재 기물을 움직이려는 플레이어의 차례가 아닌 경우 예외가 발생하고 이동하지 않아야 한다")
 		void invalidTurn() {
 			final String[] invalidCommand1 = {"move", "a7", "a5"};
 			final String expectedMessage = "현재 기물을 움직이려는 플레이어의 차례가 아닙니다";
