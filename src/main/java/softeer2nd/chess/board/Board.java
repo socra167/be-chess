@@ -6,6 +6,7 @@ import softeer2nd.chess.pieces.concrete.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static softeer2nd.chess.game.GameMenu.*;
 import static softeer2nd.chess.pieces.Piece.*;
 
 public class Board {
@@ -112,7 +113,7 @@ public class Board {
 	public boolean isMovable(Position sourcePosition, Position targetPosition) throws IllegalArgumentException {
 		Piece piece = findPiece(sourcePosition);
 		if (!piece.isMovable(sourcePosition, targetPosition)) {
-			throw new IllegalArgumentException("기물의 이동 규칙을 따르지 않습니다");
+			throw new IllegalArgumentException(ILLEGAL_PIECE_MOVE_POLICY_MESSAGE);
 		}
 		if (isConflict(piece, sourcePosition, targetPosition)) {
 			return false;
@@ -125,7 +126,7 @@ public class Board {
 
 	private boolean isConflict(Piece piece, Position sourcePosition, Position targetPosition) throws IllegalArgumentException {
 		if (findPiece(targetPosition).isAlly(piece)) {
-			throw new IllegalArgumentException("이동하려는 위치에 같은 편의 기물이 존재합니다");
+			throw new IllegalArgumentException(ALLY_ON_DESTINATION_MESSAGE);
 		}
 		if (piece.isType(Type.KNIGHT)) {
 			return false;
@@ -146,10 +147,10 @@ public class Board {
 			currentPosition.moveTo(direction);
 			currentPiece = findPiece(currentPosition);
 			if (currentPiece.isAlly(piece)) {
-				throw new IllegalArgumentException("이동하려는 경로에 같은 편의 기물이 존재합니다");
+				throw new IllegalArgumentException(ALLY_ON_PATH_MESSAGE);
 			}
 			if (currentPiece.isEnemy(piece) && !currentPosition.equals(targetPosition)) {
-				throw new IllegalArgumentException("이동하려는 경로에 적 기물이 존재합니다");
+				throw new IllegalArgumentException(ENEMY_ON_PATH_MESSAGE);
 			}
 		}
 		return false;
@@ -158,13 +159,13 @@ public class Board {
 	private boolean isIllegalPawnMove(Piece piece, Position sourcePosition, Position targetPosition) throws IllegalArgumentException {
 		if (piece.isType(Type.PAWN)) {
 			if (isNonFirstDoubleMove(piece, sourcePosition, targetPosition)) {
-				throw new IllegalArgumentException("Pawn의 첫 이동이 아니므로 2칸을 이동할 수 없습니다");
+				throw new IllegalArgumentException(NON_FIRST_DOUBLE_MOVE_MESSAGE);
 			}
 			if (isNoEnemyOnDiagonal(piece, sourcePosition, targetPosition)) {
-				throw new IllegalArgumentException("Pawn의 대각선 위치에 적 기물이 없어 이동할 수 없습니다");
+				throw new IllegalArgumentException(NO_ENEMY_ON_DIAGONAL_MESSAGE);
 			}
 			if (isConflictOnFrontEnemy(piece, sourcePosition, targetPosition)) {
-				throw new IllegalArgumentException("Pawn의 앞에 적 기물이 있어 이동할 수 없습니다");
+				throw new IllegalArgumentException(CONFLICT_ON_FRONT_ENEMY_MESSAGE);
 			}
 		}
 		return false;

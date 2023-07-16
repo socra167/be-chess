@@ -1,7 +1,7 @@
 package softeer2nd.chess.game;
 
 import static softeer2nd.chess.board.BoardView.*;
-import static softeer2nd.chess.utils.StringUtils.*;
+import static softeer2nd.chess.game.GameMenu.*;
 
 import softeer2nd.chess.board.Board;
 import softeer2nd.chess.board.BoardInitializer;
@@ -54,15 +54,13 @@ public class GameManager {
 			return BoardView.showBoard(board);
 		}
 		if (!gameStatus.isPlaying()) {
-			gameMenu.informStartGameFirst();
-			return BLANK_LINES;
+			throw new IllegalArgumentException(START_GAME_FIRST_MESSAGE);
 		}
 		if (command.equals(Command.MOVE_PIECE)) {
 			movePiece(keywords);
 			return BoardView.showBoard(board);
 		}
-		gameMenu.informInvalidCommand();
-		return BoardView.showBoard(board);
+		throw new IllegalArgumentException(INVALID_COMMAND_MESSAGE);
 	}
 
 	private void printBoard() {
@@ -73,25 +71,22 @@ public class GameManager {
 
 	private void movePiece(String[] keywords) throws IllegalArgumentException {
 		if (isInvalidCount(keywords)) {
-			gameMenu.informInvalidKeywordCount();
-			throw new IllegalArgumentException("입력한 위치의 수가 잘못되었습니다");
+			throw new IllegalArgumentException(INVALID_KEYWORD_COUNT_MESSAGE);
 		}
 		if (isInvalidPosition(keywords)) {
-			gameMenu.informInvalidLocation();
-			throw new IllegalArgumentException("입력한 위치가 a1에서 h8을 벗어났습니다");
+			throw new IllegalArgumentException(INVALID_POSITION_RANGE_MESSAGE);
 		}
 
 		Position sourcePosition = new Position(keywords[1]);
 		Position targetPosition = new Position(keywords[2]);
 
 		if (samePosition(sourcePosition, targetPosition)) {
-			throw new IllegalArgumentException("이동하려는 위치가 현재 위치와 같습니다");
+			throw new IllegalArgumentException(SAME_POSITION_MESSAGE);
 		}
 		if (isInvalidTurn(sourcePosition)) {
-			throw new IllegalArgumentException("현재 기물을 움직이려는 플레이어의 차례가 아닙니다");
+			throw new IllegalArgumentException(INVALID_TURN_MESSAGE);
 		}
 		if (!board.isMovable(sourcePosition, targetPosition)) {
-			gameMenu.informIllegalMove();
 			return;
 		}
 		board.move(sourcePosition, targetPosition);
