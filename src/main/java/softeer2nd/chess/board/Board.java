@@ -155,10 +155,10 @@ public class Board {
 		return false;
 	}
 
-	private boolean isIllegalPawnMove(Piece piece, Position sourcePosition, Position targetPosition) {
+	private boolean isIllegalPawnMove(Piece piece, Position sourcePosition, Position targetPosition) throws IllegalArgumentException {
 		if (piece.isType(Type.PAWN)) {
 			if (isNonFirstDoubleMove(piece, sourcePosition, targetPosition)) {
-				return true;
+				throw new IllegalArgumentException("Pawn의 첫 이동이 아니므로 2칸을 이동할 수 없습니다");
 			}
 			if (isNoEnemyOnDiagonal(piece, sourcePosition, targetPosition)) {
 				return true;
